@@ -13,12 +13,6 @@
 
 body
 {
-    display: grid;
-    grid-template-areas:
-        "header"
-        "main"
-        "footer";
-    grid-template-rows: min-content auto min-content;
     margin: 0;
     font-family: "Roboto Mono", monospace;
     color: var(--primary-color);

@@ -1,3 +1,14 @@
+:host
+{
+    display: grid;
+    grid-template-areas:
+        "header"
+        "main"
+        "footer";
+    grid-template-rows: min-content auto min-content;
+    height: 100vh;
+}
+
 .hero
 {
     display: flex;

@@ -1,6 +1,10 @@
-header
+:host
 {
     grid-area: header;
+}
+
+header
+{
     display: grid;
     grid-template-columns: max-content auto max-content;
     align-items: center;
