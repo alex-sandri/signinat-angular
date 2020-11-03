@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiRequest } from 'api/src/typings/ApiRequest';
 import { ApiResponse } from 'api/src/typings/ApiResponse';
 import { ISerializedApp } from 'api/src/models/App';
+import { ISerializedSession } from 'api/src/models/Session';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class ApiService {
   private static readonly ENDPOINTS = {
     USERS: `${ApiService.BASE_ENDPOINT}/users`,
     APPS: `${ApiService.BASE_ENDPOINT}/apps`,
+    SESSIONS: `${ApiService.BASE_ENDPOINT}/sessions`,
   };
 
   public createUser = async (data: ApiRequest.Users.Create): Promise<ApiResponse.Users.Create> =>
@@ -50,4 +52,24 @@ export class ApiService {
 
     return response as ISerializedApp[];
   }
+
+  public createSession = async (data: ApiRequest.Sessions.Create): Promise<ApiResponse.Sessions.Create> =>
+  {
+    const response = await this.http.post(ApiService.ENDPOINTS.SESSIONS, JSON.stringify(data), {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).toPromise();
+
+    return response as ApiResponse.Sessions.Create;
+  }
+
+  public retrieveSession = async (id: string): Promise<ISerializedSession> =>
+  {
+    const response = await this.http.get(`${ApiService.ENDPOINTS.SESSIONS}/${id}`).toPromise();
+
+    return response as ISerializedSession;
+  }
+
+  public deleteSession = async (id: string): Promise<void> => { await this.http.delete(`${ApiService.ENDPOINTS.SESSIONS}/${id}`).toPromise(); }
 }
