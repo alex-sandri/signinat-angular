@@ -126,6 +126,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "signinat-angular"
+    }
+  },
+  "defaultProject": "signinat-angular",
+  "cli": {
+    "analytics": "8b205846-4d99-4f5d-9017-70cefae83a45"
+  }
 }
