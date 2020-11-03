@@ -36,6 +36,8 @@ export class SignupComponent implements OnInit {
 
     submitButton.disabled = true;
 
+    this.firstNameError = this.lastNameError = this.emailError = this.passwordError = "";
+
     const response = await this.api.createUser({
       name: {
         first: this.firstName.trim(),
