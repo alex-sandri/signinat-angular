@@ -8,6 +8,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { SignupComponent } from './signup/signup.component';
 import { RouterModule } from '@angular/router';
 import { IndexComponent } from './index/index.component';
+import { SigninComponent } from './signin/signin.component';
 
 @NgModule({
   declarations: [
@@ -15,14 +16,16 @@ import { IndexComponent } from './index/index.component';
     HeaderComponent,
     FooterComponent,
     SignupComponent,
-    IndexComponent
+    IndexComponent,
+    SigninComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     RouterModule.forRoot([
       { path: "", component: IndexComponent },
-      { path: "signup", component: SignupComponent }
+      { path: "signup", component: SignupComponent },
+      { path: "signin", component: SigninComponent }
     ])
   ],
   providers: [],
