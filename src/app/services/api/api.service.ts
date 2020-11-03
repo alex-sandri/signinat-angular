@@ -5,6 +5,7 @@ import { ApiRequest } from 'api/src/typings/ApiRequest';
 import { ApiResponse } from 'api/src/typings/ApiResponse';
 import { ISerializedApp } from 'api/src/models/App';
 import { ISerializedSession } from 'api/src/models/Session';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class ApiService {
   {
     const response = await this.http.post(ApiService.ENDPOINTS.APPS, JSON.stringify(data), {
       headers: {
-        "Authorization": `Bearer ${Settings.get("session")}`,
+        "Authorization": `Bearer ${SettingsService.get("session")}`,
         "Content-Type": "application/json",
       },
     }).toPromise();
@@ -46,7 +47,7 @@ export class ApiService {
   {
     const response = await this.http.get(ApiService.ENDPOINTS.APPS, {
       headers: {
-        "Authorization": `Bearer ${Settings.get("session")}`,
+        "Authorization": `Bearer ${SettingsService.get("session")}`,
       },
     }).toPromise();
 
