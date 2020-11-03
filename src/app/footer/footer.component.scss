@@ -1,0 +1,12 @@
+footer
+{
+    grid-area: footer;
+    padding: 15px;
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+
+    a
+    {
+        color: inherit;
+    }
+}
