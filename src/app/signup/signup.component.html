@@ -3,7 +3,7 @@
 <main>
     <h1>Sign Up</h1>
     <small>or <a href="/signin">Sign In</a></small>
-    <form (submit)="onSubmit($event)">
+    <form #form (submit)="onSubmit($event, form)">
         <label for="first-name">
             First Name
             <input
@@ -16,6 +16,7 @@
                 #firstName
                 (input)="setFirstName(firstName.value)"
             >
+            <small *ngIf="firstNameError.length > 0"><mark>&#x2716; {{firstNameError}}</mark></small>
         </label>
         <label for="last-name">
             Last Name
@@ -29,6 +30,7 @@
                 #lastName
                 (input)="setLastName(lastName.value)"
             >
+            <small *ngIf="lastNameError.length > 0"><mark>&#x2716; {{lastNameError}}</mark></small>
         </label>
         <label for="email">
             Email
@@ -42,6 +44,7 @@
                 #email
                 (input)="setEmail(email.value)"
             >
+            <small *ngIf="emailError.length > 0"><mark>&#x2716; {{emailError}}</mark></small>
         </label>
         <label for="password">
             Password
@@ -55,6 +58,7 @@
                 #password
                 (input)="setPassword(password.value)"
             >
+            <small *ngIf="passwordError.length > 0"><mark>&#x2716; {{passwordError}}</mark></small>
         </label>
         <button type="submit">Sign Up</button>
     </form>

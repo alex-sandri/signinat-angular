@@ -19,8 +19,6 @@ export class ApiService {
       headers: { "Content-Type": "application/json" },
     }).toPromise();
 
-    console.log(response);
-
     return response as ApiResponse.Users.Create;
   }
 }
