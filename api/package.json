@@ -1,0 +1,26 @@
+{
+  "name": "api",
+  "scripts": {
+    "start": "concurrently \"nodemon lib/index.js\" \"npm run build\"",
+    "build": "tsc --watch"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-bearer-token": "^2.4.0",
+    "firebase-admin": "^9.3.0",
+    "helmet": "^4.1.1",
+    "uuid": "^8.3.1"
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/cors": "^2.8.8",
+    "@types/express": "^4.17.8",
+    "@types/uuid": "^8.3.0",
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.6"
+  }
+}

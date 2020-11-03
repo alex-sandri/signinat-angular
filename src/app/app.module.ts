@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -26,7 +27,8 @@ import { SigninComponent } from './signin/signin.component';
       { path: "", component: IndexComponent },
       { path: "signup", component: SignupComponent },
       { path: "signin", component: SigninComponent }
-    ])
+    ]),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
