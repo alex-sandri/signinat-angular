@@ -25,3 +25,85 @@ main
     grid-area: main;
     padding: 15px;
 }
+
+dialog
+{
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    color: inherit;
+    background-color: var(--secondary-color);
+
+    h1
+    {
+        margin-top: 0;
+    }
+
+    &::backdrop
+    {
+        background-color: rgba(black, 0.8);
+    }
+}
+
+input,
+button
+{
+    padding: 10px;
+    font-family: inherit;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+    outline: none;
+    
+    &:disabled
+    {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}
+
+button
+{
+    cursor: pointer;
+    transition: 300ms;
+
+    &:hover,
+    &:focus
+    {
+        opacity: 0.8;
+    }
+}
+
+form label,
+form label input,
+form label small
+{
+    display: block;
+}
+
+form label
+{
+    margin: 15px 0;
+}
+
+form label input:focus
+{
+    color: var(--primary-color);
+    background-color: var(--secondary-color);
+}
+
+form label small:not(:empty)
+{
+    margin-top: 5px;
+}
+
+form input,
+form button
+{
+    width: 100%;
+}
+
+form button
+{
+    margin-top: 30px;
+}
