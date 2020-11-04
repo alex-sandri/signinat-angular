@@ -3,14 +3,34 @@
 <main>
     <h1>Sign In</h1>
     <small>or <a href="/signup">Sign Up</a></small>
-    <form>
+    <form #form (submit)="onSubmit($event, form)">
         <label for="email">
             Email
-            <input type="email" id="email" name="email" autocomplete="email" required>
+            <input 
+                type="email"
+                id="email"
+                name="email"
+                autocomplete="email"
+                required
+
+                #email
+                (input)="setEmail(email.value)"
+            >
+            <small *ngIf="emailError.length > 0"><mark>&#x2716; {{emailError}}</mark></small>
         </label>
         <label for="password">
             Password
-            <input type="password" id="password" name="password" autocomplete="current-password" required>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                autocomplete="current-password"
+                required
+
+                #password
+                (input)="setPassword(password.value)"
+            >
+            <small *ngIf="passwordError.length > 0"><mark>&#x2716; {{passwordError}}</mark></small>
         </label>
         <button type="submit">Sign In</button>
     </form>
