@@ -1,1 +1,44 @@
-<p>settings works!</p>
+<app-header></app-header>
+
+<main>
+    <section id="profile">
+        <h1>Profile</h1>
+        <div class="field">
+            <h4 class="name">First Name</h4>
+            <small class="value first-name"></small>
+        </div>
+        <div class="field">
+            <h4 class="name">Last Name</h4>
+            <small class="value last-name"></small>
+        </div>
+        <div class="field">
+            <h4 class="name">Email</h4>
+            <small class="value email"></small>
+        </div>
+    </section>
+    <section id="developer">
+        <h1>Developer</h1>
+        <button id="create-new-app">Create new App</button>
+    </section>
+</main>
+
+<dialog id="create-new-app-dialog">
+    <h1>Create new App</h1>
+    <form>
+        <label for="app-name">
+            App Name
+            <input type="text" id="app-name" name="name" required>
+        </label>
+        <label for="app-url">
+            URL
+            <input type="url" id="app-url" name="url" required>
+        </label>
+        <button type="submit">Create</button>
+        <button type="button" class="cancel">Cancel</button>
+    </form>
+</dialog>
+
+<footer>
+    <a href="#profile">Profile</a>
+    <a href="#developer">Developer</a>
+</footer>
