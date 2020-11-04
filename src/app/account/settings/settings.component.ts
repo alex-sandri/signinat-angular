@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsComponent implements OnInit {
 
+  section: "profile" | "developer" = "profile";
+
   constructor() { }
 
   ngOnInit(): void {

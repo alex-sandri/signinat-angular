@@ -9,22 +9,6 @@
     height: 100vh;
 }
 
-@each $section in profile, developer
-{
-    ##{$section}
-    {
-        display: none;
-    }
-
-    html[data-section=#{$section}]
-    {
-        ##{$section}
-        {
-            display: block;
-        }
-    }
-}
-
 main
 {
     section
@@ -51,20 +35,13 @@ footer
 {
     grid-area: footer;
     display: flex;
-    padding: 0;
     background: none;
 
-    a
+    button
     {
-        text-decoration: none;
         width: 100%;
-        display: block;
         padding: 15px;
-        text-align: center;
-        color: var(--secondary-color);
-        background-color: var(--primary-color);
-        transition: 300ms;
-        outline: none;
+        border-radius: 0;
 
         &:hover,
         &:focus
