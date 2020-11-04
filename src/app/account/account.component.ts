@@ -8,10 +8,10 @@ import { ApiService } from '../services/api/api.service';
 })
 export class AccountComponent implements OnInit {
 
-  linkedAccounts: ISerializedLinkedAccount[] = [];
+  accounts: ISerializedAccount[] = [];
 
   constructor(api: ApiService) {
-    api.listLinkedAccounts().then(linkedAccounts => this.linkedAccounts = linkedAccounts);
+    api.listAccounts().then(accounts => this.accounts = accounts);
   }
 
   ngOnInit(): void {

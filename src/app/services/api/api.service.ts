@@ -20,6 +20,7 @@ export class ApiService {
     USERS: `${ApiService.BASE_ENDPOINT}/users`,
     APPS: `${ApiService.BASE_ENDPOINT}/apps`,
     SESSIONS: `${ApiService.BASE_ENDPOINT}/sessions`,
+    ACCOUNTS: `${ApiService.BASE_ENDPOINT}/accounts`,
   };
 
   public createUser = async (data: ApiRequest.Users.Create): Promise<ApiResponse.Users.Create> =>
@@ -29,6 +30,17 @@ export class ApiService {
     }).toPromise();
 
     return response as ApiResponse.Users.Create;
+  }
+
+  public listAccounts = async (): Promise<ISerializedAccount[]> =>
+  {
+    const response = await this.http.get(ApiService.ENDPOINTS.ACCOUNTS, {
+      headers: {
+        "Authorization": `Bearer ${SettingsService.get("session")}`,
+      },
+    }).toPromise();
+
+    return response as ISerializedAccount[];
   }
 
   public createApp = async (data: ApiRequest.Apps.Create): Promise<ApiResponse.Apps.Create> =>

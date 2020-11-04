@@ -4,12 +4,12 @@
     <h1>Account</h1>
     <h2>Linked Accounts</h2>
     <section id="linked-accounts">
-        <span *ngIf="linkedAccounts.length === 0">No linked accounts</span>
-        <a class="linked-account" *ngFor="let linkedAccount of linkedAccounts" href="/account/manage/{{linkedAccount.id}}">
-            <img src="https://picsum.photos/200/100" alt="{{linkedAccount.name}}">
+        <span *ngIf="accounts.length === 0">No linked accounts</span>
+        <a class="linked-account" *ngFor="let account of accounts" href="/account/manage/{{account.id}}">
+            <img src="https://picsum.photos/200/100" alt="{{account.name}}">
             <div class="info">
-                <p class="name"><b>{{linkedAccount.name}}</b></p>
-                <small class="url">{{linkedAccount.url}}</small>
+                <p class="name"><b>{{account.name}}</b></p>
+                <small class="url">{{account.url}}</small>
             </div>
         </a>
     </section>
