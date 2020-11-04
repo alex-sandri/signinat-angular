@@ -1,3 +1,10 @@
 <header>
     <a href="/">SignInAt</a>
+    <div></div>
+    <div>
+        <a href="/signin" *ngIf="!isSignedIn">Sign In</a>
+        <button (click)="openAccountMenu(accountMenu)" *ngIf="isSignedIn">Account</button>
+    </div>
 </header>
+
+<app-account-menu #accountMenu></app-account-menu>

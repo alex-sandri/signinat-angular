@@ -1,5 +1,5 @@
-<div id="account-menu-container">
-    <aside id="account-menu">
+<div class="container" (click)="onClick($event, accountMenu)" *ngIf="visible">
+    <aside #accountMenu>
         <h1>{{firstName}} {{lastName}}</h1>
         <p>{{email}}</p>
         <a href="/account">Account</a>

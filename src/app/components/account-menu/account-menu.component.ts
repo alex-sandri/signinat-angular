@@ -9,13 +9,15 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class AccountMenuComponent implements OnInit {
 
+  visible: boolean = false;
+
   firstName: string = "";
   lastName: string = "";
   email: string = "";
 
   signOut = () => this.authService.signOut();
 
-  constructor(private authService: AuthService, private api: ApiService) {
+  constructor(private authService: AuthService, api: ApiService) {
     api.retrieveSession(authService.sessionId as string).then(session =>
     {
       this.firstName = session.user.name.first;
@@ -25,6 +27,13 @@ export class AccountMenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  onClick(e: Event, accountMenu: HTMLElement) {
+    if (!accountMenu.contains(e.target as HTMLElement))
+    {
+      this.visible = false;
+    }
   }
 
 }

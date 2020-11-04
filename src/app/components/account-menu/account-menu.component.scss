@@ -1,6 +1,5 @@
-#account-menu-container
+.container
 {
-    display: none;
     background-color: rgba(black, 0.5);
     width: 100%;
     height: 100%;
@@ -9,7 +8,7 @@
     left: 0;
 }
 
-#account-menu
+aside
 {
     padding: 15px;
     position: absolute;
