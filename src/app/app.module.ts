@@ -12,6 +12,7 @@ import { IndexComponent } from './index/index.component';
 import { SigninComponent } from './signin/signin.component';
 import { AccountComponent } from './account/account.component';
 import { SettingsComponent } from './account/settings/settings.component';
+import { AuthGuard } from './guards/auth-guard/auth-guard.guard';
 
 @NgModule({
   declarations: [
@@ -31,8 +32,8 @@ import { SettingsComponent } from './account/settings/settings.component';
       { path: "", component: IndexComponent },
       { path: "signup", component: SignupComponent },
       { path: "signin", component: SigninComponent },
-      { path: "account", component: AccountComponent },
-      { path: "account/settings", component: SettingsComponent }
+      { path: "account", component: AccountComponent, canActivate: [ AuthGuard ] },
+      { path: "account/settings", component: SettingsComponent, canActivate: [ AuthGuard ] }
     ]),
     HttpClientModule
   ],
