@@ -18,23 +18,37 @@
     </section>
     <section id="developer" *ngIf="section == 'developer'">
         <h1>Developer</h1>
-        <button id="create-new-app">Create new App</button>
+        <button (click)="setCreateNewAppDialogVisible(true, createNewAppDialog)">Create new App</button>
     </section>
 </main>
 
-<dialog id="create-new-app-dialog">
+<dialog #createNewAppDialog>
     <h1>Create new App</h1>
-    <form>
+    <form #createNewAppForm (submit)="createNewAppFormOnSubmit($event, appName.value, appUrl.value)">
         <label for="app-name">
             App Name
-            <input type="text" id="app-name" name="name" required>
+            <input
+                type="text"
+                id="app-name"
+                name="name"
+                required
+
+                #appName
+            >
         </label>
         <label for="app-url">
             URL
-            <input type="url" id="app-url" name="url" required>
+            <input
+                type="url"
+                id="app-url"
+                name="url"
+                required
+
+                #appUrl
+            >
         </label>
         <button type="submit">Create</button>
-        <button type="button" class="cancel">Cancel</button>
+        <button type="button" (click)="setCreateNewAppDialogVisible(false, createNewAppDialog)">Cancel</button>
     </form>
 </dialog>
 
