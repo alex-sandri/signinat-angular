@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { AccountMenuComponent } from '../account-menu/account-menu.component';
 
@@ -13,7 +14,7 @@ export class HeaderComponent implements OnInit {
 
   openAccountMenu = (accountMenu: AccountMenuComponent) => accountMenu.visible = true;
 
-  constructor(authService: AuthService) {
+  constructor(authService: AuthService, public router: Router) {
     this.isSignedIn = authService.isSignedIn();
   }
 
