@@ -12,7 +12,7 @@ import { IndexComponent } from './index/index.component';
 import { SigninComponent } from './signin/signin.component';
 import { AccountComponent } from './account/account.component';
 import { SettingsComponent } from './account/settings/settings.component';
-import { AuthGuard } from './guards/auth-guard/auth-guard.guard';
+import { AuthGuard } from './guards/auth/auth.guard';
 
 @NgModule({
   declarations: [
