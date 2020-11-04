@@ -20,13 +20,12 @@ main
     }
 }
 
-#profile .field ~ .field
+.field ~ .field
 {
     margin-top: 15px;
 }
 
-#profile .field .name,
-#profile .field .value
+.field .name
 {
     margin: 0;
 }

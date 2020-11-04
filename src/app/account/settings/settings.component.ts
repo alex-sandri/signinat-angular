@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/app/services/api/api.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-settings',
@@ -12,6 +13,10 @@ export class SettingsComponent implements OnInit {
   @ViewChild("createNewAppForm") createNewAppForm!: ElementRef<HTMLFormElement>;
 
   section: "profile" | "developer" = "profile";
+
+  firstName: string = "";
+  lastName: string = "";
+  email: string = "";
 
   createNewAppNameError: string = "";
   createNewAppUrlError: string = "";
@@ -57,7 +62,17 @@ export class SettingsComponent implements OnInit {
     submitButton.disabled = false;
   }
 
-  constructor(private api: ApiService) { }
+  constructor(authService: AuthService, private api: ApiService) {
+    if (authService.isSignedIn())
+    {
+      api.retrieveSession(authService.sessionId as string).then(session =>
+      {
+        this.firstName = session.user.name.first;
+        this.lastName = session.user.name.last;
+        this.email = session.user.email;
+      });
+    }
+  }
 
   ngOnInit(): void {
     this.api.listApps().then(apps =>
