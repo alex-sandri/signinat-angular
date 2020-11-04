@@ -28,7 +28,8 @@ import { AccountComponent } from './account/account.component';
     RouterModule.forRoot([
       { path: "", component: IndexComponent },
       { path: "signup", component: SignupComponent },
-      { path: "signin", component: SigninComponent }
+      { path: "signin", component: SigninComponent },
+      { path: "account", component: AccountComponent }
     ]),
     HttpClientModule
   ],
