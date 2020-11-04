@@ -18,11 +18,11 @@
     </section>
     <section id="developer" *ngIf="section == 'developer'">
         <h1>Developer</h1>
-        <button (click)="setCreateNewAppDialogVisible(true, createNewAppDialog)">Create new App</button>
+        <button (click)="setCreateNewAppDialogVisible(true)">Create new App</button>
     </section>
 </main>
 
-<dialog #createNewAppDialog>
+<dialog>
     <h1>Create new App</h1>
     <form #createNewAppForm (submit)="createNewAppFormOnSubmit($event, appName.value, appUrl.value)">
         <label for="app-name">
@@ -48,7 +48,7 @@
             >
         </label>
         <button type="submit">Create</button>
-        <button type="button" (click)="setCreateNewAppDialogVisible(false, createNewAppDialog)">Cancel</button>
+        <button type="button" (click)="setCreateNewAppDialogVisible(false)">Cancel</button>
     </form>
 </dialog>
 
