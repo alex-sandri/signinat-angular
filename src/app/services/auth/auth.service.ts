@@ -7,6 +7,8 @@ import { SettingsService } from '../settings/settings.service';
   providedIn: 'root'
 })
 export class AuthService {
+  get sessionId () { return SettingsService.get("session"); }
+
   isSignedIn = () => SettingsService.exists("session");
 
   async signOut() {
