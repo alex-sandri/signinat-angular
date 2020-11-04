@@ -17,7 +17,12 @@
         </div>
     </section>
     <section *ngIf="section == 'developer'">
-        <h1>Developer</h1>
+        <h1>Apps</h1>
+        <div>
+            <div *ngFor="let app of apps">
+                <p>{{app.name}}</p>
+            </div>
+        </div>
         <button (click)="setCreateNewAppDialogVisible(true)">Create new App</button>
     </section>
 </main>

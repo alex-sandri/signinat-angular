@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ISerializedApp } from 'api/src/models/App';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
@@ -17,6 +18,8 @@ export class SettingsComponent implements OnInit {
   firstName: string = "";
   lastName: string = "";
   email: string = "";
+
+  apps: ISerializedApp[] = [];
 
   createNewAppNameError: string = "";
   createNewAppUrlError: string = "";
@@ -75,13 +78,7 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.listApps().then(apps =>
-    {
-      apps.forEach(app =>
-      {
-        console.log(app);
-      });
-    });
+    this.api.listApps().then(apps => this.apps = apps);
   }
 
 }
