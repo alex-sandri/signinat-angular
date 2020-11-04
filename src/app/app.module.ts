@@ -10,6 +10,7 @@ import { SignupComponent } from './signup/signup.component';
 import { RouterModule } from '@angular/router';
 import { IndexComponent } from './index/index.component';
 import { SigninComponent } from './signin/signin.component';
+import { AccountComponent } from './account/account.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { SigninComponent } from './signin/signin.component';
     FooterComponent,
     SignupComponent,
     IndexComponent,
-    SigninComponent
+    SigninComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,
