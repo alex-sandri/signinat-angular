@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 import { IndexComponent } from './index/index.component';
 import { SigninComponent } from './signin/signin.component';
 import { AccountComponent } from './account/account.component';
+import { SettingsComponent } from './account/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { AccountComponent } from './account/account.component';
     SignupComponent,
     IndexComponent,
     SigninComponent,
-    AccountComponent
+    AccountComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +31,8 @@ import { AccountComponent } from './account/account.component';
       { path: "", component: IndexComponent },
       { path: "signup", component: SignupComponent },
       { path: "signin", component: SigninComponent },
-      { path: "account", component: AccountComponent }
+      { path: "account", component: AccountComponent },
+      { path: "account/settings", component: SettingsComponent }
     ]),
     HttpClientModule
   ],
