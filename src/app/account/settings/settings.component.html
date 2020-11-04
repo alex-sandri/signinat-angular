@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <main>
-    <section *ngIf="section == 'profile'">
+    <section *ngIf="section == 'general'">
         <h1>Profile</h1>
         <div class="field">
             <h4 class="name">First Name</h4>
@@ -58,6 +58,6 @@
 </dialog>
 
 <footer>
-    <button (click)="section = 'profile'">Profile</button>
+    <button (click)="section = 'general'">General</button>
     <button (click)="section = 'developer'">Developer</button>
 </footer>

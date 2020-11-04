@@ -13,7 +13,7 @@ export class SettingsComponent implements OnInit {
   @ViewChild("createNewAppDialog") createNewAppDialog!: ElementRef<HTMLDialogElement>;
   @ViewChild("createNewAppForm") createNewAppForm!: ElementRef<HTMLFormElement>;
 
-  section: "profile" | "developer" = "profile";
+  section: "general" | "developer" = "general";
 
   firstName: string = "";
   lastName: string = "";
