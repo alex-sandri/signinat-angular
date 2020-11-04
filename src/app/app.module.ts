@@ -13,6 +13,7 @@ import { SigninComponent } from './signin/signin.component';
 import { AccountComponent } from './account/account.component';
 import { SettingsComponent } from './account/settings/settings.component';
 import { AuthGuard } from './guards/auth/auth.guard';
+import { AccountMenuComponent } from './components/account-menu/account-menu.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { AuthGuard } from './guards/auth/auth.guard';
     IndexComponent,
     SigninComponent,
     AccountComponent,
-    SettingsComponent
+    SettingsComponent,
+    AccountMenuComponent
   ],
   imports: [
     BrowserModule,
