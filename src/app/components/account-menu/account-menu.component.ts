@@ -18,12 +18,15 @@ export class AccountMenuComponent implements OnInit {
   signOut = () => this.authService.signOut();
 
   constructor(private authService: AuthService, api: ApiService) {
-    api.retrieveSession(authService.sessionId as string).then(session =>
+    if (authService.isSignedIn())
     {
-      this.firstName = session.user.name.first;
-      this.lastName = session.user.name.last;
-      this.email = session.user.email;
-    });
+      api.retrieveSession(authService.sessionId as string).then(session =>
+      {
+        this.firstName = session.user.name.first;
+        this.lastName = session.user.name.last;
+        this.email = session.user.email;
+      });
+    }
   }
 
   ngOnInit(): void {
