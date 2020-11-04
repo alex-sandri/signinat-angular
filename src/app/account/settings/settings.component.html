@@ -58,6 +58,6 @@
 </dialog>
 
 <footer>
-    <button (click)="section = 'general'">General</button>
-    <button (click)="section = 'developer'">Developer</button>
+    <button (click)="section = 'general'" [class.selected]="section === 'general'">General</button>
+    <button (click)="section = 'developer'" [class.selected]="section === 'developer'">Developer</button>
 </footer>
