@@ -66,19 +66,17 @@ export class SettingsComponent implements OnInit {
   }
 
   constructor(authService: AuthService, private api: ApiService) {
-    if (authService.isSignedIn())
+    api.retrieveSession(authService.sessionId as string).then(session =>
     {
-      api.retrieveSession(authService.sessionId as string).then(session =>
-      {
-        this.firstName = session.user.name.first;
-        this.lastName = session.user.name.last;
-        this.email = session.user.email;
-      });
-    }
+      this.firstName = session.user.name.first;
+      this.lastName = session.user.name.last;
+      this.email = session.user.email;
+    });
+
+    api.listApps().then(apps => this.apps = apps);
   }
 
   ngOnInit(): void {
-    this.api.listApps().then(apps => this.apps = apps);
   }
 
 }

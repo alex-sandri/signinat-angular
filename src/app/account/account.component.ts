@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../services/api/api.service';
 
 @Component({
   selector: 'app-account',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountComponent implements OnInit {
 
-  linkedAccounts: any[] = [];
+  linkedAccounts: ISerializedLinkedAccount[] = [];
 
-  constructor() { }
+  constructor(api: ApiService) {
+    api.listLinkedAccounts().then(linkedAccounts => this.linkedAccounts = linkedAccounts);
+  }
 
   ngOnInit(): void {
   }
