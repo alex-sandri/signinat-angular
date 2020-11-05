@@ -13,6 +13,14 @@ export namespace ApiRequest
         }
     }
 
+    export namespace Accounts
+    {
+        export interface Create
+        {
+            // TODO
+        }
+    }
+
     export namespace Sessions
     {
         export interface Create

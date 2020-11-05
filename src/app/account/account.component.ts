@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ISerializedAccount } from 'api/src/models/Account';
 import { ApiService } from '../services/api/api.service';
 
 @Component({

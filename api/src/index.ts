@@ -17,6 +17,7 @@ import { ApiError } from "./models/ApiError";
 import { App } from "./models/App";
 import { User } from "./models/User";
 import { Session } from "./models/Session";
+import { Account } from "./models/Account";
 
 const app = express();
 
@@ -63,6 +64,29 @@ app.post("/api/users", async (req, res) =>
   }
 
   res.send(response);
+});
+
+app.get("/api/accounts", async (req, res) =>
+{
+  if (!req.token)
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
+  const session = await Session.retrieve(req.token);
+
+  if (!session)
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
+  const accounts = await Account.list(session);
+
+  res.send(accounts.map(account => account.json()));
 });
 
 app.get("/api/apps", async (req, res) =>

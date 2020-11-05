@@ -6,6 +6,7 @@ import { ApiResponse } from 'api/src/typings/ApiResponse';
 import { ISerializedApp } from 'api/src/models/App';
 import { ISerializedSession } from 'api/src/models/Session';
 import { SettingsService } from '../settings/settings.service';
+import { ISerializedAccount } from 'api/src/models/Account';
 
 @Injectable({
   providedIn: 'root'
