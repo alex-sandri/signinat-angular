@@ -27,7 +27,7 @@
     </section>
 </main>
 
-<dialog>
+<dialog #createNewAppDialog>
     <h1>Create new App</h1>
     <form #createNewAppForm (submit)="createNewAppFormOnSubmit($event, appName.value, appUrl.value)">
         <label for="app-name">
