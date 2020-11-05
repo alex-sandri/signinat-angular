@@ -96,5 +96,8 @@ export class ApiService {
     return response as ISerializedSession;
   }
 
-  public deleteSession = async (id: string): Promise<void> => { await this.http.delete(`${ApiService.ENDPOINTS.SESSIONS}/${id}`).toPromise(); }
+  public deleteSession = async (id: string): Promise<void> =>
+  {
+    await this.http.delete(`${ApiService.ENDPOINTS.SESSIONS}/${id}`, { responseType: "text" }).toPromise();
+  }
 }
