@@ -12,7 +12,7 @@ import { IndexComponent } from './index/index.component';
 import { SigninComponent } from './signin/signin.component';
 import { AccountComponent } from './account/account.component';
 import { SettingsComponent } from './account/settings/settings.component';
-import { AuthGuard } from './guards/auth/auth.guard';
+import { SignedInGuard } from './guards/signed-in/signed-in.guard';
 import { AccountMenuComponent } from './components/account-menu/account-menu.component';
 import { ManageComponent } from './account/manage/manage.component';
 import { SignedOutGuard } from './guards/signed-out/signed-out.guard';
@@ -37,9 +37,9 @@ import { SignedOutGuard } from './guards/signed-out/signed-out.guard';
       { path: "", component: IndexComponent },
       { path: "signup", component: SignupComponent, canActivate: [ SignedOutGuard ] },
       { path: "signin", component: SigninComponent, canActivate: [ SignedOutGuard ] },
-      { path: "account", component: AccountComponent, canActivate: [ AuthGuard ] },
-      { path: "account/settings", component: SettingsComponent, canActivate: [ AuthGuard ] },
-      { path: "account/manage/:id", component: ManageComponent, canActivate: [ AuthGuard ] }
+      { path: "account", component: AccountComponent, canActivate: [ SignedInGuard ] },
+      { path: "account/settings", component: SettingsComponent, canActivate: [ SignedInGuard ] },
+      { path: "account/manage/:id", component: ManageComponent, canActivate: [ SignedInGuard ] }
     ]),
     HttpClientModule
   ],
