@@ -3,4 +3,10 @@
 <main *ngIf="account !== undefined">
     <h1>{{account.app.name}}</h1>
     <small><a href="{{account.app.url}}" target="_blank">{{account.app.url}}</a></small>
+    <fieldset>
+        <legend>Danger zone</legend>
+        <p><b>&#9888; These actions cannot be undone &#9888;</b></p>
+        <button>Unlink</button>
+        <button>Delete</button>
+    </fieldset>
 </main>

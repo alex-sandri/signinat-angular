@@ -54,6 +54,7 @@ button
     color: var(--secondary-color);
     background-color: var(--primary-color);
     outline: none;
+    display: block;
     
     &:disabled
     {
@@ -75,7 +76,6 @@ button
 }
 
 form label,
-form label input,
 form label small
 {
     display: block;
@@ -106,4 +106,10 @@ form button
 form button
 {
     margin-top: 30px;
+}
+
+fieldset
+{
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
 }
