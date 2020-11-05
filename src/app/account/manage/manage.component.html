@@ -1,5 +1,6 @@
 <app-header></app-header>
 
 <main *ngIf="account !== undefined">
-    {{account.id}}
+    <h1>{{account.app.name}}</h1>
+    <small><a href="{{account.app.url}}">{{account.app.url}}</a></small>
 </main>
