@@ -89,6 +89,30 @@ app.get("/api/accounts", async (req, res) =>
   res.send(accounts.map(account => account.json()));
 });
 
+app.get("/api/accounts/:id", async (req, res) =>
+{
+  if (!req.token)
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
+  const session = await Session.retrieve(req.token);
+
+  if (!session)
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
+  const account = await Account.retrieve(session, req.params.id);
+
+  if (!account) res.sendStatus(404);
+  else res.send(account.json());
+});
+
 app.get("/api/apps", async (req, res) =>
 {
   if (!req.token)
