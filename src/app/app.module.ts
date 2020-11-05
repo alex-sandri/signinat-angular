@@ -14,6 +14,7 @@ import { AccountComponent } from './account/account.component';
 import { SettingsComponent } from './account/settings/settings.component';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { AccountMenuComponent } from './components/account-menu/account-menu.component';
+import { ManageComponent } from './account/manage/manage.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AccountMenuComponent } from './components/account-menu/account-menu.com
     SigninComponent,
     AccountComponent,
     SettingsComponent,
-    AccountMenuComponent
+    AccountMenuComponent,
+    ManageComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +37,8 @@ import { AccountMenuComponent } from './components/account-menu/account-menu.com
       { path: "signup", component: SignupComponent },
       { path: "signin", component: SigninComponent },
       { path: "account", component: AccountComponent, canActivate: [ AuthGuard ] },
-      { path: "account/settings", component: SettingsComponent, canActivate: [ AuthGuard ] }
+      { path: "account/settings", component: SettingsComponent, canActivate: [ AuthGuard ] },
+      { path: "account/manage/:id", component: ManageComponent, canActivate: [ AuthGuard ] }
     ]),
     HttpClientModule
   ],
