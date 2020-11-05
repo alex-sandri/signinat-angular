@@ -103,7 +103,13 @@ export class App
         return apps;
     }
 
-    static delete = async (id: string): Promise<void> => { await db.collection("apps").doc(id).delete(); }
+    static delete = async (id: string): Promise<void> =>
+    {
+        await db.collection("apps").doc(id).delete();
+
+        // TODO
+        // Delete every account associated with this app
+    }
 
     static withUrl = async (url: string): Promise<App | null> =>
     {

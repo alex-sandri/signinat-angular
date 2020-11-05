@@ -82,7 +82,13 @@ export class User
         );
     }
 
-    static delete = async (id: string): Promise<void> => { await db.collection("users").doc(id).delete(); }
+    static delete = async (id: string): Promise<void> =>
+    {
+        await db.collection("users").doc(id).delete();
+
+        // TODO
+        // Delete accounts collection
+    }
 
     static withEmail = async (email: string): Promise<User | null> =>
     {
