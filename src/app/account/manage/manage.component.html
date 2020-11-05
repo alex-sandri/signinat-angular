@@ -3,10 +3,17 @@
 <main *ngIf="account !== undefined">
     <h1>{{account.app.name}}</h1>
     <small><a href="{{account.app.url}}" target="_blank">{{account.app.url}}</a></small>
-    <fieldset>
+    <fieldset id="danger-zone">
         <legend>Danger zone</legend>
         <p><b>&#9888; These actions cannot be undone &#9888;</b></p>
         <button>Unlink</button>
+        <small>
+            This will unlink this account from your SignInAt account,
+            but you will still be able to access your <a href="{{account.app.url}}" target="_blank">{{account.app.name}}</a> account.
+        </small>
         <button>Delete</button>
+        <small>
+            This will delete your <a href="{{account.app.url}}" target="_blank">{{account.app.name}}</a> account permanently.
+        </small>
     </fieldset>
 </main>
