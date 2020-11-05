@@ -20,12 +20,18 @@ export class AccountMenuComponent implements OnInit {
   constructor(private authService: AuthService, api: ApiService) {
     if (authService.isSignedIn())
     {
-      api.retrieveSession(authService.sessionId as string).then(session =>
-      {
-        this.firstName = session.user.name.first;
-        this.lastName = session.user.name.last;
-        this.email = session.user.email;
-      });
+      api
+        .retrieveSession(authService.sessionId as string)
+        .then(session =>
+        {
+          this.firstName = session.user.name.first;
+          this.lastName = session.user.name.last;
+          this.email = session.user.email;
+        })
+        .catch(() =>
+        {
+          this.signOut();
+        });
     }
   }
 
