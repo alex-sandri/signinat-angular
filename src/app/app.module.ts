@@ -15,6 +15,7 @@ import { SettingsComponent } from './account/settings/settings.component';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { AccountMenuComponent } from './components/account-menu/account-menu.component';
 import { ManageComponent } from './account/manage/manage.component';
+import { SignedOutGuard } from './guards/signed-out/signed-out.guard';
 
 @NgModule({
   declarations: [
@@ -34,8 +35,8 @@ import { ManageComponent } from './account/manage/manage.component';
     AppRoutingModule,
     RouterModule.forRoot([
       { path: "", component: IndexComponent },
-      { path: "signup", component: SignupComponent },
-      { path: "signin", component: SigninComponent },
+      { path: "signup", component: SignupComponent, canActivate: [ SignedOutGuard ] },
+      { path: "signin", component: SigninComponent, canActivate: [ SignedOutGuard ] },
       { path: "account", component: AccountComponent, canActivate: [ AuthGuard ] },
       { path: "account/settings", component: SettingsComponent, canActivate: [ AuthGuard ] },
       { path: "account/manage/:id", component: ManageComponent, canActivate: [ AuthGuard ] }
