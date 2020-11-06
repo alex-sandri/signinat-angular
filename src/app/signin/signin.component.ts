@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ISerializedSession } from 'api/src/models/Session';
 import { ApiService } from '../services/api/api.service';
 import { SettingsService } from '../services/settings/settings.service';
@@ -20,7 +20,7 @@ export class SigninComponent implements OnInit {
   setEmail = (value: string) => { this.email = value; }
   setPassword = (value: string) => { this.password = value; }
 
-  constructor(private api: ApiService, private route: ActivatedRoute) { }
+  constructor(private api: ApiService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
   }
@@ -50,11 +50,11 @@ export class SigninComponent implements OnInit {
 
       if (this.route.snapshot.queryParams["ref"])
       {
-        location.href = `/${this.route.snapshot.queryParams["ref"]}`;
+        this.router.navigateByUrl(`/${this.route.snapshot.queryParams["ref"]}`)
       }
       else
       {
-        location.href = "/account";
+        this.router.navigateByUrl("/account");
       }
     }
 
