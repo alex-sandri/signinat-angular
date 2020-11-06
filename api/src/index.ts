@@ -113,6 +113,29 @@ app.get("/api/accounts/:id", async (req, res) =>
   else res.send(account.json());
 });
 
+app.delete("/api/accounts/:id/unlink", async (req, res) =>
+{
+  if (!req.token)
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
+  const session = await Session.retrieve(req.token);
+
+  if (!session)
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
+  await Account.unlink(session, req.params.id);
+
+  res.sendStatus(200);
+});
+
 app.delete("/api/accounts/:id", async (req, res) =>
 {
   if (!req.token)
@@ -131,8 +154,7 @@ app.delete("/api/accounts/:id", async (req, res) =>
     return;
   }
 
-  if (req.body.unlink) await Account.unlink(session, req.params.id);
-  else await Account.delete(session, req.params.id);
+  await Account.delete(session, req.params.id);
 
   res.sendStatus(200);
 });

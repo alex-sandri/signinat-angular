@@ -10,17 +10,17 @@ import { ApiService } from 'src/app/services/api/api.service';
 })
 export class ManageComponent implements OnInit {
 
-  account?: ISerializedAccount;
+  account!: ISerializedAccount;
 
-  unlink() {
-    // TODO
+  async unlink() {
+    await this.api.unlinkAccount(this.account.id);
   }
 
-  delete() {
-    // TODO
+  async delete() {
+    await this.api.deleteAccount(this.account.id);
   }
 
-  constructor(api: ApiService, route: ActivatedRoute) {
+  constructor(private api: ApiService, route: ActivatedRoute) {
     api
       .retrieveAccount(route.snapshot.params["id"])
       .then(account => this.account = account);

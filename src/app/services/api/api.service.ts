@@ -55,6 +55,24 @@ export class ApiService {
     return response as ISerializedAccount[];
   }
 
+  public unlinkAccount = async (id: string): Promise<void> =>
+  {
+    await this.http.delete(`${ApiService.ENDPOINTS.ACCOUNTS}/${id}/unlink`, {
+      headers: {
+        "Authorization": `Bearer ${SettingsService.get("session")}`,
+      },
+    }).toPromise();
+  }
+
+  public deleteAccount = async (id: string): Promise<void> =>
+  {
+    await this.http.delete(`${ApiService.ENDPOINTS.ACCOUNTS}/${id}`, {
+      headers: {
+        "Authorization": `Bearer ${SettingsService.get("session")}`,
+      },
+    }).toPromise();
+  }
+
   public createApp = async (data: ApiRequest.Apps.Create): Promise<ApiResponse.Apps.Create> =>
   {
     const response = await this.http.post(ApiService.ENDPOINTS.APPS, JSON.stringify(data), {
