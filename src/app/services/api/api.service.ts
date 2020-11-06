@@ -61,6 +61,7 @@ export class ApiService {
       headers: {
         "Authorization": `Bearer ${SettingsService.get("session")}`,
       },
+      responseType: "text",
     }).toPromise();
   }
 
@@ -70,6 +71,7 @@ export class ApiService {
       headers: {
         "Authorization": `Bearer ${SettingsService.get("session")}`,
       },
+      responseType: "text",
     }).toPromise();
   }
 
