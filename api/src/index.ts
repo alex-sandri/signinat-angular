@@ -113,6 +113,30 @@ app.get("/api/accounts/:id", async (req, res) =>
   else res.send(account.json());
 });
 
+app.delete("/api/accounts/:id", async (req, res) =>
+{
+  if (!req.token)
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
+  const session = await Session.retrieve(req.token);
+
+  if (!session)
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
+  if (req.body.unlink) await Account.unlink(session, req.params.id);
+  else await Account.delete(session, req.params.id);
+
+  res.sendStatus(200);
+});
+
 app.get("/api/apps", async (req, res) =>
 {
   if (!req.token)

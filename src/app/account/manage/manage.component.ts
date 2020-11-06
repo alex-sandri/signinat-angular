@@ -12,6 +12,14 @@ export class ManageComponent implements OnInit {
 
   account?: ISerializedAccount;
 
+  unlink() {
+    // TODO
+  }
+
+  delete() {
+    // TODO
+  }
+
   constructor(api: ApiService, route: ActivatedRoute) {
     api
       .retrieveAccount(route.snapshot.params["id"])
