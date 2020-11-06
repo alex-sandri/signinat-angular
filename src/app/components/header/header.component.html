@@ -1,9 +1,9 @@
 <header>
-    <a href="/">SignInAt</a>
+    <a routerLink="/">SignInAt</a>
     <div></div>
     <div class="right">
-        <a href="/signin" *ngIf="!isSignedIn && router.url != '/signin'">Sign In</a>
-        <a href="/signup" *ngIf="!isSignedIn && router.url == '/signin'">Sign Up</a>
+        <a routerLink="/signin" *ngIf="!isSignedIn && router.url != '/signin'">Sign In</a>
+        <a routerLink="/signup" *ngIf="!isSignedIn && router.url == '/signin'">Sign Up</a>
         <button (click)="openAccountMenu(accountMenu)" *ngIf="isSignedIn">Account</button>
     </div>
 </header>

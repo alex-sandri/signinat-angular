@@ -7,7 +7,7 @@
         <span *ngIf="accounts.length === 0">No linked accounts</span>
         <a
             class="linked-account"
-            href="/account/manage/{{account.id}}"
+            routerLink="/account/manage/{{account.id}}"
             title="{{account.app.name}}"
 
             *ngFor="let account of accounts"
