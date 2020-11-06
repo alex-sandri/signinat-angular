@@ -19,9 +19,18 @@
     <section *ngIf="section == 'developer'">
         <h1>Apps</h1>
         <div>
-            <div *ngFor="let app of apps">
-                <p>{{app.name}}</p>
-            </div>
+            <a
+                class="linked-account"
+                routerLink="/app/manage/{{app.id}}"
+                title="{{app.name}}"
+
+                *ngFor="let app of apps"
+            >
+                <img src="https://picsum.photos/200/100" alt="{{app.name}}">
+                <div class="info">
+                    <p class="name"><b>{{app.name}}</b></p>
+                </div>
+            </a>
         </div>
         <button (click)="setCreateNewAppDialogVisible(true)">Create new App</button>
     </section>
