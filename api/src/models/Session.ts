@@ -1,5 +1,6 @@
 import { firestore } from "firebase-admin";
 import * as bcrypt from "bcrypt";
+import { DateTime } from "luxon";
 
 import { ApiRequest } from "../typings/ApiRequest";
 import { ISerializedUser, User } from "./User";
@@ -46,15 +47,15 @@ export class Session
 
         if (!bcrypt.compareSync(data.password, user.password)) throw new ApiError("user/password/wrong");
 
-        const expires = firestore.Timestamp.now();
+        const expires = DateTime.fromJSDate(firestore.Timestamp.now().toDate()).plus({ months: 1 });
 
         const session = await db.collection(`users/${user.id}/sessions`).add(<ISession>{
-            expires,
+            expires: firestore.Timestamp.fromDate(expires.toJSDate()),
         });
 
         return new Session(
             session.id,
-            expires.toDate(),
+            expires.toJSDate(),
             user,
         );
     }
