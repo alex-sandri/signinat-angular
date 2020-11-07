@@ -288,9 +288,23 @@ app.delete("/api/apps/:id", async (req, res) =>
 
 app.get("/api/sessions/:id", async (req, res) =>
 {
+  if (!req.token)
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
   const id = req.params.id;
 
-  const session = await Session.withToken(id);
+  if (id !== req.token.split(";")[1])
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
+  const session = await Session.withToken(req.token);
 
   if (!session) res.sendStatus(404);
   else res.send(session.json());
