@@ -87,6 +87,17 @@ export class ApiService {
     return response as ApiResponse.Apps.Create;
   }
 
+  public retrieveApp = async (id: string): Promise<ISerializedApp> =>
+  {
+    const response = await this.http.get(`${ApiService.ENDPOINTS.APPS}/${id}`, {
+      headers: {
+        "Authorization": `Bearer ${SettingsService.get("session")}`,
+      },
+    }).toPromise();
+
+    return response as ISerializedApp;
+  }
+
   public listApps = async (): Promise<ISerializedApp[]> =>
   {
     const response = await this.http.get(ApiService.ENDPOINTS.APPS, {
@@ -96,6 +107,16 @@ export class ApiService {
     }).toPromise();
 
     return response as ISerializedApp[];
+  }
+
+  public deleteApp = async (id: string): Promise<void> =>
+  {
+    await this.http.delete(`${ApiService.ENDPOINTS.APPS}/${id}`, {
+      headers: {
+        "Authorization": `Bearer ${SettingsService.get("session")}`,
+      },
+      responseType: "text",
+    }).toPromise();
   }
 
   public createSession = async (data: ApiRequest.Sessions.Create): Promise<ApiResponse.Sessions.Create> =>
