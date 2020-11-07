@@ -182,6 +182,30 @@ app.get("/api/apps", async (req, res) =>
   res.send(apps.map(app => app.json()));
 });
 
+app.get("/api/apps/:id", async (req, res) =>
+{
+  if (!req.token)
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
+  const session = await Session.retrieve(req.token);
+
+  if (!session)
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
+  const app = await App.retrieve(req.params.id);
+
+  if (!app) res.sendStatus(404);
+  else res.send(app.json());
+});
+
 app.post("/api/apps", async (req, res) =>
 {
   if (!req.token)
@@ -230,6 +254,36 @@ app.post("/api/apps", async (req, res) =>
   }
 
   res.send(response);
+});
+
+app.delete("/api/apps/:id", async (req, res) =>
+{
+  if (!req.token)
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
+  const session = await Session.retrieve(req.token);
+
+  if (!session)
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
+  if (!(await App.isOwnedBy(req.params.id, session.user)))
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
+  await App.delete(req.params.id);
+
+  res.sendStatus(200);
 });
 
 app.get("/api/sessions/:id", async (req, res) =>

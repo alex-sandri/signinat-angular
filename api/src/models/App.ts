@@ -124,6 +124,13 @@ export class App
 
     static exists = async (url: string): Promise<boolean> => (await App.withUrl(url)) !== null;
 
+    static isOwnedBy = async (id: string, user: User): Promise<boolean> =>
+    {
+        const app = await App.retrieve(id);
+
+        return app?.owner.id === user.id;
+    }
+
     /**
      * @throws `Error` if data is not valid
      */
