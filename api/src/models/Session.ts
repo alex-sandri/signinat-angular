@@ -68,6 +68,8 @@ export class Session
 
         const data = session.data() as ISession;
 
+        if (data.expires.toDate() < new Date()) return null;
+
         return new Session(
             session.id,
             data.expires.toDate(),
