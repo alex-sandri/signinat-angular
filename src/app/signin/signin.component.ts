@@ -46,7 +46,7 @@ export class SigninComponent implements OnInit {
     }
     else
     {
-      SettingsService.set("session", (response.result.data as ISerializedSession).id);
+      SettingsService.set("session", (response.result.data as ISerializedSession).token);
 
       if (this.route.snapshot.queryParams["ref"])
       {
