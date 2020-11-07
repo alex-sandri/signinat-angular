@@ -18,6 +18,7 @@ import { App } from "./models/App";
 import { User } from "./models/User";
 import { Session } from "./models/Session";
 import { Account } from "./models/Account";
+import { Token } from "./models/Token";
 
 const app = express();
 
@@ -68,46 +69,32 @@ app.post("/api/users", async (req, res) =>
 
 app.get("/api/accounts", async (req, res) =>
 {
-  if (!req.token)
+  const token = await Token.fromString(req.token);
+
+  if (!token)
   {
     res.sendStatus(403);
 
     return;
   }
 
-  const session = await Session.withToken(req.token);
-
-  if (!session)
-  {
-    res.sendStatus(403);
-
-    return;
-  }
-
-  const accounts = await Account.list(session);
+  const accounts = await Account.list(token.session);
 
   res.send(accounts.map(account => account.json()));
 });
 
 app.get("/api/accounts/:id", async (req, res) =>
 {
-  if (!req.token)
+  const token = await Token.fromString(req.token);
+
+  if (!token)
   {
     res.sendStatus(403);
 
     return;
   }
 
-  const session = await Session.withToken(req.token);
-
-  if (!session)
-  {
-    res.sendStatus(403);
-
-    return;
-  }
-
-  const account = await Account.retrieve(session, req.params.id);
+  const account = await Account.retrieve(token.session, req.params.id);
 
   if (!account) res.sendStatus(404);
   else res.send(account.json());
@@ -115,85 +102,57 @@ app.get("/api/accounts/:id", async (req, res) =>
 
 app.delete("/api/accounts/:id/unlink", async (req, res) =>
 {
-  if (!req.token)
+  const token = await Token.fromString(req.token);
+
+  if (!token)
   {
     res.sendStatus(403);
 
     return;
   }
 
-  const session = await Session.withToken(req.token);
-
-  if (!session)
-  {
-    res.sendStatus(403);
-
-    return;
-  }
-
-  await Account.unlink(session, req.params.id);
+  await Account.unlink(token.session, req.params.id);
 
   res.sendStatus(200);
 });
 
 app.delete("/api/accounts/:id", async (req, res) =>
 {
-  if (!req.token)
+  const token = await Token.fromString(req.token);
+
+  if (!token)
   {
     res.sendStatus(403);
 
     return;
   }
 
-  const session = await Session.withToken(req.token);
-
-  if (!session)
-  {
-    res.sendStatus(403);
-
-    return;
-  }
-
-  await Account.delete(session, req.params.id);
+  await Account.delete(token.session, req.params.id);
 
   res.sendStatus(200);
 });
 
 app.get("/api/apps", async (req, res) =>
 {
-  if (!req.token)
+  const token = await Token.fromString(req.token);
+
+  if (!token)
   {
     res.sendStatus(403);
 
     return;
   }
 
-  const session = await Session.withToken(req.token);
-
-  if (!session)
-  {
-    res.sendStatus(403);
-
-    return;
-  }
-
-  const apps = await App.list(session);
+  const apps = await App.list(token.session);
 
   res.send(apps.map(app => app.json()));
 });
 
 app.get("/api/apps/:id", async (req, res) =>
 {
-  if (!req.token)
-  {
-    res.sendStatus(403);
+  const token = await Token.fromString(req.token);
 
-    return;
-  }
-
-  const session = await Session.withToken(req.token);
-
-  if (!session)
+  if (!token)
   {
     res.sendStatus(403);
 
@@ -208,16 +167,9 @@ app.get("/api/apps/:id", async (req, res) =>
 
 app.post("/api/apps", async (req, res) =>
 {
-  if (!req.token)
-  {
-    res.sendStatus(403);
+  const token = await Token.fromString(req.token);
 
-    return;
-  }
-
-  const session = await Session.withToken(req.token);
-
-  if (!session)
+  if (!token)
   {
     res.sendStatus(403);
 
@@ -236,7 +188,7 @@ app.post("/api/apps", async (req, res) =>
 
   try
   {
-    const app = await App.create(session, data);
+    const app = await App.create(token.session, data);
 
     response.result.data = app.json();
   }
@@ -258,23 +210,16 @@ app.post("/api/apps", async (req, res) =>
 
 app.delete("/api/apps/:id", async (req, res) =>
 {
-  if (!req.token)
+  const token = await Token.fromString(req.token);
+
+  if (!token)
   {
     res.sendStatus(403);
 
     return;
   }
 
-  const session = await Session.withToken(req.token);
-
-  if (!session)
-  {
-    res.sendStatus(403);
-
-    return;
-  }
-
-  if (!(await App.isOwnedBy(req.params.id, session.user)))
+  if (!(await App.isOwnedBy(req.params.id, token.user)))
   {
     res.sendStatus(403);
 
@@ -288,7 +233,9 @@ app.delete("/api/apps/:id", async (req, res) =>
 
 app.get("/api/sessions/:id", async (req, res) =>
 {
-  if (!req.token)
+  const token = await Token.fromString(req.token);
+
+  if (!token)
   {
     res.sendStatus(403);
 
@@ -297,17 +244,15 @@ app.get("/api/sessions/:id", async (req, res) =>
 
   const id = req.params.id;
 
-  if (id !== req.token.split(";")[1])
+  if (id !== token.session.id)
   {
     res.sendStatus(403);
 
     return;
   }
 
-  const session = await Session.withToken(req.token);
-
-  if (!session) res.sendStatus(404);
-  else res.send(session.json());
+  if (!token.session) res.sendStatus(404);
+  else res.send(token.session.json());
 });
 
 app.post("/api/sessions", async (req, res) =>
@@ -348,7 +293,9 @@ app.post("/api/sessions", async (req, res) =>
 
 app.delete("/api/sessions/:id", async (req, res) =>
 {
-  if (!req.token)
+  const token = await Token.fromString(req.token);
+
+  if (!token)
   {
     res.sendStatus(403);
 
@@ -357,22 +304,20 @@ app.delete("/api/sessions/:id", async (req, res) =>
 
   const id = req.params.id;
 
-  if (id !== req.token.split(";")[1])
+  if (id !== token.session.id)
   {
     res.sendStatus(403);
 
     return;
   }
 
-  const session = await Session.withToken(req.token);
-
-  if (!session)
+  if (!token.session)
   {
     res.sendStatus(404);
   }
   else
   {
-    await session.delete();
+    await token.session.delete();
 
     res.sendStatus(200);
   }

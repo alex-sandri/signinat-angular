@@ -77,15 +77,6 @@ export class Session
         );
     }
 
-    static withToken = async (token: string): Promise<Session | null> =>
-    {
-        const user = await User.retrieve(token.split(";")[0]);
-
-        if (!user) return null;
-
-        return Session.retrieve(user, token.split(";")[1]);
-    }
-
     public delete = async (): Promise<void> => { await db.collection(`users/${this.user.id}/sessions`).doc(this.id).delete(); }
 
     static exists = async (user: User, id: string): Promise<boolean> => (await Session.retrieve(user, id)) !== null;
