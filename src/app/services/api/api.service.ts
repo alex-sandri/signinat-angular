@@ -132,13 +132,22 @@ export class ApiService {
 
   public retrieveSession = async (id: string): Promise<ISerializedSession> =>
   {
-    const response = await this.http.get(`${ApiService.ENDPOINTS.SESSIONS}/${id}`).toPromise();
+    const response = await this.http.get(`${ApiService.ENDPOINTS.SESSIONS}/${id}`, {
+      headers: {
+        "Authorization": `Bearer ${SettingsService.get("session")}`,
+      },
+    }).toPromise();
 
     return response as ISerializedSession;
   }
 
   public deleteSession = async (id: string): Promise<void> =>
   {
-    await this.http.delete(`${ApiService.ENDPOINTS.SESSIONS}/${id}`, { responseType: "text" }).toPromise();
+    await this.http.delete(`${ApiService.ENDPOINTS.SESSIONS}/${id}`, {
+      headers: {
+        "Authorization": `Bearer ${SettingsService.get("session")}`,
+      },
+      responseType: "text",
+    }).toPromise();
   }
 }
