@@ -354,7 +354,7 @@ app.delete("/api/sessions/:id", async (req, res) =>
 
   if (!session)
   {
-    res.sendStatus(403);
+    res.sendStatus(404);
   }
   else
   {
