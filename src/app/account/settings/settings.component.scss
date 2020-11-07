@@ -30,6 +30,37 @@ main
     margin: 0;
 }
 
+#apps
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+
+    .app
+    {
+        text-decoration: none;
+        color: var(--secondary-color);
+        background-color: var(--primary-color);
+        padding: 5px;
+        border-radius: 5px;
+
+        img
+        {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        p
+        {
+            margin: 0;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    }
+}
+
 footer
 {
     grid-area: footer;
