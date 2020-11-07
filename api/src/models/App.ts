@@ -128,7 +128,9 @@ export class App
     {
         const app = await App.retrieve(id);
 
-        return app?.owner.id === user.id;
+        if (!app) return false;
+
+        return app.owner.id === user.id;
     }
 
     /**
