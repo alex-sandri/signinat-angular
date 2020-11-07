@@ -16,7 +16,7 @@ aside
     height: 100%;
     color: var(--secondary-color);
     background-color: var(--primary-color);
-    width: min(100%, 400px);
+    width: min(calc(100% - 30px), 400px);
 
     h1,
     p
