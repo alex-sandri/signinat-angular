@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RouterService {
 
-  navigateToSignIn() {
+  navigateToSignIn(route: ActivatedRouteSnapshot) {
     this.router.navigate([ "signin" ], {
       queryParams: {
-        ref: this.route.url.toString().replace(/,/g, "/")
+        ref: route.url.toString().replace(/,/g, "/")
       },
     });
   }
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router) { }
 }

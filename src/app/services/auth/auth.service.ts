@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../api/api.service';
 import { RouterService } from '../router/router.service';
 import { SettingsService } from '../settings/settings.service';
@@ -16,9 +17,9 @@ export class AuthService {
     {
       SettingsService.delete("session");
 
-      this.router.navigateToSignIn();
+      this.router.navigateToSignIn(this.route.snapshot);
     });
   }
 
-  constructor(private api: ApiService, private router: RouterService) { }
+  constructor(private api: ApiService, private router: RouterService, private route: ActivatedRoute) { }
 }
