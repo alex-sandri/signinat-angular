@@ -17,6 +17,7 @@ import { AccountMenuComponent } from './components/account-menu/account-menu.com
 import { ManageComponent as AccountManageComponent } from './account/manage/manage.component';
 import { SignedOutGuard } from './guards/signed-out/signed-out.guard';
 import { ManageComponent as AppManageComponent } from './app/manage/manage.component';
+import { SigninComponent as AppSignInComponent } from './app/signin/signin.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ManageComponent as AppManageComponent } from './app/manage/manage.compo
     SettingsComponent,
     AccountMenuComponent,
     AccountManageComponent,
-    AppManageComponent
+    AppManageComponent,
+    AppSignInComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +44,8 @@ import { ManageComponent as AppManageComponent } from './app/manage/manage.compo
       { path: "account", component: AccountComponent, canActivate: [ SignedInGuard ] },
       { path: "account/settings", component: SettingsComponent, canActivate: [ SignedInGuard ] },
       { path: "account/manage/:id", component: AccountManageComponent, canActivate: [ SignedInGuard ] },
-      { path: "app/manage/:id", component: AppManageComponent, canActivate: [ SignedInGuard ] }
+      { path: "app/manage/:id", component: AppManageComponent, canActivate: [ SignedInGuard ] },
+      { path: "app/signin/:id", component: AppSignInComponent }
     ]),
     HttpClientModule
   ],
