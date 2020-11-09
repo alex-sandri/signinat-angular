@@ -12,8 +12,6 @@ export class SigninComponent implements OnInit {
 
   app!: ISerializedApp;
 
-  fields: any[] = [];
-
   async onSubmit(e: Event, form: HTMLFormElement): Promise<void> {
     e.preventDefault();
 
