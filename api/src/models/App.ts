@@ -43,7 +43,7 @@ export class App
         name: this.name,
         url: this.url,
         owner: this.owner.json(),
-        fields: this.fields.map(field => field.json()),
+        fields: this.fields.sort((a, b) => a.order - b.order).map(field => field.json()),
     });
 
     static create = async (session: Session, data: ApiRequest.Apps.Create): Promise<App> =>
@@ -94,6 +94,7 @@ export class App
                     data.name,
                     data.type,
                     data.required,
+                    data.order,
                 );
             }),
         );
@@ -167,6 +168,7 @@ interface IAppField
     name: string,
     type: "text" | "email" | "password",
     required: boolean,
+    order: number,
 }
 
 export interface ISerializedAppField extends IAppField
@@ -181,6 +183,7 @@ class AppField
         public readonly name: string,
         public readonly type: "text" | "email" | "password",
         public readonly required: boolean,
+        public readonly order: number,
     ) {}
 
     public json = (): ISerializedAppField =>
@@ -189,5 +192,6 @@ class AppField
         name: this.name,
         type: this.type,
         required: this.required,
+        order: this.order,
     });
 }
