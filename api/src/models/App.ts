@@ -24,6 +24,7 @@ export interface ISerializedApp
     name: string,
     url: string,
     owner: ISerializedUser,
+    fields: ISerializedAppField[],
 }
 
 export class App
@@ -33,6 +34,7 @@ export class App
         public readonly name: string,
         public readonly url: string,
         public readonly owner: User,
+        public readonly fields: AppField[],
     ) {}
 
     public json = (): ISerializedApp =>
@@ -41,6 +43,7 @@ export class App
         name: this.name,
         url: this.url,
         owner: this.owner.json(),
+        fields: this.fields.map(field => field.json()),
     });
 
     static create = async (session: Session, data: ApiRequest.Apps.Create): Promise<App> =>
@@ -63,6 +66,7 @@ export class App
             data.name,
             data.url,
             session.user,
+            [], // TODO
         );
     }
 
@@ -74,11 +78,24 @@ export class App
 
         const data = app.data() as IApp;
 
+        const fields = await db.collection("apps").doc(id).collection("fields").get();
+
         return new App(
             id,
             data.name,
             data.url,
             (await User.retrieve(data.owner)) as User,
+            fields.docs.map(field =>
+            {
+                const data = field.data() as IAppField;
+
+                return new AppField(
+                    field.id,
+                    data.name,
+                    data.type,
+                    data.required,
+                );
+            }),
         );
     }
 
@@ -97,6 +114,7 @@ export class App
                 data.name,
                 data.url,
                 session.user,
+                [], // Fields are not sent with a LIST operation
             ));
         });
 
@@ -142,4 +160,34 @@ export class App
 
         if (data.url.length === 0) throw new ApiError("app/url/empty");
     }
+}
+
+interface IAppField
+{
+    name: string,
+    type: "text" | "email" | "password",
+    required: boolean,
+}
+
+export interface ISerializedAppField extends IAppField
+{
+    id: string,
+}
+
+class AppField
+{
+    constructor(
+        public readonly id: string,
+        public readonly name: string,
+        public readonly type: "text" | "email" | "password",
+        public readonly required: boolean,
+    ) {}
+
+    public json = (): ISerializedAppField =>
+    ({
+        id: this.id,
+        name: this.name,
+        type: this.type,
+        required: this.required,
+    });
 }
