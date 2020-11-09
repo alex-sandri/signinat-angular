@@ -171,9 +171,12 @@ interface IAppField
     order: number,
 }
 
-export interface ISerializedAppField extends IAppField
+export interface ISerializedAppField
 {
     id: string,
+    name: string,
+    type: "text" | "email" | "password",
+    required: boolean,
 }
 
 class AppField
@@ -192,6 +195,5 @@ class AppField
         name: this.name,
         type: this.type,
         required: this.required,
-        order: this.order,
     });
 }
