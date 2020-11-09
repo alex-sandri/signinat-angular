@@ -1,15 +1,1 @@
-h1
-{
-    margin: 0;
-
-    + small
-    {
-        display: block;
-        margin-bottom: 30px;
-
-        a
-        {
-            color: inherit;
-        }
-    }
-}
+@import "../../signup/signup.component.scss";

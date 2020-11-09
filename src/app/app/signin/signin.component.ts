@@ -12,6 +12,18 @@ export class SigninComponent implements OnInit {
 
   app!: ISerializedApp;
 
+  fields: any[] = [];
+
+  async onSubmit(e: Event, form: HTMLFormElement): Promise<void> {
+    e.preventDefault();
+
+    const submitButton = form.querySelector("button[type=submit]") as HTMLButtonElement;
+
+    submitButton.disabled = true;
+
+    // TODO
+  }
+
   constructor(api: ApiService, router: Router, route: ActivatedRoute) {
     api
       .retrieveApp(route.snapshot.params["id"])
