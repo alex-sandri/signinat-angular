@@ -45,7 +45,7 @@ import { SigninComponent as AppSignInComponent } from './app/signin/signin.compo
       { path: "account/settings", component: SettingsComponent, canActivate: [ SignedInGuard ] },
       { path: "account/manage/:id", component: AccountManageComponent, canActivate: [ SignedInGuard ] },
       { path: "app/manage/:id", component: AppManageComponent, canActivate: [ SignedInGuard ] },
-      { path: "app/signin/:id", component: AppSignInComponent }
+      { path: "app/signin/:id", component: AppSignInComponent, canActivate: [ SignedInGuard ] }
     ]),
     HttpClientModule
   ],
