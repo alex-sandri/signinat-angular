@@ -6,10 +6,10 @@
         <label for="{{field.id}}" *ngFor="let field of fields">
             {{field.name}}
             <input 
-                type="text"
+                type="{{field.type}}"
                 id="{{field.id}}"
                 name="{{field.name}}"
-                required
+                required="{{field.required}}"
             >
         </label>
         <button type="submit">Sign In @ <b>{{app.name}}</b></button>
