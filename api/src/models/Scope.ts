@@ -2,26 +2,39 @@ import { firestore } from "firebase-admin";
 
 const db = firestore();
 
+type TScopeValue =
+    "user.profile.email";
+
 interface IScope
 {
-    value: string,
+    value: TScopeValue,
 }
+
+type TScopeType = "text" | "email";
 
 export interface ISerializedScope
 {
-    value: string,
+    value: TScopeValue,
+    metadata: {
+        label: string,
+        type: TScopeType,
+    }
 }
 
 export class Scope
 {
     private constructor(
         public readonly id: string,
-        public readonly value: string,
+        public readonly value: TScopeValue,
     ) {}
 
     public json = (): ISerializedScope =>
     ({
         value: this.value,
+        metadata: {
+            label: this.label,
+            type: this.type,
+        }
     });
 
     static list = async (app: string): Promise<Scope[]> =>
@@ -41,5 +54,27 @@ export class Scope
         }
 
         return scopes;
+    }
+
+    public get label(): string {
+        let label: string;
+
+        switch (this.value)
+        {
+            case "user.profile.email": label = "Email"; break;
+        }
+
+        return label;
+    }
+
+    public get type(): TScopeType {
+        let type: TScopeType;
+
+        switch (this.value)
+        {
+            case "user.profile.email": type = "email"; break;
+        }
+
+        return type;
     }
 }
