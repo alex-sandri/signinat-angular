@@ -62,6 +62,14 @@
                 #appUrl
             >
         </label>
+        <label>
+            Scopes
+            <select name="scopes" multiple>
+                <option>user.profile.name.first</option>
+                <option>user.profile.name.last</option>
+                <option>user.profile.name.email</option>
+            </select>
+        </label>
         <button type="submit">Create</button>
         <button type="button" (click)="setCreateNewAppDialogVisible(false)">Cancel</button>
     </form>
