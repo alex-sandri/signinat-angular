@@ -113,3 +113,13 @@ fieldset
     border: 2px solid var(--primary-color);
     border-radius: 5px;
 }
+
+select
+{
+    width: 100%;
+    font-family: inherit;
+    padding: 5px;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    outline: none;
+}
