@@ -3,6 +3,8 @@ import { firestore } from "firebase-admin";
 const db = firestore();
 
 type TScopeValue =
+    "user.profile.name.first" |
+    "user.profile.name.last" |
     "user.profile.email";
 
 interface IScope
@@ -61,6 +63,8 @@ export class Scope
 
         switch (this.value)
         {
+            case "user.profile.name.first": label = "First Name"; break;
+            case "user.profile.name.last": label = "Last Name"; break;
             case "user.profile.email": label = "Email"; break;
         }
 
@@ -73,6 +77,7 @@ export class Scope
         switch (this.value)
         {
             case "user.profile.email": type = "email"; break;
+            default: type = "text"; break;
         }
 
         return type;
