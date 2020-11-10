@@ -78,22 +78,32 @@ export class App
 
         const data = app.data() as IApp;
 
+        const owner = await User.retrieve(data.owner) as User;
+
         const fields = await db.collection("apps").doc(id).collection("fields").get();
 
         return new App(
             id,
             data.name,
             data.url,
-            (await User.retrieve(data.owner)) as User,
+            owner,
             fields.docs.map(field =>
             {
                 const data = field.data() as IAppField;
+
+                let value: string = "";
+
+                if (data.type === "email")
+                {
+                    value = owner.email;
+                }
 
                 return new AppField(
                     field.id,
                     data.name,
                     data.type,
                     data.required,
+                    value,
                     data.order,
                 );
             }),
@@ -177,6 +187,7 @@ export interface ISerializedAppField
     name: string,
     type: "text" | "email" | "password",
     required: boolean,
+    value: string,
 }
 
 class AppField
@@ -186,6 +197,7 @@ class AppField
         public readonly name: string,
         public readonly type: "text" | "email" | "password",
         public readonly required: boolean,
+        public readonly value: string,
         public readonly order: number,
     ) {}
 
@@ -195,5 +207,6 @@ class AppField
         name: this.name,
         type: this.type,
         required: this.required,
+        value: this.value,
     });
 }
