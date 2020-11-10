@@ -176,7 +176,7 @@ export class App
 interface IAppField
 {
     name: string,
-    type: "text" | "email" | "password",
+    type: "text" | "email",
     required: boolean,
     order: number,
 }
@@ -185,7 +185,7 @@ export interface ISerializedAppField
 {
     id: string,
     name: string,
-    type: "text" | "email" | "password",
+    type: "text" | "email",
     required: boolean,
     value: string,
 }
@@ -195,7 +195,7 @@ class AppField
     constructor(
         public readonly id: string,
         public readonly name: string,
-        public readonly type: "text" | "email" | "password",
+        public readonly type: "text" | "email",
         public readonly required: boolean,
         public readonly value: string,
         public readonly order: number,
