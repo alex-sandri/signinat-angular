@@ -76,7 +76,7 @@ button
 }
 
 form label,
-form label small
+form label > *
 {
     display: block;
 }
