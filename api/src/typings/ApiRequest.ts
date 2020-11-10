@@ -36,6 +36,7 @@ export namespace ApiRequest
         {
             name: string,
             url: string,
+            scopes: string[],
         }
     }
 }

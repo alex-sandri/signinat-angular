@@ -37,7 +37,7 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  async createNewAppFormOnSubmit(e: Event, name: string, url: string) {
+  async createNewAppFormOnSubmit(e: Event, name: string, url: string, scopes: HTMLCollection) {
     e.preventDefault();
 
     const submitButton = this.createNewAppForm.nativeElement.querySelector("button[type=submit]") as HTMLButtonElement;
@@ -49,6 +49,7 @@ export class SettingsComponent implements OnInit {
     const response = await this.api.createApp({
       name: name.trim(),
       url: url.trim(),
+      scopes: Array.from(scopes).map(scope => (scope as HTMLElement).innerText),
     });
 
     if (!response.result.valid)
