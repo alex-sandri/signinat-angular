@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { ApiRequest } from "../typings/ApiRequest";
 import { ApiError } from "./ApiError";
+import { ISerializedScope, Scope } from "./Scope";
 import { Session } from "./Session";
 import { ISerializedUser, User } from "./User";
 
@@ -24,7 +25,7 @@ export interface ISerializedApp
     name: string,
     url: string,
     owner: ISerializedUser,
-    fields: ISerializedAppField[],
+    scopes: ISerializedScope[],
 }
 
 export class App
@@ -34,7 +35,7 @@ export class App
         public readonly name: string,
         public readonly url: string,
         public readonly owner: User,
-        public readonly fields: AppField[],
+        public readonly scopes: Scope[],
     ) {}
 
     public json = (): ISerializedApp =>
@@ -43,7 +44,7 @@ export class App
         name: this.name,
         url: this.url,
         owner: this.owner.json(),
-        fields: this.fields.sort((a, b) => a.order - b.order).map(field => field.json()),
+        scopes: this.scopes.map(scope => scope.json()),
     });
 
     static create = async (session: Session, data: ApiRequest.Apps.Create): Promise<App> =>
@@ -80,25 +81,14 @@ export class App
 
         const owner = await User.retrieve(data.owner) as User;
 
-        const fields = await db.collection("apps").doc(id).collection("fields").get();
+        const scopes = await Scope.list(app.id);
 
         return new App(
             id,
             data.name,
             data.url,
             owner,
-            fields.docs.map(field =>
-            {
-                const data = field.data() as IAppField;
-
-                return new AppField(
-                    field.id,
-                    data.name,
-                    data.type,
-                    data.required,
-                    data.order,
-                );
-            }),
+            scopes,
         );
     }
 
@@ -163,39 +153,4 @@ export class App
 
         if (data.url.length === 0) throw new ApiError("app/url/empty");
     }
-}
-
-interface IAppField
-{
-    name: string,
-    type: "text" | "email",
-    required: boolean,
-    order: number,
-}
-
-export interface ISerializedAppField
-{
-    id: string,
-    name: string,
-    type: "text" | "email",
-    required: boolean,
-}
-
-class AppField
-{
-    constructor(
-        public readonly id: string,
-        public readonly name: string,
-        public readonly type: "text" | "email",
-        public readonly required: boolean,
-        public readonly order: number,
-    ) {}
-
-    public json = (): ISerializedAppField =>
-    ({
-        id: this.id,
-        name: this.name,
-        type: this.type,
-        required: this.required,
-    });
 }
