@@ -91,19 +91,11 @@ export class App
             {
                 const data = field.data() as IAppField;
 
-                let value: string = "";
-
-                if (data.type === "email")
-                {
-                    value = owner.email;
-                }
-
                 return new AppField(
                     field.id,
                     data.name,
                     data.type,
                     data.required,
-                    value,
                     data.order,
                 );
             }),
@@ -187,7 +179,6 @@ export interface ISerializedAppField
     name: string,
     type: "text" | "email",
     required: boolean,
-    value: string,
 }
 
 class AppField
@@ -197,7 +188,6 @@ class AppField
         public readonly name: string,
         public readonly type: "text" | "email",
         public readonly required: boolean,
-        public readonly value: string,
         public readonly order: number,
     ) {}
 
@@ -207,6 +197,5 @@ class AppField
         name: this.name,
         type: this.type,
         required: this.required,
-        value: this.value,
     });
 }
