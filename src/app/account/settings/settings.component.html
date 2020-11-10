@@ -18,6 +18,7 @@
     </section>
     <section *ngIf="section == 'developer'">
         <h1>Apps</h1>
+        <span *ngIf="apps.length === 0"><i>You haven't created any apps yet</i></span>
         <div id="apps">
             <a
                 class="app"

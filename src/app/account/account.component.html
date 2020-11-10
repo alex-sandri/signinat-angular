@@ -2,8 +2,8 @@
 
 <main>
     <h2>Linked Accounts</h2>
+    <span *ngIf="accounts.length === 0"><i>No linked accounts</i></span>
     <section id="linked-accounts">
-        <span *ngIf="accounts.length === 0">No linked accounts</span>
         <a
             class="linked-account"
             routerLink="/account/manage/{{account.id}}"
