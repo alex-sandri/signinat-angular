@@ -39,13 +39,26 @@ export class Scope
         }
     });
 
+    static set = async (app: string, scopes: string[]): Promise<void> =>
+    {
+        // TODO
+        // Validate scopes
+
+        for (const scope of scopes)
+        {
+            await db.collection(`apps/${app}/scopes`).add(<IScope>{
+                value: scope,
+            });
+        }
+    }
+
     static list = async (app: string): Promise<Scope[]> =>
     {
         const snapshot = await db.collection(`apps/${app}/scopes`).get();
 
         const scopes: Scope[] = [];
 
-        for await (const scope of snapshot.docs)
+        for (const scope of snapshot.docs)
         {
             const data = scope.data() as IScope;
 

@@ -67,7 +67,7 @@ export class Account
 
         const accounts: Account[] = [];
 
-        for await (const account of snapshot.docs)
+        for (const account of snapshot.docs)
         {
             const data = account.data() as IAccount;
 
