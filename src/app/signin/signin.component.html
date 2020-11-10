@@ -4,11 +4,10 @@
     <h1>Sign In</h1>
     <small>or <a routerLink="/signup">Sign Up</a></small>
     <form #form (submit)="onSubmit($event, form)">
-        <label for="email">
+        <label>
             Email
             <input 
                 type="email"
-                id="email"
                 name="email"
                 autocomplete="email"
                 required
@@ -18,11 +17,10 @@
             >
             <small *ngIf="emailError.length > 0"><mark>&#x2716; {{emailError}}</mark></small>
         </label>
-        <label for="password">
+        <label>
             Password
             <input
                 type="password"
-                id="password"
                 name="password"
                 autocomplete="current-password"
                 required

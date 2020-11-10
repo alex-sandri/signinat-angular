@@ -3,11 +3,10 @@
 <main *ngIf="app !== undefined">
     <h1>{{app.name}}</h1>
     <form #form (submit)="onSubmit($event, form)">
-        <label for="{{scope.value}}" *ngFor="let scope of app.scopes">
+        <label *ngFor="let scope of app.scopes">
             {{scope.metadata.label}}
             <input 
                 type="{{scope.metadata.type}}"
-                id="{{scope.value}}"
                 name="{{scope.value}}"
                 required
             >

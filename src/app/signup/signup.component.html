@@ -4,11 +4,10 @@
     <h1>Sign Up</h1>
     <small>or <a routerLink="/signin">Sign In</a></small>
     <form #form (submit)="onSubmit($event, form)">
-        <label for="first-name">
+        <label>
             First Name
             <input
                 type="text"
-                id="first-name"
                 name="first-name"
                 autocomplete="given-name"
                 required
@@ -18,11 +17,10 @@
             >
             <small *ngIf="firstNameError.length > 0"><mark>&#x2716; {{firstNameError}}</mark></small>
         </label>
-        <label for="last-name">
+        <label>
             Last Name
             <input
                 type="text"
-                id="last-name"
                 name="last-name"
                 autocomplete="family-name"
                 required
@@ -32,11 +30,10 @@
             >
             <small *ngIf="lastNameError.length > 0"><mark>&#x2716; {{lastNameError}}</mark></small>
         </label>
-        <label for="email">
+        <label>
             Email
             <input
                 type="email"
-                id="email"
                 name="email"
                 autocomplete="email"
                 required
@@ -46,11 +43,10 @@
             >
             <small *ngIf="emailError.length > 0"><mark>&#x2716; {{emailError}}</mark></small>
         </label>
-        <label for="password">
+        <label>
             Password
             <input
                 type="password"
-                id="password"
                 name="password"
                 autocomplete="new-password"
                 required
