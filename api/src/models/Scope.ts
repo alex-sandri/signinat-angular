@@ -70,11 +70,11 @@ export class Scope
 
         switch (this.value)
         {
-            case "user.profile": description = "TODO"; break;
-            case "user.profile.name": description = "TODO"; break;
-            case "user.profile.name.first": description = "TODO"; break;
-            case "user.profile.name.last": description = "TODO"; break;
-            case "user.profile.email": description = "TODO"; break;
+            case "user.profile": description = "Your entire profile"; break;
+            case "user.profile.name": description = "Your full name"; break;
+            case "user.profile.name.first": description = "Your first name"; break;
+            case "user.profile.name.last": description = "Your last name"; break;
+            case "user.profile.email": description = "Your email"; break;
         }
 
         return description;
