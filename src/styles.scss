@@ -63,6 +63,12 @@ button
     }
 }
 
+input:focus
+{
+    color: var(--primary-color);
+    background-color: var(--secondary-color);
+}
+
 button
 {
     cursor: pointer;
@@ -84,12 +90,6 @@ form label > *
 form label
 {
     margin: 15px 0;
-}
-
-form label input:focus
-{
-    color: var(--primary-color);
-    background-color: var(--secondary-color);
 }
 
 form label small:not(:empty)
