@@ -63,10 +63,18 @@ button
     }
 }
 
-input:focus
+input
 {
-    color: var(--primary-color);
-    background-color: var(--secondary-color);
+    &:focus
+    {
+        color: var(--primary-color);
+        background-color: var(--secondary-color);
+    }
+
+    &::placeholder
+    {
+        color: rgba(white, 0.7);
+    }
 }
 
 button
