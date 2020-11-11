@@ -3,6 +3,15 @@
 <main *ngIf="app !== undefined">
     <h1>{{app.name}}</h1>
     <small><a href="{{app.url}}" target="_blank">{{app.url}}</a></small>
+    <fieldset id="webhook">
+        <legend>Webhook</legend>
+        <input type="url" name="webhook">
+        <button>Update</button>
+    </fieldset>
+    <fieldset id="scopes">
+        <legend>Scopes</legend>
+        <p *ngFor="let scope of app.scopes">{{scope.value}}</p>
+    </fieldset>
     <fieldset id="api-key">
         <legend>API Key</legend>
         <div>
