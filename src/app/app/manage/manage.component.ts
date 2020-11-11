@@ -16,6 +16,10 @@ export class ManageComponent implements OnInit {
     await this.api.deleteApp(this.app.id);
   }
 
+  copyApiKey() {
+    navigator.clipboard.writeText(this.app.api.key);
+  }
+
   constructor(private api: ApiService, private router: Router, route: ActivatedRoute) {
     api
       .retrieveApp(route.snapshot.params["id"])
