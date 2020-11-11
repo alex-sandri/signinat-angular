@@ -25,6 +25,7 @@ export interface ISerializedApp
     name: string,
     url: string,
     owner: ISerializedUser,
+    // TODO: Send API key only if the signed in user is the owner
     api: {
         key: string,
     },
