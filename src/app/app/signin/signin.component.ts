@@ -14,6 +14,9 @@ export class SigninComponent implements OnInit {
 
   async onSignIn(): Promise<void> {
     // TODO
+    // Create account
+
+    // TODO
     // Generate session id to send to the app
 
     let url = new URL(this.app.url);
