@@ -17,6 +17,7 @@ type TScopeType = "text" | "email";
 export interface ISerializedScope
 {
     value: TScopeValue,
+    description: string,
     metadata: {
         label: string,
         type: TScopeType,
@@ -33,6 +34,7 @@ export class Scope
     public json = (): ISerializedScope =>
     ({
         value: this.value,
+        description: this.description,
         metadata: {
             label: this.label,
             type: this.type,
@@ -94,5 +96,18 @@ export class Scope
         }
 
         return type;
+    }
+
+    public get description(): string {
+        let description: string;
+
+        switch (this.value)
+        {
+            case "user.profile.name.first": description = "TODO"; break;
+            case "user.profile.name.last": description = "TODO"; break;
+            case "user.profile.email": description = "TODO"; break;
+        }
+
+        return description;
     }
 }

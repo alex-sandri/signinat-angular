@@ -11,6 +11,10 @@
                 required
             >
         </label>
+        <p>This app wants to access:</p>
+        <ul>
+            <li *ngFor="let scope of app.scopes">{{scope.description}}</li>
+        </ul>
         <button type="submit">Sign In @ <b>{{app.name}}</b></button>
     </form>
 </main>
