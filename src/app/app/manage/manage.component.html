@@ -3,6 +3,11 @@
 <main *ngIf="app !== undefined">
     <h1>{{app.name}}</h1>
     <small><a href="{{app.url}}" target="_blank">{{app.url}}</a></small>
+    <fieldset id="api-key">
+        <legend>API Key</legend>
+        <span>{{app.api.key}}</span>
+        <button>Copy</button>
+    </fieldset>
     <fieldset id="danger-zone">
         <legend>Danger zone</legend>
         <p><b>&#9888; These actions cannot be undone &#9888;</b></p>

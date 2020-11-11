@@ -25,6 +25,9 @@ export interface ISerializedApp
     name: string,
     url: string,
     owner: ISerializedUser,
+    api: {
+        key: string,
+    },
     scopes: ISerializedScope[],
 }
 
@@ -35,6 +38,7 @@ export class App
         public readonly name: string,
         public readonly url: string,
         public readonly owner: User,
+        public readonly apiKey: string,
         public readonly scopes: Scope[],
     ) {}
 
@@ -44,6 +48,9 @@ export class App
         name: this.name,
         url: this.url,
         owner: this.owner.json(),
+        api: {
+            key: this.apiKey,
+        },
         scopes: this.scopes.map(scope => scope.json()),
     });
 
@@ -53,12 +60,14 @@ export class App
 
         if (await App.exists(data.url)) throw new ApiError("app/url/already-exists");
 
+        const apiKey = uuidv4();
+
         const app = await db.collection("apps").add(<IApp>{
             name: data.name,
             url: data.url,
             owner: session.user.id,
             api: {
-                key: uuidv4(),
+                key: apiKey,
             },
         });
 
@@ -69,6 +78,7 @@ export class App
             data.name,
             data.url,
             session.user,
+            apiKey,
             [], // TODO
         );
     }
@@ -90,6 +100,7 @@ export class App
             data.name,
             data.url,
             owner,
+            data.api.key,
             scopes,
         );
     }
@@ -109,6 +120,7 @@ export class App
                 data.name,
                 data.url,
                 session.user,
+                data.api.key,
                 [], // Fields are not sent with a LIST operation
             ));
         });
