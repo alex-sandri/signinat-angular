@@ -6,5 +6,5 @@
     <ul>
         <li *ngFor="let scope of app.scopes">{{scope.description}}</li>
     </ul>
-    <button>Sign In @ <b>{{app.name}}</b></button>
+    <button (click)="onSignIn()">Sign In @ <b>{{app.name}}</b></button>
 </main>

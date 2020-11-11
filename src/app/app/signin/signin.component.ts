@@ -12,14 +12,15 @@ export class SigninComponent implements OnInit {
 
   app!: ISerializedApp;
 
-  async onSubmit(e: Event, form: HTMLFormElement): Promise<void> {
-    e.preventDefault();
-
-    const submitButton = form.querySelector("button[type=submit]") as HTMLButtonElement;
-
-    submitButton.disabled = true;
-
+  async onSignIn(): Promise<void> {
     // TODO
+    // Generate session id to send to the app
+
+    let url = new URL(this.app.url);
+
+    url.searchParams.append("SignInAtSession", "TODO");
+
+    location.href = url.toString();
   }
 
   constructor(api: ApiService, router: Router, route: ActivatedRoute) {
