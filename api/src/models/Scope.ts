@@ -3,6 +3,8 @@ import { firestore } from "firebase-admin";
 const db = firestore();
 
 type TScopeValue =
+    "user.profile" |
+    "user.profile.name" |
     "user.profile.name.first" |
     "user.profile.name.last" |
     "user.profile.email";
@@ -12,16 +14,10 @@ interface IScope
     value: TScopeValue,
 }
 
-type TScopeType = "text" | "email";
-
 export interface ISerializedScope
 {
     value: TScopeValue,
     description: string,
-    metadata: {
-        label: string,
-        type: TScopeType,
-    }
 }
 
 export class Scope
@@ -35,10 +31,6 @@ export class Scope
     ({
         value: this.value,
         description: this.description,
-        metadata: {
-            label: this.label,
-            type: this.type,
-        }
     });
 
     static set = async (app: string, scopes: string[]): Promise<void> =>
@@ -73,36 +65,13 @@ export class Scope
         return scopes;
     }
 
-    public get label(): string {
-        let label: string;
-
-        switch (this.value)
-        {
-            case "user.profile.name.first": label = "First Name"; break;
-            case "user.profile.name.last": label = "Last Name"; break;
-            case "user.profile.email": label = "Email"; break;
-        }
-
-        return label;
-    }
-
-    public get type(): TScopeType {
-        let type: TScopeType;
-
-        switch (this.value)
-        {
-            case "user.profile.email": type = "email"; break;
-            default: type = "text"; break;
-        }
-
-        return type;
-    }
-
     public get description(): string {
         let description: string;
 
         switch (this.value)
         {
+            case "user.profile": description = "TODO"; break;
+            case "user.profile.name": description = "TODO"; break;
             case "user.profile.name.first": description = "TODO"; break;
             case "user.profile.name.last": description = "TODO"; break;
             case "user.profile.email": description = "TODO"; break;
