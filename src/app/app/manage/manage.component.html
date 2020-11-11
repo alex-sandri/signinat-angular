@@ -5,7 +5,11 @@
     <small><a href="{{app.url}}" target="_blank">{{app.url}}</a></small>
     <fieldset id="api-key">
         <legend>API Key</legend>
-        <span>{{app.api.key}}</span>
+        <div>
+            <span>{{app.api.key}}</span>
+            <br>
+            <small><mark>Do not share your API key with anyone</mark></small>
+        </div>
         <button (click)="copyApiKey()">Copy</button>
     </fieldset>
     <fieldset id="danger-zone">
