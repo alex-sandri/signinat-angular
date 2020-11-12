@@ -14,10 +14,14 @@ export class ManageComponent implements OnInit {
 
   async unlink() {
     await this.api.unlinkAccount(this.account.id);
+
+    this.router.navigateByUrl("/account");
   }
 
   async delete() {
     await this.api.deleteAccount(this.account.id);
+
+    this.router.navigateByUrl("/account");
   }
 
   constructor(private api: ApiService, private router: Router, route: ActivatedRoute) {
