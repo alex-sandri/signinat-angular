@@ -88,6 +88,11 @@ button,
     cursor: pointer;
     transition: 300ms;
 
+    &.small
+    {
+        padding: 5px;
+    }
+
     &.inverted
     {
         color: var(--primary-color);
