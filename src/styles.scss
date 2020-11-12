@@ -58,7 +58,8 @@ button,
     background-color: var(--primary-color);
     outline: none;
     display: block;
-    
+    font-size: medium;
+
     &:disabled
     {
         opacity: 0.5;
