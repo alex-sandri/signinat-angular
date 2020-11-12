@@ -59,7 +59,7 @@ export class App
     {
         App.validate(data);
 
-        if ((await App.withUrl(data.url)) === null) throw new ApiError("app/url/already-exists");
+        if ((await App.withUrl(data.url)) !== null) throw new ApiError("app/url/already-exists");
 
         const apiKey = uuidv4();
 
