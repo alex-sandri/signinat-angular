@@ -73,7 +73,7 @@ app.get("/api/accounts", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(403);
+    res.sendStatus(401);
 
     return;
   }
@@ -89,7 +89,7 @@ app.get("/api/accounts/:id", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(403);
+    res.sendStatus(401);
 
     return;
   }
@@ -124,7 +124,7 @@ app.delete("/api/accounts/:id/unlink", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(403);
+    res.sendStatus(401);
 
     return;
   }
@@ -140,7 +140,7 @@ app.delete("/api/accounts/:id", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(403);
+    res.sendStatus(401);
 
     return;
   }
@@ -156,7 +156,7 @@ app.get("/api/apps", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(403);
+    res.sendStatus(401);
 
     return;
   }
@@ -172,7 +172,7 @@ app.get("/api/apps/:id", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(403);
+    res.sendStatus(401);
 
     return;
   }
@@ -189,7 +189,7 @@ app.post("/api/apps", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(403);
+    res.sendStatus(401);
 
     return;
   }
@@ -232,7 +232,7 @@ app.delete("/api/apps/:id", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(403);
+    res.sendStatus(401);
 
     return;
   }
@@ -255,7 +255,7 @@ app.get("/api/sessions/:id", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(403);
+    res.sendStatus(401);
 
     return;
   }
@@ -315,7 +315,7 @@ app.delete("/api/sessions/:id", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(403);
+    res.sendStatus(401);
 
     return;
   }
