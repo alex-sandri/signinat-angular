@@ -102,7 +102,7 @@ app.get("/api/accounts/:id", async (req, res) =>
 
 app.post("/api/accounts", async (req, res) =>
 {
-  const id: string = req.body;
+  const id: string = req.body.id;
 
   const token = await Token.fromString(req.token);
 

@@ -59,7 +59,7 @@ export class App
     {
         App.validate(data);
 
-        if (await App.exists(data.url)) throw new ApiError("app/url/already-exists");
+        if ((await App.withUrl(data.url)) === null) throw new ApiError("app/url/already-exists");
 
         const apiKey = uuidv4();
 
@@ -148,7 +148,7 @@ export class App
         return App.retrieve(app.id);
     }
 
-    static exists = async (url: string): Promise<boolean> => (await App.withUrl(url)) !== null;
+    static exists = async (id: string): Promise<boolean> => (await App.retrieve(id)) !== null;
 
     static isOwnedBy = async (id: string, user: User): Promise<boolean> =>
     {
