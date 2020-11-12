@@ -34,7 +34,7 @@ export class Account
     {
         if (!(await App.exists(id))) throw new ApiError("app/inexistent");
 
-        if (await Account.exists(session, id)) throw new ApiError("account/already-exists");
+        if ((await Account.withAppId(session, id)) !== null) throw new ApiError("account/already-exists");
 
         const account = await db.collection(`users/${session.user.id}/accounts`).add(<IAccount>{
             app: id,
@@ -89,6 +89,17 @@ export class Account
         // TODO
         // if successful
         await Account.unlink(session, id);
+    }
+
+    static withAppId = async (session: Session, app: string): Promise<Account | null> =>
+    {
+        const result = await db.collection(`users/${session.user.id}/accounts`).where("app", "==", app).limit(1).get();
+
+        if (result.empty) return null;
+
+        const account = result.docs[0];
+
+        return Account.retrieve(session, account.id);
     }
 
     static exists = async (session: Session, id: string): Promise<boolean> => (await Account.retrieve(session, id)) !== null;
