@@ -2,9 +2,9 @@
     <a routerLink="/">SignInAt</a>
     <div></div>
     <div class="right">
-        <a routerLink="/signin" *ngIf="!isSignedIn && !router.url.startsWith('/signin')">Sign In</a>
-        <a routerLink="/signup" *ngIf="!isSignedIn && router.url.startsWith('/signin')">Sign Up</a>
-        <button (click)="openAccountMenu(accountMenu)" *ngIf="isSignedIn">Account</button>
+        <a class="button inverted" routerLink="/signin" *ngIf="!isSignedIn && !router.url.startsWith('/signin')">Sign In</a>
+        <a class="button inverted" routerLink="/signup" *ngIf="!isSignedIn && router.url.startsWith('/signin')">Sign Up</a>
+        <button class="inverted" (click)="openAccountMenu(accountMenu)" *ngIf="isSignedIn">Account</button>
     </div>
 </header>
 

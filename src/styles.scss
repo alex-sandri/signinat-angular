@@ -88,6 +88,19 @@ button,
     cursor: pointer;
     transition: 300ms;
 
+    &.inverted
+    {
+        color: var(--primary-color);
+        background-color: var(--secondary-color);
+
+        &:focus
+        {
+            box-shadow:
+                0 0 0 2px var(--primary-color),
+                0 0 0 4px var(--secondary-color);
+        }
+    }
+
     &:hover
     {
         opacity: 0.8;
