@@ -28,6 +28,8 @@ main
 
 dialog
 {
+    width: 40ch;
+    max-width: 100%;
     border: 2px solid var(--primary-color);
     border-radius: 5px;
     color: inherit;
