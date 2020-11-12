@@ -18,6 +18,7 @@ import { ManageComponent as AccountManageComponent } from './account/manage/mana
 import { SignedOutGuard } from './guards/signed-out/signed-out.guard';
 import { ManageComponent as AppManageComponent } from './app/manage/manage.component';
 import { SigninComponent as AppSignInComponent } from './app/signin/signin.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { SigninComponent as AppSignInComponent } from './app/signin/signin.compo
     AccountMenuComponent,
     AccountManageComponent,
     AppManageComponent,
-    AppSignInComponent
+    AppSignInComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
