@@ -30,27 +30,12 @@ aside
         margin-bottom: 45px;
     }
 
-    a
-    {
-        display: block;
-        text-decoration: none;
-        text-align: center;
-    }
-
     a,
     button
     {
         width: 100%;
-        color: var(--primary-color);
-        background-color: var(--secondary-color);
-        border: none;
-        font-size: medium;
         margin-top: 15px;
-
-        &:hover
-        {
-            opacity: 0.8;
-        }
+        font-size: medium;
     }
 
     button:last-of-type
