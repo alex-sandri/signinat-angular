@@ -42,7 +42,7 @@ export class SigninComponent implements OnInit {
         {
           if (account)
           {
-            // this.redirect(app);
+            this.redirect(app);
 
             return;
           }
