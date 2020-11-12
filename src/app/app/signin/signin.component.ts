@@ -13,7 +13,7 @@ export class SigninComponent implements OnInit {
   app!: ISerializedApp;
 
   async onSignIn(): Promise<void> {
-    this.api.createAccount(this.app.id);
+    await this.api.createAccount(this.app.id);
 
     // TODO
     // Generate session id to send to the app
