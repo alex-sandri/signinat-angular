@@ -1,6 +1,5 @@
 import { firestore } from "firebase-admin";
 
-import { ApiRequest } from "../typings/ApiRequest";
 import { ApiError } from "./ApiError";
 import { App, ISerializedApp } from "./App";
 import { Session } from "./Session";
@@ -31,11 +30,11 @@ export class Account
         app: this.app.json(),
     });
 
-    static create = async (session: Session, data: ApiRequest.Accounts.Create): Promise<Account> =>
+    static create = async (session: Session, id: string): Promise<Account> =>
     {
-        Account.validate(data);
+        if (!(await App.exists(id))) throw new ApiError("app/inexistent");
 
-        if (await Account.exists(session, "TODO")) throw new ApiError("account/already-exists");
+        if (await Account.exists(session, id)) throw new ApiError("account/already-exists");
 
         const account = await db.collection(`users/${session.user.id}/accounts`).add(<IAccount>{
             // TODO
@@ -92,21 +91,5 @@ export class Account
         await Account.unlink(session, id);
     }
 
-    static withUrl = async (session: Session, url: string): Promise<Account | null> =>
-    {
-        const result = (await db.collection(`users/${session.user.id}/accounts`).where("url", "==", url).limit(1).get());
-
-        if (result.empty) return null;
-
-        const account = result.docs[0];
-
-        return Account.retrieve(session, account.id);
-    }
-
-    static exists = async (session: Session, url: string): Promise<boolean> => (await Account.withUrl(session, url)) !== null;
-
-    static validate = (data: ApiRequest.Accounts.Create): void =>
-    {
-        // TODO
-    }
+    static exists = async (session: Session, id: string): Promise<boolean> => (await Account.retrieve(session, id)) !== null;
 }
