@@ -9,7 +9,7 @@ import { ApiService } from '../services/api/api.service';
 })
 export class AccountComponent implements OnInit {
 
-  accounts: ISerializedAccount[] = [];
+  accounts!: ISerializedAccount[];
 
   constructor(api: ApiService) {
     api.listAccounts().then(accounts => this.accounts = accounts);

@@ -2,7 +2,8 @@
 
 <main>
     <h2>Linked Accounts</h2>
-    <span *ngIf="accounts.length === 0"><i>No linked accounts</i></span>
+    <span *ngIf="accounts !== undefined && accounts.length === 0"><i>No linked accounts</i></span>
+    <app-spinner *ngIf="accounts === undefined"></app-spinner>
     <section id="linked-accounts">
         <a
             class="linked-account"
