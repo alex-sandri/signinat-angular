@@ -66,7 +66,7 @@ export class Scope
     }
 
     public get description(): string {
-        let description: string;
+        let description: string = "";
 
         switch (this.value)
         {
