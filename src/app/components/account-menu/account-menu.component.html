@@ -2,8 +2,8 @@
     <aside #accountMenu>
         <h1>{{firstName}} {{lastName}}</h1>
         <p>{{email}}</p>
-        <a routerLink="/account">Account</a>
-        <a routerLink="/account/settings">Settings</a>
+        <a class="button" routerLink="/account">Account</a>
+        <a class="button" routerLink="/account/settings">Settings</a>
         <button (click)="signOut()">Sign Out</button>
     </aside>
 </div>

@@ -47,7 +47,8 @@ dialog
 }
 
 input,
-button
+button,
+.button
 {
     padding: 10px;
     font-family: inherit;
@@ -79,15 +80,22 @@ input
     }
 }
 
-button
+button,
+.button
 {
     cursor: pointer;
     transition: 300ms;
 
-    &:hover,
-    &:focus
+    &:hover
     {
         opacity: 0.8;
+    }
+
+    &:focus
+    {
+        box-shadow:
+            0 0 0 2px var(--secondary-color),
+            0 0 0 4px var(--primary-color);
     }
 }
 
