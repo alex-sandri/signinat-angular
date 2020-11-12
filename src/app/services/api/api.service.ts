@@ -37,7 +37,6 @@ export class ApiService {
   {
     await this.http.post(ApiService.ENDPOINTS.ACCOUNTS, id, {
       headers: {
-        "Content-Type": "application/json",
         "Authorization": `Bearer ${SettingsService.get("session")}`,
       },
       responseType: "text",
