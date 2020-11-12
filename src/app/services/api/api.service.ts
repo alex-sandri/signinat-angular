@@ -33,6 +33,17 @@ export class ApiService {
     return response as ApiResponse.Users.Create;
   }
 
+  public createAccount = async (id: string): Promise<void> =>
+  {
+    await this.http.post(ApiService.ENDPOINTS.ACCOUNTS, JSON.stringify({ id }), {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${SettingsService.get("session")}`,
+      },
+      responseType: "text",
+    }).toPromise();
+  }
+
   public retrieveAccount = async (id: string): Promise<ISerializedAccount> =>
   {
     const response = await this.http.get(`${ApiService.ENDPOINTS.ACCOUNTS}/${id}`, {

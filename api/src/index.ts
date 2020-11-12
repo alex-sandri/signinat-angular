@@ -100,6 +100,24 @@ app.get("/api/accounts/:id", async (req, res) =>
   else res.send(account.json());
 });
 
+app.post("/api/accounts", async (req, res) =>
+{
+  const id: string = req.body;
+
+  const token = await Token.fromString(req.token);
+
+  if (!token)
+  {
+    res.sendStatus(401);
+
+    return;
+  }
+
+  await Account.create(token.session, id);
+
+  res.sendStatus(200);
+});
+
 app.delete("/api/accounts/:id/unlink", async (req, res) =>
 {
   const token = await Token.fromString(req.token);

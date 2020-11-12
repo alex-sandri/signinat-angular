@@ -13,8 +13,7 @@ export class SigninComponent implements OnInit {
   app!: ISerializedApp;
 
   async onSignIn(): Promise<void> {
-    // TODO
-    // Create account
+    this.api.createAccount(this.app.id);
 
     // TODO
     // Generate session id to send to the app
@@ -26,7 +25,7 @@ export class SigninComponent implements OnInit {
     location.href = url.toString();
   }
 
-  constructor(api: ApiService, router: Router, route: ActivatedRoute) {
+  constructor(private api: ApiService, router: Router, route: ActivatedRoute) {
     api
       .retrieveApp(route.snapshot.params["id"])
       .then(app => this.app = app)
