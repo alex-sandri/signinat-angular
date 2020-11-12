@@ -15,10 +15,14 @@ export class SigninComponent implements OnInit {
   async onSignIn(): Promise<void> {
     await this.api.createAccount(this.app.id);
 
+    this.redirect(this.app);
+  }
+
+  redirect(app: ISerializedApp): void {
     // TODO
     // Generate session id to send to the app
 
-    let url = new URL(this.app.url);
+    let url = new URL(app.url);
 
     url.searchParams.append("SignInAtSession", "TODO");
 
@@ -26,13 +30,30 @@ export class SigninComponent implements OnInit {
   }
 
   constructor(private api: ApiService, router: Router, route: ActivatedRoute) {
-    api
-      .retrieveApp(route.snapshot.params["id"])
-      .then(app => this.app = app)
-      .catch(() =>
-      {
-        router.navigateByUrl("/account");
-      });
+    api.listAccounts().then(accounts =>
+    {
+      const appId: string = route.snapshot.params["id"];
+
+      const account = accounts.find(account => account.app.id === appId);
+
+      api
+        .retrieveApp(appId)
+        .then(app =>
+        {
+          if (account)
+          {
+            this.redirect(app);
+
+            return;
+          }
+
+          this.app = app;
+        })
+        .catch(() =>
+        {
+          router.navigateByUrl("/account");
+        });
+    });
   }
 
   ngOnInit(): void {
