@@ -37,12 +37,12 @@ export class Account
         if (await Account.exists(session, id)) throw new ApiError("account/already-exists");
 
         const account = await db.collection(`users/${session.user.id}/accounts`).add(<IAccount>{
-            // TODO
+            app: id,
         });
 
         return new Account(
             account.id,
-            await App.retrieve("TODO") as App,
+            await App.retrieve(id) as App,
         );
     }
 
