@@ -35,7 +35,7 @@ export class ApiService {
 
   public createAccount = async (id: string): Promise<void> =>
   {
-    await this.http.post(ApiService.ENDPOINTS.ACCOUNTS, JSON.stringify({ id }), {
+    await this.http.post(ApiService.ENDPOINTS.ACCOUNTS, id, {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${SettingsService.get("session")}`,
