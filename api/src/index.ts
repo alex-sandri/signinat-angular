@@ -19,6 +19,7 @@ import { User } from "./models/User";
 import { Session } from "./models/Session";
 import { Account } from "./models/Account";
 import { Token } from "./models/Token";
+import { Scope } from "./models/Scope";
 
 const app = express();
 
@@ -339,6 +340,20 @@ app.delete("/api/sessions/:id", async (req, res) =>
 
     res.sendStatus(200);
   }
+});
+
+app.get("/api/scopes", async (req, res) =>
+{
+  const token = await Token.fromString(req.token);
+
+  if (!token)
+  {
+    res.sendStatus(401);
+
+    return;
+  }
+
+  res.send(Scope.all().map(scope => scope.json()));
 });
 
 app.listen(3000);

@@ -24,10 +24,7 @@ export class Scope
 {
     private constructor(
         public readonly value: TScopeValue,
-    )
-    {
-        if (!Scope.validate(value)) throw new Error("scope/invalid");
-    }
+    ) {}
 
     public json = (): ISerializedScope =>
     ({
@@ -37,18 +34,18 @@ export class Scope
 
     private static validate = (scope: string): boolean =>
     {
-        return Scope.all().includes(scope);
+        return Scope.all().findIndex(s => s.value === scope) > -1;
     }
 
-    public static all = (): string[] =>
+    public static all = (): Scope[] =>
     {
-        return <TScopeValue[]>[
+        return (<TScopeValue[]>[
             "user.profile",
             "user.profile.name",
             "user.profile.name.first",
             "user.profile.name.last",
             "user.profile.email",
-        ];
+        ]).map(scope => new Scope(scope));
     }
 
     static from = (scopes: string[]): Scope[] =>
@@ -58,6 +55,8 @@ export class Scope
 
     static set = async (app: string, scopes: Scope[]): Promise<void> =>
     {
+        if (!scopes.every(scope => Scope.validate(scope.value))) throw new Error("scope/invalid");
+
         for (const scope of scopes)
         {
             await db.collection(`apps/${app}/scopes`).add(<IScope>{

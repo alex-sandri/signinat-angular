@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ISerializedApp } from 'api/src/models/App';
+import { ISerializedScope } from 'api/src/models/Scope';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
@@ -20,6 +21,8 @@ export class SettingsComponent implements OnInit {
   email: string = "";
 
   apps: ISerializedApp[] = [];
+
+  scopes: ISerializedScope[] = [];
 
   createNewAppNameError: string = "";
   createNewAppUrlError: string = "";
@@ -75,6 +78,8 @@ export class SettingsComponent implements OnInit {
     });
 
     api.listApps().then(apps => this.apps = apps);
+
+    api.listScopes().then(scopes => this.scopes = scopes);
   }
 
   ngOnInit(): void {

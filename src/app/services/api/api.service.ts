@@ -7,6 +7,7 @@ import { ISerializedApp } from 'api/src/models/App';
 import { ISerializedSession } from 'api/src/models/Session';
 import { SettingsService } from '../settings/settings.service';
 import { ISerializedAccount } from 'api/src/models/Account';
+import { ISerializedScope } from 'api/src/models/Scope';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,7 @@ export class ApiService {
     APPS: `${ApiService.BASE_ENDPOINT}/apps`,
     SESSIONS: `${ApiService.BASE_ENDPOINT}/sessions`,
     ACCOUNTS: `${ApiService.BASE_ENDPOINT}/accounts`,
+    SCOPES: `${ApiService.BASE_ENDPOINT}/scopes`,
   };
 
   public createUser = async (data: ApiRequest.Users.Create): Promise<ApiResponse.Users.Create> =>
@@ -160,5 +162,16 @@ export class ApiService {
       },
       responseType: "text",
     }).toPromise();
+  }
+
+  public listScopes = async (): Promise<ISerializedScope[]> =>
+  {
+    const response = await this.http.get(`${ApiService.ENDPOINTS.SCOPES}`, {
+      headers: {
+        "Authorization": `Bearer ${SettingsService.get("session")}`,
+      },
+    }).toPromise();
+
+    return response as ISerializedScope[];
   }
 }
