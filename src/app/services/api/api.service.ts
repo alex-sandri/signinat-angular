@@ -122,6 +122,18 @@ export class ApiService {
     return response as ISerializedApp[];
   }
 
+  public updateApp = async (id: string, data: ApiRequest.Apps.Update): Promise<ApiResponse.Apps.Update> =>
+  {
+    const response = await this.http.put(`${ApiService.ENDPOINTS.APPS}/${id}`, JSON.stringify(data), {
+      headers: {
+        "Authorization": `Bearer ${SettingsService.get("session")}`,
+        "Content-Type": "application/json",
+      },
+    }).toPromise();
+
+    return response as ApiResponse.Apps.Update;
+  }
+
   public deleteApp = async (id: string): Promise<void> =>
   {
     await this.http.delete(`${ApiService.ENDPOINTS.APPS}/${id}`, {

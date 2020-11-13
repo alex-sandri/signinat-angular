@@ -30,5 +30,12 @@ export namespace ApiRequest
             url: string,
             scopes: string[],
         }
+
+        export interface Update
+        {
+            api: {
+                webhook: string,
+            },
+        }
     }
 }

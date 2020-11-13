@@ -67,5 +67,20 @@ export namespace ApiResponse
                 },
             },
         }
+
+        export interface Update
+        {
+            result: {
+                valid: boolean,
+                data?: ISerializedApp,
+            },
+            errors: {
+                api: {
+                    webhook: {
+                        error: string,
+                    },
+                },
+            },
+        }
     }
 }

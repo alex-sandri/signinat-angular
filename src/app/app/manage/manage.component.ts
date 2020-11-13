@@ -12,12 +12,20 @@ export class ManageComponent implements OnInit {
 
   app!: ISerializedApp;
 
-  async delete() {
-    await this.api.deleteApp(this.app.id);
+  setWebhook(url: string) {
+    this.api.updateApp(this.app.id, {
+      api: {
+        webhook: url,
+      },
+    });
   }
 
   copyApiKey() {
     navigator.clipboard.writeText(this.app.api.key);
+  }
+
+  async delete() {
+    await this.api.deleteApp(this.app.id);
   }
 
   constructor(private api: ApiService, private router: Router, route: ActivatedRoute) {
