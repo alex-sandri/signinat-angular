@@ -85,7 +85,7 @@ export class App
             session.user,
             apiKey,
             "", // TODO,
-            await Scope.list(app.id),
+            Scope.from(data.scopes),
         );
     }
 
