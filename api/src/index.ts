@@ -268,9 +268,12 @@ app.put("/api/apps/:id", async (req, res) =>
   {
     const app = await App.retrieve(req.params.id);
 
-    app?.update(data);
+    if (app)
+    {
+      app.update(data);
 
-    response.result.data = app?.json();
+      response.result.data = app.json();
+    }
   }
   catch (e)
   {
