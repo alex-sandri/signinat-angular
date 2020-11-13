@@ -136,6 +136,11 @@ export class App
         return apps;
     }
 
+    public update = async (data: ApiRequest.Apps.Update): Promise<void> =>
+    {
+        await db.collection("apps").doc(this.id).update(data);
+    }
+
     static delete = async (id: string): Promise<void> =>
     {
         await db.collection("apps").doc(id).delete();

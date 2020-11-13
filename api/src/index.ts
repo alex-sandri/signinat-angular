@@ -266,9 +266,11 @@ app.put("/api/apps/:id", async (req, res) =>
 
   try
   {
-    const app = await App.update(token.session, data);
+    const app = await App.retrieve(req.params.id);
 
-    response.result.data = app.json();
+    app?.update(data);
+
+    response.result.data = app?.json();
   }
   catch (e)
   {
@@ -285,7 +287,8 @@ app.put("/api/apps/:id", async (req, res) =>
     }
   }
 
-  res.sendStatus(200);
+  if (response.result.valid) res.send(response);
+  else res.status(400).send(response);
 });
 
 app.delete("/api/apps/:id", async (req, res) =>
