@@ -76,7 +76,7 @@ export class App
             },
         });
 
-        await Scope.set(app.id, data.scopes);
+        await Scope.set(app.id, Scope.from(data.scopes));
 
         return new App(
             app.id,

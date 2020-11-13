@@ -23,7 +23,6 @@ export interface ISerializedScope
 export class Scope
 {
     private constructor(
-        public readonly id: string,
         public readonly value: TScopeValue,
     ) {}
 
@@ -33,15 +32,20 @@ export class Scope
         description: this.description,
     });
 
-    static set = async (app: string, scopes: string[]): Promise<void> =>
+    static from = (scopes: string[]): Scope[] =>
     {
         // TODO
         // Validate scopes
 
+        return scopes.map(scope => new Scope(scope as TScopeValue));
+    }
+
+    static set = async (app: string, scopes: Scope[]): Promise<void> =>
+    {
         for (const scope of scopes)
         {
             await db.collection(`apps/${app}/scopes`).add(<IScope>{
-                value: scope,
+                value: scope.value,
             });
         }
     }
@@ -56,10 +60,7 @@ export class Scope
         {
             const data = scope.data() as IScope;
 
-            scopes.push(new Scope(
-                scope.id,
-                data.value,
-            ));
+            scopes.push(new Scope(data.value));
         }
 
         return scopes;
