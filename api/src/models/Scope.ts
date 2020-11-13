@@ -40,7 +40,7 @@ export class Scope
         return Scope.all().includes(scope);
     }
 
-    private static all = (): string[] =>
+    public static all = (): string[] =>
     {
         return <TScopeValue[]>[
             "user.profile",
