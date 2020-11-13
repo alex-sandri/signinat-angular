@@ -56,12 +56,20 @@ app.post("/api/users", async (req, res) =>
 
     switch (id)
     {
-      case "user/name/first/empty": response.errors.name.first.error = message; break;
-      case "user/name/last/empty": response.errors.name.last.error = message; break;
-      case "user/email/empty": response.errors.email.error = message; break;
-      case "user/email/already-exists": response.errors.email.error = message; break;
-      case "user/password/empty": response.errors.password.error = message; break;
-      case "user/password/weak": response.errors.password.error = message; break;
+      case "user/name/first/empty":
+        response.errors.name.first.error = message;
+        break;
+      case "user/name/last/empty":
+        response.errors.name.last.error = message;
+        break;
+      case "user/email/empty":
+      case "user/email/already-exists":
+        response.errors.email.error = message;
+        break;
+      case "user/password/empty":
+      case "user/password/weak":
+        response.errors.password.error = message;
+        break;
     }
   }
 
@@ -353,10 +361,14 @@ app.post("/api/sessions", async (req, res) =>
 
     switch (id)
     {
-      case "user/email/empty": response.errors.email.error = message; break;
-      case "user/email/inexistent": response.errors.email.error = message; break;
-      case "user/password/empty": response.errors.password.error = message; break;
-      case "user/password/wrong": response.errors.password.error = message; break;
+      case "user/email/empty":
+      case "user/email/inexistent":
+        response.errors.email.error = message;
+        break;
+      case "user/password/empty":
+      case "user/password/wrong":
+        response.errors.password.error = message;
+        break;
     }
   }
 
