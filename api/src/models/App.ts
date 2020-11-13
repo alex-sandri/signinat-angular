@@ -16,6 +16,7 @@ interface IApp
     owner: string,
     api: {
         key: string,
+        webhook: string,
     },
 }
 
@@ -28,6 +29,7 @@ export interface ISerializedApp
     // TODO: Send API key only if the signed in user is the owner
     api: {
         key: string,
+        webhook: string,
     },
     scopes: ISerializedScope[],
 }
@@ -40,6 +42,7 @@ export class App
         public readonly url: string,
         public readonly owner: User,
         public readonly apiKey: string,
+        public readonly webhook: string,
         public readonly scopes: Scope[],
     ) {}
 
@@ -51,6 +54,7 @@ export class App
         owner: this.owner.json(),
         api: {
             key: this.apiKey,
+            webhook: this.webhook,
         },
         scopes: this.scopes.map(scope => scope.json()),
     });
@@ -80,7 +84,8 @@ export class App
             data.url,
             session.user,
             apiKey,
-            [], // TODO
+            "", // TODO,
+            await Scope.list(app.id),
         );
     }
 
@@ -102,6 +107,7 @@ export class App
             data.url,
             owner,
             data.api.key,
+            data.api.webhook,
             scopes,
         );
     }
@@ -122,7 +128,8 @@ export class App
                 data.url,
                 session.user,
                 data.api.key,
-                [], // Fields are not sent with a LIST operation
+                data.api.webhook,
+                [], // Scopes are not sent with a LIST operation
             ));
         });
 
