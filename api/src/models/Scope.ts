@@ -24,7 +24,10 @@ export class Scope
 {
     private constructor(
         public readonly value: TScopeValue,
-    ) {}
+    )
+    {
+        if (!Scope.validate(value)) throw new Error("scope/invalid");
+    }
 
     public json = (): ISerializedScope =>
     ({
@@ -32,11 +35,24 @@ export class Scope
         description: this.description,
     });
 
+    private static validate = (scope: string): boolean =>
+    {
+        return Scope.all().includes(scope);
+    }
+
+    private static all = (): string[] =>
+    {
+        return <TScopeValue[]>[
+            "user.profile",
+            "user.profile.name",
+            "user.profile.name.first",
+            "user.profile.name.last",
+            "user.profile.email",
+        ];
+    }
+
     static from = (scopes: string[]): Scope[] =>
     {
-        // TODO
-        // Validate scopes
-
         return scopes.map(scope => new Scope(scope as TScopeValue));
     }
 
