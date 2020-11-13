@@ -138,7 +138,9 @@ export class App
 
     public update = async (data: ApiRequest.Apps.Update): Promise<void> =>
     {
-        await db.collection("apps").doc(this.id).update(data);
+        await db.collection("apps").doc(this.id).update({
+            "api.webhook": data.api.webhook,
+        });
     }
 
     static delete = async (id: string): Promise<void> =>
