@@ -227,6 +227,59 @@ app.post("/api/apps", async (req, res) =>
   res.send(response);
 });
 
+app.put("/api/apps/:id", async (req, res) =>
+{
+  const token = await Token.fromString(req.token);
+
+  if (!token)
+  {
+    res.sendStatus(401);
+
+    return;
+  }
+
+  if (!(await App.isOwnedBy(req.params.id, token.user)))
+  {
+    res.sendStatus(403);
+
+    return;
+  }
+
+  const data: ApiRequest.Apps.Update = req.body;
+
+  const response: ApiResponse.Apps.Update = {
+    result: { valid: true },
+    errors: {
+      api: {
+        webhook: { error: "" },
+      },
+    },
+  };
+
+  try
+  {
+    const app = await App.update(token.session, data);
+
+    response.result.data = app.json();
+  }
+  catch (e)
+  {
+    const { id, message } = e as ApiError;
+
+    response.result.valid = false;
+
+    switch (id)
+    {
+      case "app/webhook/empty":
+      case "app/webhook/invalid":
+        response.errors.api.webhook.error = message;
+        break;
+    }
+  }
+
+  res.sendStatus(200);
+});
+
 app.delete("/api/apps/:id", async (req, res) =>
 {
   const token = await Token.fromString(req.token);
