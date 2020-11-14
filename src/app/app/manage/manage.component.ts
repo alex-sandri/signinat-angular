@@ -26,6 +26,8 @@ export class ManageComponent implements OnInit {
 
   async delete() {
     await this.api.deleteApp(this.app.id);
+
+    this.router.navigateByUrl("/account/settings");
   }
 
   constructor(private api: ApiService, private router: Router, route: ActivatedRoute) {
