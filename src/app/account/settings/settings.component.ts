@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { ISerializedApp } from 'api/src/models/App';
 import { ISerializedScope } from 'api/src/models/Scope';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -40,6 +41,12 @@ export class SettingsComponent implements OnInit {
     }
   }
 
+  setSection(section: "general" | "developer") {
+    this.section = section;
+
+    this.router.navigateByUrl(`account/settings/${section}`);
+  }
+
   async createNewAppFormOnSubmit(e: Event, name: string, url: string, scopes: HTMLCollection) {
     e.preventDefault();
 
@@ -69,7 +76,7 @@ export class SettingsComponent implements OnInit {
     submitButton.disabled = false;
   }
 
-  constructor(authService: AuthService, private api: ApiService) {
+  constructor(authService: AuthService, private api: ApiService, private router: Router) {
     api.retrieveSession(authService.sessionId as string).then(session =>
     {
       this.firstName = session.user.name.first;

@@ -43,13 +43,23 @@ import { AboutComponent } from './about/about.component';
     AppRoutingModule,
     RouterModule.forRoot([
       { path: "", component: IndexComponent },
+
       { path: "about", component: AboutComponent },
+
       { path: "signup", component: SignupComponent, canActivate: [ SignedOutGuard ] },
+
       { path: "signin", component: SigninComponent, canActivate: [ SignedOutGuard ] },
+
       { path: "account", component: AccountComponent, canActivate: [ SignedInGuard ] },
+
       { path: "account/settings", component: SettingsComponent, canActivate: [ SignedInGuard ] },
+      { path: "account/settings/general", component: SettingsComponent, canActivate: [ SignedInGuard ] },
+      { path: "account/settings/developer", component: SettingsComponent, canActivate: [ SignedInGuard ] },
+
       { path: "account/manage/:id", component: AccountManageComponent, canActivate: [ SignedInGuard ] },
+
       { path: "app/manage/:id", component: AppManageComponent, canActivate: [ SignedInGuard ] },
+
       { path: "app/signin/:id", component: AppSignInComponent, canActivate: [ SignedInGuard ] }
     ]),
     HttpClientModule
