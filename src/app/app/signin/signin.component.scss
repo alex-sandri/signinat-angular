@@ -2,6 +2,23 @@
 
 main
 {
+    #full-access-warning
+    {
+        mark
+        {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-radius: 5px;
+            padding: 15px;
+
+            span:first-child
+            {
+                font-size: xxx-large;
+            }
+        }
+    }
+
     button
     {
         width: 100%;
