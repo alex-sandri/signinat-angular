@@ -25,16 +25,13 @@
         <div id="apps">
             <button (click)="setCreateNewAppDialogVisible(true)">Create new App</button>
             <a
-                class="app"
+                class="button"
                 routerLink="/app/manage/{{app.id}}"
                 title="{{app.name}}"
 
                 *ngFor="let app of apps"
             >
-                <img src="https://picsum.photos/200/100" alt="{{app.name}}">
-                <div class="info">
-                    <p class="name"><b>{{app.name}}</b></p>
-                </div>
+                <span>{{app.name}}</span>
             </a>
         </div>
     </section>
