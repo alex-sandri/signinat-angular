@@ -21,7 +21,7 @@ export class SettingsComponent implements OnInit {
   lastName: string = "";
   email: string = "";
 
-  apps: ISerializedApp[] = [];
+  apps!: ISerializedApp[];
 
   scopes: ISerializedScope[] = [];
 
