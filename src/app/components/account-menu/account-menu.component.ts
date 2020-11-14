@@ -39,7 +39,10 @@ export class AccountMenuComponent implements OnInit {
   }
 
   onClick(e: Event, accountMenu: HTMLElement) {
-    if (!accountMenu.contains(e.target as HTMLElement))
+    if (
+      !accountMenu.contains(e.target as HTMLElement)
+      || (e.target as HTMLElement).tagName === "A" // Links
+    )
     {
       this.visible = false;
     }
