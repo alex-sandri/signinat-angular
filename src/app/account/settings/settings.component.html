@@ -25,13 +25,15 @@
         <div id="apps">
             <button (click)="setCreateNewAppDialogVisible(true)">Create new App</button>
             <a
-                class="button"
+                class="button app"
                 routerLink="/app/manage/{{app.id}}"
                 title="{{app.name}}"
 
                 *ngFor="let app of apps"
             >
                 <span>{{app.name}}</span>
+                <br>
+                <small>{{app.url}}</small>
             </a>
         </div>
     </section>
