@@ -147,6 +147,8 @@ export class App
     {
         await db.collection("apps").doc(id).delete();
 
+        await Scope.delete(id);
+
         // TODO
         // Delete every account associated with this app
     }

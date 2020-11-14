@@ -57,6 +57,8 @@ export class Scope
     {
         if (!scopes.every(scope => Scope.validate(scope.value))) throw new Error("scope/invalid");
 
+        await Scope.delete(app);
+
         for (const scope of scopes)
         {
             await db.collection(`apps/${app}/scopes`).add(<IScope>{
@@ -79,6 +81,16 @@ export class Scope
         }
 
         return scopes;
+    }
+
+    static delete = async (app: string): Promise<void> =>
+    {
+        const snapshot = await db.collection(`apps/${app}/scopes`).get();
+
+        for (const scope of snapshot.docs)
+        {
+            await scope.ref.delete();
+        }
     }
 
     public get description(): string {
