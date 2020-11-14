@@ -30,7 +30,7 @@ dialog
 {
     width: 40ch;
     max-width: 100%;
-    border: 2px solid var(--primary-color);
+    border: none;
     border-radius: 5px;
     color: inherit;
     background-color: var(--secondary-color);
@@ -42,7 +42,7 @@ dialog
 
     &::backdrop
     {
-        background-color: rgba(black, 0.8);
+        background-color: white;
     }
 }
 
