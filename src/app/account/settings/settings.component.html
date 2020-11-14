@@ -22,6 +22,7 @@
         <h1>Apps</h1>
         <span *ngIf="apps.length === 0"><i>You haven't created any apps yet</i></span>
         <div id="apps">
+            <button (click)="setCreateNewAppDialogVisible(true)">Create new App</button>
             <a
                 class="app"
                 routerLink="/app/manage/{{app.id}}"
@@ -35,7 +36,6 @@
                 </div>
             </a>
         </div>
-        <button (click)="setCreateNewAppDialogVisible(true)">Create new App</button>
     </section>
 </main>
 
