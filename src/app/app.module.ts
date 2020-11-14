@@ -20,6 +20,7 @@ import { ManageComponent as AppManageComponent } from './app/manage/manage.compo
 import { SigninComponent as AppSignInComponent } from './app/signin/signin.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { AboutComponent } from './about/about.component';
+import { ScopeListComponent } from './components/scope-list/scope-list.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { AboutComponent } from './about/about.component';
     AppManageComponent,
     AppSignInComponent,
     SpinnerComponent,
-    AboutComponent
+    AboutComponent,
+    ScopeListComponent
   ],
   imports: [
     BrowserModule,

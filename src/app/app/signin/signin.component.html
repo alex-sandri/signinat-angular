@@ -6,8 +6,6 @@
     <h1>{{app.name}}</h1>
     <small><a href="{{app.url}}" target="_blank">{{app.url}}</a></small>
     <p>This app wants to access:</p>
-    <ul>
-        <li *ngFor="let scope of app.scopes">{{scope.description}}</li>
-    </ul>
+    <app-scope-list [scopes]="app.scopes"></app-scope-list>
     <button (click)="onSignIn()">Sign In @ <b>{{app.name}}</b></button>
 </main>

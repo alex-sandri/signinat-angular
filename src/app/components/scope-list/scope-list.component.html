@@ -1,0 +1,6 @@
+<ul>
+    <li *ngFor="let scope of scopes">
+        {{scope.description}}
+        <app-scope-list *ngIf="scope.includes.length > 0"></app-scope-list>
+    </li>
+</ul>
