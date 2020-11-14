@@ -33,7 +33,7 @@ export class Scope
         description: this.description,
         includes: Scope
             .all()
-            .filter(scope => scope.value.startsWith(`${this.value}.`))
+            .filter(scope => scope.value.match(RegExp(`^${this.value}\.[^\.]+$`)))
             .map(scope => scope.json()),
     });
 
