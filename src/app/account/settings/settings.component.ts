@@ -15,7 +15,7 @@ export class SettingsComponent implements OnInit {
   @ViewChild("createNewAppDialog") createNewAppDialog!: ElementRef<HTMLDialogElement>;
   @ViewChild("createNewAppForm") createNewAppForm!: ElementRef<HTMLFormElement>;
 
-  section: "general" | "developer" = "general";
+  section: string;
 
   firstName: string = "";
   lastName: string = "";
@@ -77,6 +77,10 @@ export class SettingsComponent implements OnInit {
   }
 
   constructor(authService: AuthService, private api: ApiService, private router: Router) {
+    this.section = router.url.split("/").pop() as string;
+
+    if (this.section === "settings") this.section = "general";
+
     api.retrieveSession(authService.sessionId as string).then(session =>
     {
       this.firstName = session.user.name.first;
