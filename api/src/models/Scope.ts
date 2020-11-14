@@ -18,6 +18,7 @@ export interface ISerializedScope
 {
     value: TScopeValue,
     description: string,
+    includes: ISerializedScope[],
 }
 
 export class Scope
@@ -30,6 +31,10 @@ export class Scope
     ({
         value: this.value,
         description: this.description,
+        includes: Scope
+            .all()
+            .filter(scope => scope.value.startsWith(`${this.value}.`))
+            .map(scope => scope.json()),
     });
 
     private static validate = (scope: string): boolean =>
