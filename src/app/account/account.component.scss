@@ -10,28 +10,11 @@ main
 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+    grid-template-rows: 150px;
     gap: 15px;
 
-    .linked-account
+    > *
     {
-        text-decoration: none;
-        color: var(--secondary-color);
-        background-color: var(--primary-color);
-        padding: 5px;
-        border-radius: 5px;
-
-        img
-        {
-            width: 100%;
-            border-radius: 5px;
-        }
-
-        p
-        {
-            margin: 0;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-        }
+        text-align: start;
     }
 }

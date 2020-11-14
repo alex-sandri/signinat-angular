@@ -6,16 +6,15 @@
     <app-spinner *ngIf="accounts === undefined"></app-spinner>
     <section id="linked-accounts">
         <a
-            class="linked-account"
+            class="button"
             routerLink="/account/manage/{{account.id}}"
             title="{{account.app.name}}"
 
             *ngFor="let account of accounts"
         >
-            <img src="https://picsum.photos/200/100" alt="{{account.app.name}}">
-            <div class="info">
-                <p class="name"><b>{{account.app.name}}</b></p>
-            </div>
+            <span>{{account.app.name}}</span>
+            <br>
+            <small>{{account.app.url}}</small>
         </a>
     </section>
 </main>
