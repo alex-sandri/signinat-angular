@@ -3,6 +3,7 @@ import { firestore } from "firebase-admin";
 const db = firestore();
 
 type TScopeValue =
+    "user" |
     "user.profile" |
     "user.profile.name" |
     "user.profile.name.first" |
@@ -103,6 +104,7 @@ export class Scope
 
         switch (this.value)
         {
+            case "user": description = "Everything"; break;
             case "user.profile": description = "Your entire profile"; break;
             case "user.profile.name": description = "Your full name"; break;
             case "user.profile.name.first": description = "Your first name"; break;
