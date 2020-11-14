@@ -21,9 +21,9 @@
     <section *ngIf="section == 'developer'">
         <h1>Apps</h1>
         <span *ngIf="apps !== undefined && apps.length === 0"><i>You haven't created any apps yet</i></span>
-        <app-spinner *ngIf="apps === undefined"></app-spinner>
         <div id="apps">
             <button (click)="setCreateNewAppDialogVisible(true)">Create new App</button>
+            <app-spinner *ngIf="apps === undefined"></app-spinner>
             <a
                 class="button app"
                 routerLink="/app/manage/{{app.id}}"
