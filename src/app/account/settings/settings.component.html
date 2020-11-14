@@ -22,7 +22,11 @@
         <h1>Apps</h1>
         <span *ngIf="apps !== undefined && apps.length === 0"><i>You haven't created any apps yet</i></span>
         <div id="apps">
-            <button (click)="setCreateNewAppDialogVisible(true)">Create new App</button>
+            <button (click)="setCreateNewAppDialogVisible(true)">
+                <span [style.font-size]="'xx-large'">&#43;</span>
+                <br>
+                Create new App
+            </button>
             <app-spinner *ngIf="apps === undefined"></app-spinner>
             <a
                 class="button app"
