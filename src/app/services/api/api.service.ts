@@ -24,6 +24,7 @@ export class ApiService {
     SESSIONS: `${ApiService.BASE_ENDPOINT}/sessions`,
     ACCOUNTS: `${ApiService.BASE_ENDPOINT}/accounts`,
     SCOPES: `${ApiService.BASE_ENDPOINT}/scopes`,
+    TOKENS: `${ApiService.BASE_ENDPOINT}/tokens`,
   };
 
   public createUser = async (data: ApiRequest.Users.Create): Promise<ApiResponse.Users.Create> =>
@@ -185,5 +186,16 @@ export class ApiService {
     }).toPromise();
 
     return response as ISerializedScope[];
+  }
+
+  public createAppToken = async (data: ApiRequest.Tokens.Create): Promise<string> =>
+  {
+    const response = await this.http.post(`${ApiService.ENDPOINTS.TOKENS}`, JSON.stringify(data), {
+      headers: {
+        "Authorization": `Bearer ${SettingsService.get("session")}`,
+      },
+    }).toPromise();
+
+    return response as string;
   }
 }

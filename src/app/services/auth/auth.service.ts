@@ -8,6 +8,8 @@ import { SettingsService } from '../settings/settings.service';
   providedIn: 'root'
 })
 export class AuthService {
+  get userId () { return SettingsService.get("session")?.split(";")[0]; }
+
   get sessionId () { return SettingsService.get("session")?.split(";")[1]; }
 
   isSignedIn = () => SettingsService.exists("session");
