@@ -16,5 +16,8 @@ main
     > *
     {
         text-align: start;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 }
