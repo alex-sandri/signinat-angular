@@ -2,22 +2,23 @@ import { firestore } from "firebase-admin";
 
 const db = firestore();
 
-type TScopeValue =
-    "user" |
-    "user.profile" |
-    "user.profile.name" |
-    "user.profile.name.first" |
-    "user.profile.name.last" |
-    "user.profile.email";
+const SCOPES = [
+    { value: "user", description: "Everything" },
+    { value: "user.profile", description: "Your entire profile" },
+    { value: "user.profile.name", description: "Your full name" },
+    { value: "user.profile.name.first", description: "Your first name" },
+    { value: "user.profile.name.last", description: "Your last name" },
+    { value: "user.profile.email", description: "Your email" },
+];
 
 interface IScope
 {
-    value: TScopeValue,
+    value: string,
 }
 
 export interface ISerializedScope
 {
-    value: TScopeValue,
+    value: string,
     description: string,
     includes: ISerializedScope[],
 }
@@ -25,7 +26,7 @@ export interface ISerializedScope
 export class Scope
 {
     private constructor(
-        public readonly value: TScopeValue,
+        public readonly value: string,
     ) {}
 
     public json = (): ISerializedScope =>
@@ -45,18 +46,12 @@ export class Scope
 
     public static all = (): Scope[] =>
     {
-        return (<TScopeValue[]>[
-            "user.profile",
-            "user.profile.name",
-            "user.profile.name.first",
-            "user.profile.name.last",
-            "user.profile.email",
-        ]).map(scope => new Scope(scope));
+        return SCOPES.map(scope => new Scope(scope.value));
     }
 
     static from = (scopes: string[]): Scope[] =>
     {
-        return scopes.map(scope => new Scope(scope as TScopeValue));
+        return scopes.map(scope => new Scope(scope));
     }
 
     static set = async (app: string, scopes: Scope[]): Promise<void> =>
@@ -100,18 +95,6 @@ export class Scope
     }
 
     public get description(): string {
-        let description: string = "";
-
-        switch (this.value)
-        {
-            case "user": description = "Everything"; break;
-            case "user.profile": description = "Your entire profile"; break;
-            case "user.profile.name": description = "Your full name"; break;
-            case "user.profile.name.first": description = "Your first name"; break;
-            case "user.profile.name.last": description = "Your last name"; break;
-            case "user.profile.email": description = "Your email"; break;
-        }
-
-        return description;
+        return SCOPES.find(scope => scope.value === this.value)!.description;
     }
 }
