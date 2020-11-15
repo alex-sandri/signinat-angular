@@ -60,6 +60,17 @@ export class Scope
 
         await Scope.delete(app);
 
+        /*
+            Remove more specific scopes
+
+            Example:
+            'user.profile' is removed if 'user' is a selected scope
+        */
+        scopes = scopes.filter(scope =>
+        {
+            return scopes.findIndex(temp => scope.value.startsWith(`${temp.value}.`)) === -1;
+        });
+
         for (const scope of scopes)
         {
             await db.collection(`apps/${app}/scopes`).add(<IScope>{
