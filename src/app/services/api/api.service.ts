@@ -193,9 +193,11 @@ export class ApiService {
     const response = await this.http.post(`${ApiService.ENDPOINTS.TOKENS}`, JSON.stringify(data), {
       headers: {
         "Authorization": `Bearer ${SettingsService.get("session")}`,
+        "Content-Type": "application/json",
       },
+      responseType: "text",
     }).toPromise();
 
-    return response as string;
+    return response;
   }
 }
