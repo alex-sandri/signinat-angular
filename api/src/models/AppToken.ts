@@ -19,13 +19,13 @@ export class AppToken
         public readonly user: User,
     ) {}
 
-    public static async create(app: App, user: User): Promise<string>
+    public static async create(app: string, user: string): Promise<string>
     {
         const uuid = uuidv4();
 
         await db.collection("tokens").doc(uuid).set(<IAppToken>{
-            app: app.id,
-            user: user.id,
+            app,
+            user,
         });
 
         return uuid;

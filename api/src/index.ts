@@ -20,6 +20,7 @@ import { Session } from "./models/Session";
 import { Account } from "./models/Account";
 import { Token } from "./models/Token";
 import { Scope } from "./models/Scope";
+import { AppToken } from "./models/AppToken";
 
 const app = express();
 
@@ -425,6 +426,24 @@ app.get("/api/scopes", async (req, res) =>
   }
 
   res.send(Scope.all().map(scope => scope.json()));
+});
+
+app.post("/api/tokens", async (req, res) =>
+{
+  const token = await Token.fromString(req.token);
+
+  if (!token)
+  {
+    res.sendStatus(401);
+
+    return;
+  }
+
+  const data: ApiRequest.Tokens.Create = req.body;
+
+  const appToken = await AppToken.create(data.app, data.user);
+
+  res.send(appToken);
 });
 
 app.listen(3000);

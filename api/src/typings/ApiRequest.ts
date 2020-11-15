@@ -38,4 +38,13 @@ export namespace ApiRequest
             },
         }
     }
+
+    export namespace Tokens
+    {
+        export interface Create
+        {
+            app: string,
+            user: string,
+        }
+    }
 }
