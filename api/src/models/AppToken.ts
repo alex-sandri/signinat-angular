@@ -66,7 +66,7 @@ export class AppToken
 
         return new AppToken(
             app,
-            user,
+            user.filter(app.scopes),
         );
     }
 }

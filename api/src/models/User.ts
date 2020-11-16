@@ -3,6 +3,7 @@ import * as bcrypt from "bcrypt";
 
 import { ApiRequest } from "../typings/ApiRequest";
 import { ApiError } from "./ApiError";
+import { Scope } from "./Scope";
 
 const db = firestore();
 
@@ -45,6 +46,36 @@ export class User
         },
         email: this.email,
     });
+
+    public filter = (scopes: Scope[]): User =>
+    {
+        let firstName = this.firstName;
+        let lastName = this.lastName;
+        let email = this.email;
+
+        if (!scopes.some(scope => scope.canAccess("user.profile.name.first")))
+        {
+            firstName = "";
+        }
+
+        if (!scopes.some(scope => scope.canAccess("user.profile.name.last")))
+        {
+            lastName = "";
+        }
+
+        if (!scopes.some(scope => scope.canAccess("user.profile.email")))
+        {
+            email = "";
+        }
+
+        return new User(
+            this.id,
+            firstName,
+            lastName,
+            email,
+            "", // Remove password from filtered user
+        );
+    }
 
     static create = async (data: ApiRequest.Users.Create): Promise<User> =>
     {

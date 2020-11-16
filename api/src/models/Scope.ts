@@ -105,6 +105,12 @@ export class Scope
         }
     }
 
+    public canAccess = (scope: string): boolean =>
+    {
+        return scope.startsWith(`${this.value}.`)
+            || scope === this.value;
+    }
+
     public get description(): string {
         return SCOPES.find(scope => scope.value === this.value)!.description;
     }
