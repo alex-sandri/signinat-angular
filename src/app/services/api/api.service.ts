@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { ApiRequest } from 'api/src/typings/ApiRequest';
 import { ApiResponse } from 'api/src/typings/ApiResponse';
 import { ISerializedApp } from 'api/src/models/App';
-import { ISerializedSession } from 'api/src/models/Session';
 import { SettingsService } from '../settings/settings.service';
 import { ISerializedAccount } from 'api/src/models/Account';
 import { ISerializedScope } from 'api/src/models/Scope';
@@ -21,7 +20,6 @@ export class ApiService {
   private static readonly ENDPOINTS = {
     USERS: `${ApiService.BASE_ENDPOINT}/users`,
     APPS: `${ApiService.BASE_ENDPOINT}/apps`,
-    SESSIONS: `${ApiService.BASE_ENDPOINT}/sessions`,
     ACCOUNTS: `${ApiService.BASE_ENDPOINT}/accounts`,
     SCOPES: `${ApiService.BASE_ENDPOINT}/scopes`,
     TOKENS: `${ApiService.BASE_ENDPOINT}/tokens`,
@@ -138,38 +136,6 @@ export class ApiService {
   public deleteApp = async (id: string): Promise<void> =>
   {
     await this.http.delete(`${ApiService.ENDPOINTS.APPS}/${id}`, {
-      headers: {
-        "Authorization": `Bearer ${SettingsService.get("session")}`,
-      },
-      responseType: "text",
-    }).toPromise();
-  }
-
-  public createSession = async (data: ApiRequest.Sessions.Create): Promise<ApiResponse.Sessions.Create> =>
-  {
-    const response = await this.http.post(ApiService.ENDPOINTS.SESSIONS, JSON.stringify(data), {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).toPromise();
-
-    return response as ApiResponse.Sessions.Create;
-  }
-
-  public retrieveSession = async (id: string): Promise<ISerializedSession> =>
-  {
-    const response = await this.http.get(`${ApiService.ENDPOINTS.SESSIONS}/${id}`, {
-      headers: {
-        "Authorization": `Bearer ${SettingsService.get("session")}`,
-      },
-    }).toPromise();
-
-    return response as ISerializedSession;
-  }
-
-  public deleteSession = async (id: string): Promise<void> =>
-  {
-    await this.http.delete(`${ApiService.ENDPOINTS.SESSIONS}/${id}`, {
       headers: {
         "Authorization": `Bearer ${SettingsService.get("session")}`,
       },
