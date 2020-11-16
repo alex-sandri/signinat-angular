@@ -13,15 +13,6 @@ export namespace ApiRequest
         }
     }
 
-    export namespace Sessions
-    {
-        export interface Create
-        {
-            email: string,
-            password: string,
-        }
-    }
-
     export namespace Apps
     {
         export interface Create

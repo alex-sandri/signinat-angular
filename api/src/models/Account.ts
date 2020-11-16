@@ -2,7 +2,7 @@ import { firestore } from "firebase-admin";
 
 import { ApiError } from "./ApiError";
 import { App, ISerializedApp } from "./App";
-import { Session } from "./Session";
+import { User } from "./User";
 
 const db = firestore();
 
@@ -60,9 +60,9 @@ export class Account
         );
     }
 
-    static list = async (session: Session): Promise<Account[]> =>
+    static list = async (user: User): Promise<Account[]> =>
     {
-        const snapshot = await db.collection(`users/${session.user.id}/accounts`).get();
+        const snapshot = await db.collection(`users/${user.id}/accounts`).get();
 
         const accounts: Account[] = [];
 
@@ -79,28 +79,28 @@ export class Account
         return accounts;
     }
 
-    static unlink = async (session: Session, id: string): Promise<void> => { await db.collection(`users/${session.user.id}/accounts`).doc(id).delete(); }
+    static unlink = async (user: User, id: string): Promise<void> => { await db.collection(`users/${user.id}/accounts`).doc(id).delete(); }
 
-    static delete = async (session: Session, id: string): Promise<void> =>
+    static delete = async (user: User, id: string): Promise<void> =>
     {
         // TODO
         // Send POST request to App webhook to request the account deletion
 
         // TODO
         // if successful
-        await Account.unlink(session, id);
+        await Account.unlink(user, id);
     }
 
-    static withAppId = async (session: Session, app: string): Promise<Account | null> =>
+    static withAppId = async (user: User, app: string): Promise<Account | null> =>
     {
-        const result = await db.collection(`users/${session.user.id}/accounts`).where("app", "==", app).limit(1).get();
+        const result = await db.collection(`users/${user.id}/accounts`).where("app", "==", app).limit(1).get();
 
         if (result.empty) return null;
 
         const account = result.docs[0];
 
-        return Account.retrieve(session, account.id);
+        return Account.retrieve(user, account.id);
     }
 
-    static exists = async (session: Session, id: string): Promise<boolean> => (await Account.retrieve(session, id)) !== null;
+    static exists = async (user: User, id: string): Promise<boolean> => (await Account.retrieve(user, id)) !== null;
 }

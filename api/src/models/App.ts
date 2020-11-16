@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 import { ApiRequest } from "../typings/ApiRequest";
 import { ApiError } from "./ApiError";
 import { ISerializedScope, Scope } from "./Scope";
-import { Session } from "./Session";
 import { ISerializedUser, User } from "./User";
 
 const db = firestore();
@@ -59,7 +58,7 @@ export class App
         scopes: this.scopes.map(scope => scope.json()),
     });
 
-    static create = async (session: Session, data: ApiRequest.Apps.Create): Promise<App> =>
+    static create = async (user: User, data: ApiRequest.Apps.Create): Promise<App> =>
     {
         App.validate(data);
 
@@ -70,7 +69,7 @@ export class App
         const app = await db.collection("apps").add(<IApp>{
             name: data.name,
             url: data.url,
-            owner: session.user.id,
+            owner: user.id,
             api: {
                 key: apiKey,
             },
@@ -82,7 +81,7 @@ export class App
             app.id,
             data.name,
             data.url,
-            session.user,
+            user,
             apiKey,
             "", // TODO,
             Scope.from(data.scopes),
@@ -112,9 +111,9 @@ export class App
         );
     }
 
-    static list = async (session: Session): Promise<App[]> =>
+    static list = async (user: User): Promise<App[]> =>
     {
-        const snapshot = await db.collection("apps").where("owner", "==", session.user.id).get();
+        const snapshot = await db.collection("apps").where("owner", "==", user.id).get();
 
         const apps: App[] = [];
 
@@ -126,7 +125,7 @@ export class App
                 app.id,
                 data.name,
                 data.url,
-                session.user,
+                user,
                 data.api.key,
                 data.api.webhook,
                 [], // Scopes are not sent with a LIST operation

@@ -16,7 +16,6 @@ import { ApiResponse } from "./typings/ApiResponse";
 import { ApiError } from "./models/ApiError";
 import { App } from "./models/App";
 import { User } from "./models/User";
-import { Session } from "./models/Session";
 import { Account } from "./models/Account";
 import { Scope } from "./models/Scope";
 import { AuthToken } from "./models/AuthToken";
@@ -87,14 +86,14 @@ app.get("/api/accounts", async (req, res) =>
     return;
   }
 
-  if (!token.session)
+  if (token.type !== "user")
   {
     res.status(403).send({ error: "Forbidden" });
 
     return;
   }
 
-  const accounts = await Account.list(token.session);
+  const accounts = await Account.list(token.user);
 
   res.send(accounts.map(account => account.json()));
 });
@@ -110,14 +109,14 @@ app.get("/api/accounts/:id", async (req, res) =>
     return;
   }
 
-  if (!token.session)
+  if (token.type !== "user")
   {
     res.status(403).send({ error: "Forbidden" });
 
     return;
   }
 
-  const account = await Account.retrieve(token.session, req.params.id);
+  const account = await Account.retrieve(token.user, req.params.id);
 
   if (!account) res.sendStatus(404);
   else res.send(account.json());
@@ -136,14 +135,14 @@ app.post("/api/accounts", async (req, res) =>
     return;
   }
 
-  if (!token.session)
+  if (token.type !== "user")
   {
     res.status(403).send({ error: "Forbidden" });
 
     return;
   }
 
-  await Account.create(token.session, id);
+  await Account.create(token.user, id);
 
   res.sendStatus(200);
 });
@@ -159,14 +158,14 @@ app.delete("/api/accounts/:id/unlink", async (req, res) =>
     return;
   }
 
-  if (!token.session)
+  if (token.type !== "user")
   {
     res.status(403).send({ error: "Forbidden" });
 
     return;
   }
 
-  await Account.unlink(token.session, req.params.id);
+  await Account.unlink(token.user, req.params.id);
 
   res.sendStatus(200);
 });
@@ -182,14 +181,14 @@ app.delete("/api/accounts/:id", async (req, res) =>
     return;
   }
 
-  if (!token.session)
+  if (token.type !== "user")
   {
     res.status(403).send({ error: "Forbidden" });
 
     return;
   }
 
-  await Account.delete(token.session, req.params.id);
+  await Account.delete(token.user, req.params.id);
 
   res.sendStatus(200);
 });
@@ -205,14 +204,14 @@ app.get("/api/apps", async (req, res) =>
     return;
   }
 
-  if (!token.session)
+  if (token.type !== "user")
   {
     res.status(403).send({ error: "Forbidden" });
 
     return;
   }
 
-  const apps = await App.list(token.session);
+  const apps = await App.list(token.user);
 
   res.send(apps.map(app => app.json()));
 });
@@ -228,7 +227,7 @@ app.get("/api/apps/:id", async (req, res) =>
     return;
   }
 
-  if (!token.session)
+  if (token.type !== "user")
   {
     res.status(403).send({ error: "Forbidden" });
 
@@ -252,7 +251,7 @@ app.post("/api/apps", async (req, res) =>
     return;
   }
 
-  if (!token.session)
+  if (token.type !== "user")
   {
     res.status(403).send({ error: "Forbidden" });
 
@@ -271,7 +270,7 @@ app.post("/api/apps", async (req, res) =>
 
   try
   {
-    const app = await App.create(token.session, data);
+    const app = await App.create(token.user, data);
 
     response.result.data = app.json();
   }
@@ -302,7 +301,7 @@ app.put("/api/apps/:id", async (req, res) =>
     return;
   }
 
-  if (!token.session)
+  if (token.type !== "user")
   {
     res.status(403).send({ error: "Forbidden" });
 
@@ -380,116 +379,6 @@ app.delete("/api/apps/:id", async (req, res) =>
   res.sendStatus(200);
 });
 
-app.get("/api/sessions/:id", async (req, res) =>
-{
-  const token = await AuthToken.retrieve(req.token);
-
-  if (!token)
-  {
-    res.sendStatus(401);
-
-    return;
-  }
-
-  if (!token.session)
-  {
-    res.status(403).send({ error: "Forbidden" });
-
-    return;
-  }
-
-  const id = req.params.id;
-
-  if (id !== token.session.id)
-  {
-    res.sendStatus(403);
-
-    return;
-  }
-
-  if (!token.session) res.sendStatus(404);
-  else res.send(token.session.json());
-});
-
-app.post("/api/sessions", async (req, res) =>
-{
-  const data: ApiRequest.Sessions.Create = req.body;
-
-  const response: ApiResponse.Sessions.Create = {
-    result: { valid: true },
-    errors: {
-      email: { error: "" },
-      password: { error: "" },
-    },
-  };
-
-  try
-  {
-    const session = await Session.create(data);
-
-    response.result.data = session.json();
-  }
-  catch (e)
-  {
-    const { id, message } = e as ApiError;
-
-    response.result.valid = false;
-
-    switch (id)
-    {
-      case "user/email/empty":
-      case "user/email/inexistent":
-        response.errors.email.error = message;
-        break;
-      case "user/password/empty":
-      case "user/password/wrong":
-        response.errors.password.error = message;
-        break;
-    }
-  }
-
-  res.send(response);
-});
-
-app.delete("/api/sessions/:id", async (req, res) =>
-{
-  const token = await AuthToken.retrieve(req.token);
-
-  if (!token)
-  {
-    res.sendStatus(401);
-
-    return;
-  }
-
-  if (!token.session)
-  {
-    res.status(403).send({ error: "Forbidden" });
-
-    return;
-  }
-
-  const id = req.params.id;
-
-  if (id !== token.session.id)
-  {
-    res.sendStatus(403);
-
-    return;
-  }
-
-  if (!token.session)
-  {
-    res.sendStatus(404);
-  }
-  else
-  {
-    await token.session.delete();
-
-    res.sendStatus(200);
-  }
-});
-
 app.get("/api/scopes", async (req, res) =>
 {
   const token = await AuthToken.retrieve(req.token);
@@ -529,7 +418,7 @@ app.post("/api/tokens", async (req, res) =>
     return;
   }
 
-  if (!token.session)
+  if (token.type !== "user")
   {
     res.status(403).send({ error: "Forbidden" });
 

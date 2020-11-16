@@ -31,25 +31,6 @@ export namespace ApiResponse
         }
     }
 
-    export namespace Sessions
-    {
-        export interface Create
-        {
-            result: {
-                valid: boolean,
-                data?: ISerializedSession,
-            },
-            errors: {
-                email: {
-                    error: string,
-                },
-                password: {
-                    error: string,
-                },
-            },
-        }
-    }
-
     export namespace Apps
     {
         export interface Create

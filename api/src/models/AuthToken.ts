@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 
 import { App, ISerializedApp } from "./App";
 import { Scope } from "./Scope";
-import { ISerializedSession, Session } from "./Session";
 import { ISerializedUser, User } from "./User";
 
 const db = firestore();
@@ -15,7 +14,6 @@ interface IAuthToken
     user: string,
 
     app?: string,
-    session?: string,
 }
 
 interface ISerializedAuthToken
@@ -24,7 +22,6 @@ interface ISerializedAuthToken
     user: ISerializedUser,
 
     app?: ISerializedApp,
-    session?: ISerializedSession,
 }
 
 export class AuthToken
@@ -35,7 +32,6 @@ export class AuthToken
         public readonly user: User,
 
         public readonly app?: App | null,
-        public readonly session?: Session | null,
     ) {}
 
     public json = (): ISerializedAuthToken =>
@@ -44,7 +40,6 @@ export class AuthToken
         user: this.user.json(),
 
         app: this.app?.json(),
-        session: this.session?.json(),
     });
 
     public static async create(app: string, user: string): Promise<string>
@@ -74,7 +69,6 @@ export class AuthToken
         const user = await User.retrieve(data.user);
 
         let app: App | null = null;
-        let session: Session | null = null;
 
         let scopes: Scope[];
 
@@ -90,19 +84,11 @@ export class AuthToken
 
             scopes = app.scopes;
         }
-        else if (data.session)
+        else
         {
             type = "user";
 
-            session = await Session.retrieve(user, data.session);
-
-            if (!session) return null;
-
             scopes = [ Scope.ROOT ];
-        }
-        else
-        {
-            return null;
         }
 
         return new AuthToken(
@@ -111,7 +97,6 @@ export class AuthToken
             user.filter(scopes),
 
             app,
-            session,
         );
     }
 }
