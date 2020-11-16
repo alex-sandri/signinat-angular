@@ -41,7 +41,7 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  setSection(section: "general" | "developer") {
+  setSection(section: string) {
     this.section = section;
 
     this.router.navigateByUrl(`account/settings/${section}`);

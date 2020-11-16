@@ -18,6 +18,12 @@
             </div>
         </fieldset>
     </section>
+    <section *ngIf="section == 'advanced'">
+        <fieldset>
+            <legend>Danger zone</legend>
+            <button>Delete account</button>
+        </fieldset>
+    </section>
     <section *ngIf="section == 'developer'">
         <h1>Apps</h1>
         <span *ngIf="apps !== undefined && apps.length === 0"><i>You haven't created any apps yet</i></span>
@@ -92,5 +98,6 @@
 
 <footer>
     <button (click)="setSection('general')" [class.selected]="section === 'general'">General</button>
+    <button (click)="setSection('advanced')" [class.selected]="section === 'advanced'">Advanced</button>
     <button (click)="setSection('developer')" [class.selected]="section === 'developer'">Developer</button>
 </footer>

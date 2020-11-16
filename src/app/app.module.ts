@@ -51,6 +51,7 @@ import { ScopeListComponent } from './components/scope-list/scope-list.component
       { path: "account", component: AccountComponent, canActivate: [ SignedInGuard ] },
       { path: "account/settings", component: SettingsComponent, canActivate: [ SignedInGuard ] },
       { path: "account/settings/general", component: SettingsComponent, canActivate: [ SignedInGuard ] },
+      { path: "account/settings/advanced", component: SettingsComponent, canActivate: [ SignedInGuard ] },
       { path: "account/settings/developer", component: SettingsComponent, canActivate: [ SignedInGuard ] },
       { path: "account/manage/:id", component: AccountManageComponent, canActivate: [ SignedInGuard ] },
       { path: "app/manage/:id", component: AppManageComponent, canActivate: [ SignedInGuard ] },
