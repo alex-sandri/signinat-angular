@@ -5,7 +5,7 @@ export class Token
 {
     public readonly value: string;
 
-    constructor(public readonly user: User, public readonly session: Session)
+    private constructor(public readonly user: User, public readonly session: Session)
     {
         this.value = `${user.id};${session.id}`;
     }
