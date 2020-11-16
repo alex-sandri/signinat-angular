@@ -18,9 +18,8 @@ import { App } from "./models/App";
 import { User } from "./models/User";
 import { Session } from "./models/Session";
 import { Account } from "./models/Account";
-import { Token } from "./models/Token";
 import { Scope } from "./models/Scope";
-import { AppToken } from "./models/AppToken";
+import { AuthToken } from "./models/AuthToken";
 
 const app = express();
 
@@ -79,11 +78,18 @@ app.post("/api/users", async (req, res) =>
 
 app.get("/api/accounts", async (req, res) =>
 {
-  const token = await Token.fromString(req.token);
+  const token = await AuthToken.retrieve(req.token);
 
   if (!token)
   {
     res.sendStatus(401);
+
+    return;
+  }
+
+  if (!token.session)
+  {
+    res.status(403).send({ error: "Forbidden" });
 
     return;
   }
@@ -95,11 +101,18 @@ app.get("/api/accounts", async (req, res) =>
 
 app.get("/api/accounts/:id", async (req, res) =>
 {
-  const token = await Token.fromString(req.token);
+  const token = await AuthToken.retrieve(req.token);
 
   if (!token)
   {
     res.sendStatus(401);
+
+    return;
+  }
+
+  if (!token.session)
+  {
+    res.status(403).send({ error: "Forbidden" });
 
     return;
   }
@@ -114,11 +127,18 @@ app.post("/api/accounts", async (req, res) =>
 {
   const id: string = req.body.id;
 
-  const token = await Token.fromString(req.token);
+  const token = await AuthToken.retrieve(req.token);
 
   if (!token)
   {
     res.sendStatus(401);
+
+    return;
+  }
+
+  if (!token.session)
+  {
+    res.status(403).send({ error: "Forbidden" });
 
     return;
   }
@@ -130,11 +150,18 @@ app.post("/api/accounts", async (req, res) =>
 
 app.delete("/api/accounts/:id/unlink", async (req, res) =>
 {
-  const token = await Token.fromString(req.token);
+  const token = await AuthToken.retrieve(req.token);
 
   if (!token)
   {
     res.sendStatus(401);
+
+    return;
+  }
+
+  if (!token.session)
+  {
+    res.status(403).send({ error: "Forbidden" });
 
     return;
   }
@@ -146,11 +173,18 @@ app.delete("/api/accounts/:id/unlink", async (req, res) =>
 
 app.delete("/api/accounts/:id", async (req, res) =>
 {
-  const token = await Token.fromString(req.token);
+  const token = await AuthToken.retrieve(req.token);
 
   if (!token)
   {
     res.sendStatus(401);
+
+    return;
+  }
+
+  if (!token.session)
+  {
+    res.status(403).send({ error: "Forbidden" });
 
     return;
   }
@@ -162,11 +196,18 @@ app.delete("/api/accounts/:id", async (req, res) =>
 
 app.get("/api/apps", async (req, res) =>
 {
-  const token = await Token.fromString(req.token);
+  const token = await AuthToken.retrieve(req.token);
 
   if (!token)
   {
     res.sendStatus(401);
+
+    return;
+  }
+
+  if (!token.session)
+  {
+    res.status(403).send({ error: "Forbidden" });
 
     return;
   }
@@ -178,11 +219,18 @@ app.get("/api/apps", async (req, res) =>
 
 app.get("/api/apps/:id", async (req, res) =>
 {
-  const token = await Token.fromString(req.token);
+  const token = await AuthToken.retrieve(req.token);
 
   if (!token)
   {
     res.sendStatus(401);
+
+    return;
+  }
+
+  if (!token.session)
+  {
+    res.status(403).send({ error: "Forbidden" });
 
     return;
   }
@@ -195,11 +243,18 @@ app.get("/api/apps/:id", async (req, res) =>
 
 app.post("/api/apps", async (req, res) =>
 {
-  const token = await Token.fromString(req.token);
+  const token = await AuthToken.retrieve(req.token);
 
   if (!token)
   {
     res.sendStatus(401);
+
+    return;
+  }
+
+  if (!token.session)
+  {
+    res.status(403).send({ error: "Forbidden" });
 
     return;
   }
@@ -238,11 +293,18 @@ app.post("/api/apps", async (req, res) =>
 
 app.put("/api/apps/:id", async (req, res) =>
 {
-  const token = await Token.fromString(req.token);
+  const token = await AuthToken.retrieve(req.token);
 
   if (!token)
   {
     res.sendStatus(401);
+
+    return;
+  }
+
+  if (!token.session)
+  {
+    res.status(403).send({ error: "Forbidden" });
 
     return;
   }
@@ -297,7 +359,7 @@ app.put("/api/apps/:id", async (req, res) =>
 
 app.delete("/api/apps/:id", async (req, res) =>
 {
-  const token = await Token.fromString(req.token);
+  const token = await AuthToken.retrieve(req.token);
 
   if (!token)
   {
@@ -320,11 +382,18 @@ app.delete("/api/apps/:id", async (req, res) =>
 
 app.get("/api/sessions/:id", async (req, res) =>
 {
-  const token = await Token.fromString(req.token);
+  const token = await AuthToken.retrieve(req.token);
 
   if (!token)
   {
     res.sendStatus(401);
+
+    return;
+  }
+
+  if (!token.session)
+  {
+    res.status(403).send({ error: "Forbidden" });
 
     return;
   }
@@ -384,11 +453,18 @@ app.post("/api/sessions", async (req, res) =>
 
 app.delete("/api/sessions/:id", async (req, res) =>
 {
-  const token = await Token.fromString(req.token);
+  const token = await AuthToken.retrieve(req.token);
 
   if (!token)
   {
     res.sendStatus(401);
+
+    return;
+  }
+
+  if (!token.session)
+  {
+    res.status(403).send({ error: "Forbidden" });
 
     return;
   }
@@ -416,7 +492,7 @@ app.delete("/api/sessions/:id", async (req, res) =>
 
 app.get("/api/scopes", async (req, res) =>
 {
-  const token = await Token.fromString(req.token);
+  const token = await AuthToken.retrieve(req.token);
 
   if (!token)
   {
@@ -430,7 +506,7 @@ app.get("/api/scopes", async (req, res) =>
 
 app.get("/api/tokens/:id", async (req, res) =>
 {
-  const token = await AppToken.retrieve(req.params.id);
+  const token = await AuthToken.retrieve(req.params.id);
 
   if (!token)
   {
@@ -444,7 +520,7 @@ app.get("/api/tokens/:id", async (req, res) =>
 
 app.post("/api/tokens", async (req, res) =>
 {
-  const token = await Token.fromString(req.token);
+  const token = await AuthToken.retrieve(req.token);
 
   if (!token)
   {
@@ -453,9 +529,16 @@ app.post("/api/tokens", async (req, res) =>
     return;
   }
 
+  if (!token.session)
+  {
+    res.status(403).send({ error: "Forbidden" });
+
+    return;
+  }
+
   const data: ApiRequest.Tokens.Create = req.body;
 
-  const appToken = await AppToken.create(data.app, data.user);
+  const appToken = await AuthToken.create(data.app, data.user);
 
   res.send(appToken);
 });
