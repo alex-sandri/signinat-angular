@@ -25,6 +25,8 @@ export interface ISerializedScope
 
 export class Scope
 {
+    public static readonly ROOT = new Scope("user");
+
     private constructor(
         public readonly value: string,
     ) {}
