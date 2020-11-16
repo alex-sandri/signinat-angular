@@ -30,23 +30,6 @@ app.use(bearerToken());
 
 app.use(express.json());
 
-app.get("/api/users/:id", async (req, res) =>
-{
-  const token = await Token.fromString(req.token);
-
-  if (!token)
-  {
-    res.sendStatus(401);
-
-    return;
-  }
-
-  const user = await User.retrieve(req.params.id);
-
-  if (!user) res.status(404).send({ error: "Not Found" });
-  else res.send(user.json());
-});
-
 app.post("/api/users", async (req, res) =>
 {
   const data: ApiRequest.Users.Create = req.body;
@@ -443,6 +426,20 @@ app.get("/api/scopes", async (req, res) =>
   }
 
   res.send(Scope.all().map(scope => scope.json()));
+});
+
+app.get("/api/tokens/:id", async (req, res) =>
+{
+  const token = await AppToken.retrieve(req.params.id);
+
+  if (!token)
+  {
+    res.sendStatus(401);
+
+    return;
+  }
+
+  res.send(token.json());
 });
 
 app.post("/api/tokens", async (req, res) =>

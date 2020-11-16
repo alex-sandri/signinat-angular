@@ -1,8 +1,8 @@
 import { firestore } from "firebase-admin";
 import { v4 as uuidv4 } from "uuid";
 
-import { App } from "./App";
-import { User } from "./User";
+import { App, ISerializedApp } from "./App";
+import { ISerializedUser, User } from "./User";
 
 const db = firestore();
 
@@ -12,12 +12,24 @@ interface IAppToken
     user: string,
 }
 
+interface ISerializedAppToken
+{
+    app: ISerializedApp,
+    user: ISerializedUser,
+}
+
 export class AppToken
 {
     constructor(
         public readonly app: App,
         public readonly user: User,
     ) {}
+
+    public json = (): ISerializedAppToken =>
+    ({
+        app: this.app.json(),
+        user: this.user.json(),
+    });
 
     public static async create(app: string, user: string): Promise<string>
     {
