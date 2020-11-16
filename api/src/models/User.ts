@@ -113,7 +113,7 @@ export class User
         );
     }
 
-    static delete = async (id: string): Promise<void> =>
+    public delete = async (id: string): Promise<void> =>
     {
         await db.collection("users").doc(id).delete();
 
