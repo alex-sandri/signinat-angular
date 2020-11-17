@@ -37,10 +37,10 @@ export class ApiService {
 
   public deleteUser = async (): Promise<void> =>
   {
-    await this.http.delete(ApiService.ENDPOINTS.USERS, {
+    await this.http.delete(`${ApiService.ENDPOINTS.USERS}/${SettingsService.get("session.userId")}`, {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${SettingsService.get("session")}`,
+        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
       },
     }).toPromise();
   }
@@ -50,7 +50,7 @@ export class ApiService {
     await this.http.post(ApiService.ENDPOINTS.ACCOUNTS, JSON.stringify({ id }), {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${SettingsService.get("session")}`,
+        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
       },
     }).toPromise();
   }
@@ -59,7 +59,7 @@ export class ApiService {
   {
     const response = await this.http.get(`${ApiService.ENDPOINTS.ACCOUNTS}/${id}`, {
       headers: {
-        "Authorization": `Bearer ${SettingsService.get("session")}`,
+        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
       },
     }).toPromise();
 
@@ -70,7 +70,7 @@ export class ApiService {
   {
     const response = await this.http.get(ApiService.ENDPOINTS.ACCOUNTS, {
       headers: {
-        "Authorization": `Bearer ${SettingsService.get("session")}`,
+        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
       },
     }).toPromise();
 
@@ -81,7 +81,7 @@ export class ApiService {
   {
     await this.http.delete(`${ApiService.ENDPOINTS.ACCOUNTS}/${id}/unlink`, {
       headers: {
-        "Authorization": `Bearer ${SettingsService.get("session")}`,
+        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
       },
     }).toPromise();
   }
@@ -90,7 +90,7 @@ export class ApiService {
   {
     await this.http.delete(`${ApiService.ENDPOINTS.ACCOUNTS}/${id}`, {
       headers: {
-        "Authorization": `Bearer ${SettingsService.get("session")}`,
+        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
       },
     }).toPromise();
   }
@@ -99,7 +99,7 @@ export class ApiService {
   {
     const response = await this.http.post(ApiService.ENDPOINTS.APPS, JSON.stringify(data), {
       headers: {
-        "Authorization": `Bearer ${SettingsService.get("session")}`,
+        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
         "Content-Type": "application/json",
       },
     }).toPromise();
@@ -111,7 +111,7 @@ export class ApiService {
   {
     const response = await this.http.get(`${ApiService.ENDPOINTS.APPS}/${id}`, {
       headers: {
-        "Authorization": `Bearer ${SettingsService.get("session")}`,
+        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
       },
     }).toPromise();
 
@@ -122,7 +122,7 @@ export class ApiService {
   {
     const response = await this.http.get(ApiService.ENDPOINTS.APPS, {
       headers: {
-        "Authorization": `Bearer ${SettingsService.get("session")}`,
+        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
       },
     }).toPromise();
 
@@ -133,7 +133,7 @@ export class ApiService {
   {
     const response = await this.http.put(`${ApiService.ENDPOINTS.APPS}/${id}`, JSON.stringify(data), {
       headers: {
-        "Authorization": `Bearer ${SettingsService.get("session")}`,
+        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
         "Content-Type": "application/json",
       },
     }).toPromise();
@@ -145,7 +145,7 @@ export class ApiService {
   {
     await this.http.delete(`${ApiService.ENDPOINTS.APPS}/${id}`, {
       headers: {
-        "Authorization": `Bearer ${SettingsService.get("session")}`,
+        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
       },
     }).toPromise();
   }
@@ -154,7 +154,7 @@ export class ApiService {
   {
     const response = await this.http.get(`${ApiService.ENDPOINTS.SCOPES}`, {
       headers: {
-        "Authorization": `Bearer ${SettingsService.get("session")}`,
+        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
       },
     }).toPromise();
 
@@ -176,7 +176,7 @@ export class ApiService {
   {
     const response = await this.http.post(`${ApiService.ENDPOINTS.TOKENS}/apps`, JSON.stringify(data), {
       headers: {
-        "Authorization": `Bearer ${SettingsService.get("session")}`,
+        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
         "Content-Type": "application/json",
       },
     }).toPromise();

@@ -8,7 +8,9 @@ import { SettingsService } from '../settings/settings.service';
   providedIn: 'root'
 })
 export class AuthService {
-  static get token () { return SettingsService.get("session") }
+  static get token () { return SettingsService.get("session.token"); }
+
+  static get userId () { return SettingsService.get("session.userId"); }
 
   static get isSignedIn () { return SettingsService.exists("session"); }
 
