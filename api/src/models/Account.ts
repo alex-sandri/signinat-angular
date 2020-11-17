@@ -87,6 +87,26 @@ export class Account
         return accounts;
     }
 
+    static forApp = async (app: App): Promise<Account[]> =>
+    {
+        const snapshot = await db.collection("accounts").where("app", "==", app.id).get();
+
+        const accounts: Account[] = [];
+
+        for (const account of snapshot.docs)
+        {
+            const data = account.data() as IAccount;
+
+            accounts.push(new Account(
+                account.id,
+                app,
+                await User.retrieve(data.user) as User,
+            ));
+        }
+
+        return accounts;
+    }
+
     static unlink = async (id: string): Promise<void> => { await db.collection("accounts").doc(id).delete(); }
 
     public delete = async (): Promise<void> =>

@@ -376,7 +376,9 @@ app.delete("/api/apps/:id", async (req, res) =>
     return;
   }
 
-  await App.delete(req.params.id);
+  const app = await App.retrieve(req.params.id);
+
+  await app?.delete();
 
   res.sendStatus(200);
 });

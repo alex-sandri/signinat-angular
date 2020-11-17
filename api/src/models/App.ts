@@ -2,6 +2,7 @@ import { firestore } from "firebase-admin";
 import { v4 as uuidv4 } from "uuid";
 
 import { ApiRequest } from "../typings/ApiRequest";
+import { Account } from "./Account";
 import { ApiError } from "./ApiError";
 import { ISerializedScope, Scope } from "./Scope";
 import { ISerializedUser, User } from "./User";
@@ -142,14 +143,18 @@ export class App
         });
     }
 
-    static delete = async (id: string): Promise<void> =>
+    public delete = async (): Promise<void> =>
     {
-        await db.collection("apps").doc(id).delete();
+        await db.collection("apps").doc(this.id).delete();
 
-        await Scope.delete(id);
+        await Scope.delete(this.id);
 
-        // TODO
-        // Delete every account associated with this app
+        const accounts = await Account.forApp(this);
+
+        for (const account of accounts)
+        {
+            await account.delete();
+        }
     }
 
     static withUrl = async (url: string): Promise<App | null> =>
