@@ -8,12 +8,12 @@ import { SettingsService } from '../settings/settings.service';
   providedIn: 'root'
 })
 export class AuthService {
-  get token () { return SettingsService.get("session") }
+  static get token () { return SettingsService.get("session") }
 
   isSignedIn = () => SettingsService.exists("session");
 
   async signOut() {
-    await this.api.deleteToken(this.token as string).finally(() =>
+    await this.api.deleteToken(AuthService.token as string).finally(() =>
     {
       SettingsService.delete("session");
 

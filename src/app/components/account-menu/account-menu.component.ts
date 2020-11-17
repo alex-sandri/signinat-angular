@@ -21,7 +21,7 @@ export class AccountMenuComponent implements OnInit {
     if (authService.isSignedIn())
     {
       api
-        .retrieveToken(authService.token as string)
+        .retrieveToken(AuthService.token as string)
         .then(token =>
         {
           this.firstName = token.user.name.first;

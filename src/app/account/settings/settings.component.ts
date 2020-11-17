@@ -76,12 +76,12 @@ export class SettingsComponent implements OnInit {
     submitButton.disabled = false;
   }
 
-  constructor(authService: AuthService, private api: ApiService, private router: Router) {
+  constructor(private api: ApiService, private router: Router) {
     this.section = router.url.split("/").pop() as string;
 
     if (this.section === "settings") this.section = "general";
 
-    api.retrieveToken(authService.token as string).then(token =>
+    api.retrieveToken(AuthService.token as string).then(token =>
     {
       this.firstName = token.user.name.first;
       this.lastName = token.user.name.last;
