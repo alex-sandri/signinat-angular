@@ -42,7 +42,6 @@ export class ApiService {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${SettingsService.get("session")}`,
       },
-      responseType: "text",
     }).toPromise();
   }
 
@@ -53,7 +52,6 @@ export class ApiService {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${SettingsService.get("session")}`,
       },
-      responseType: "text",
     }).toPromise();
   }
 
@@ -85,7 +83,6 @@ export class ApiService {
       headers: {
         "Authorization": `Bearer ${SettingsService.get("session")}`,
       },
-      responseType: "text",
     }).toPromise();
   }
 
@@ -95,7 +92,6 @@ export class ApiService {
       headers: {
         "Authorization": `Bearer ${SettingsService.get("session")}`,
       },
-      responseType: "text",
     }).toPromise();
   }
 
@@ -151,7 +147,6 @@ export class ApiService {
       headers: {
         "Authorization": `Bearer ${SettingsService.get("session")}`,
       },
-      responseType: "text",
     }).toPromise();
   }
 
@@ -206,7 +201,6 @@ export class ApiService {
       headers: {
         "Content-Type": "application/json",
       },
-      responseType: "text",
     }).toPromise();
   }
 }

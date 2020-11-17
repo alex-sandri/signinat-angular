@@ -81,7 +81,7 @@ app.delete("/api/users/:id", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(401);
+    res.status(401).send({ status: 401 });
 
     return;
   }
@@ -104,14 +104,14 @@ app.get("/api/accounts", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(401);
+    res.status(401).send({ status: 401 });
 
     return;
   }
 
   if (token.type !== "user")
   {
-    res.status(403).send({ error: "Forbidden" });
+    res.status(403).send({ status: 403 });
 
     return;
   }
@@ -127,21 +127,21 @@ app.get("/api/accounts/:id", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(401);
+    res.status(401).send({ status: 401 });
 
     return;
   }
 
   if (token.type !== "user")
   {
-    res.status(403).send({ error: "Forbidden" });
+    res.status(403).send({ status: 403 });
 
     return;
   }
 
   const account = await Account.retrieve(token.user, req.params.id);
 
-  if (!account) res.sendStatus(404);
+  if (!account) res.status(404).send({ status: 404 });
   else res.send(account.json());
 });
 
@@ -153,21 +153,21 @@ app.post("/api/accounts", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(401);
+    res.status(401).send({ status: 401 });
 
     return;
   }
 
   if (token.type !== "user")
   {
-    res.status(403).send({ error: "Forbidden" });
+    res.status(403).send({ status: 403 });
 
     return;
   }
 
   await Account.create(token.user, id);
 
-  res.sendStatus(200);
+  res.status(200).send({ status: 200 });
 });
 
 app.delete("/api/accounts/:id/unlink", async (req, res) =>
@@ -176,21 +176,21 @@ app.delete("/api/accounts/:id/unlink", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(401);
+    res.status(401).send({ status: 401 });
 
     return;
   }
 
   if (token.type !== "user")
   {
-    res.status(403).send({ error: "Forbidden" });
+    res.status(403).send({ status: 403 });
 
     return;
   }
 
   await Account.unlink(req.params.id);
 
-  res.sendStatus(200);
+  res.status(200).send({ status: 200 });
 });
 
 app.delete("/api/accounts/:id", async (req, res) =>
@@ -199,14 +199,14 @@ app.delete("/api/accounts/:id", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(401);
+    res.status(401).send({ status: 401 });
 
     return;
   }
 
   if (token.type !== "user")
   {
-    res.status(403).send({ error: "Forbidden" });
+    res.status(403).send({ status: 403 });
 
     return;
   }
@@ -215,7 +215,7 @@ app.delete("/api/accounts/:id", async (req, res) =>
 
   await account?.delete();
 
-  res.sendStatus(200);
+  res.status(200).send({ status: 200 });
 });
 
 app.get("/api/apps", async (req, res) =>
@@ -224,14 +224,14 @@ app.get("/api/apps", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(401);
+    res.status(401).send({ status: 401 });
 
     return;
   }
 
   if (token.type !== "user")
   {
-    res.status(403).send({ error: "Forbidden" });
+    res.status(403).send({ status: 403 });
 
     return;
   }
@@ -247,21 +247,21 @@ app.get("/api/apps/:id", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(401);
+    res.status(401).send({ status: 401 });
 
     return;
   }
 
   if (token.type !== "user")
   {
-    res.status(403).send({ error: "Forbidden" });
+    res.status(403).send({ status: 403 });
 
     return;
   }
 
   const app = await App.retrieve(req.params.id);
 
-  if (!app) res.sendStatus(404);
+  if (!app) res.status(404).send({ status: 404 });
   else res.send(app.json());
 });
 
@@ -271,14 +271,14 @@ app.post("/api/apps", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(401);
+    res.status(401).send({ status: 401 });
 
     return;
   }
 
   if (token.type !== "user")
   {
-    res.status(403).send({ error: "Forbidden" });
+    res.status(403).send({ status: 403 });
 
     return;
   }
@@ -321,14 +321,14 @@ app.put("/api/apps/:id", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(401);
+    res.status(401).send({ status: 401 });
 
     return;
   }
 
   if (token.type !== "user")
   {
-    res.status(403).send({ error: "Forbidden" });
+    res.status(403).send({ status: 403 });
 
     return;
   }
@@ -387,7 +387,7 @@ app.delete("/api/apps/:id", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(401);
+    res.status(401).send({ status: 401 });
 
     return;
   }
@@ -403,7 +403,7 @@ app.delete("/api/apps/:id", async (req, res) =>
 
   await app?.delete();
 
-  res.sendStatus(200);
+  res.status(200).send({ status: 200 });
 });
 
 app.get("/api/scopes", async (req, res) =>
@@ -412,7 +412,7 @@ app.get("/api/scopes", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(401);
+    res.status(401).send({ status: 401 });
 
     return;
   }
@@ -426,7 +426,7 @@ app.get("/api/tokens/:id", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(401);
+    res.status(401).send({ status: 401 });
 
     return;
   }
@@ -479,14 +479,14 @@ app.post("/api/tokens/apps", async (req, res) =>
 
   if (!token)
   {
-    res.sendStatus(401);
+    res.status(401).send({ status: 401 });
 
     return;
   }
 
   if (token.type !== "user")
   {
-    res.status(403).send({ error: "Forbidden" });
+    res.status(403).send({ status: 403 });
 
     return;
   }
