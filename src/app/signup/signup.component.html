@@ -60,14 +60,21 @@
             <legend>Additional information</legend>
             <details (toggle)="isAdditionalInformationShown = !isAdditionalInformationShown">
                 <summary>{{isAdditionalInformationShown ? "Hide" : "Show"}}</summary>
+                <br>
+                <small>
+                    <mark>
+                        This information is not required to create an account but some apps may require it,
+                        so when signing into an app for the first time we may ask you
+                        to add this information to your account.
+                    </mark>
+                </small>
                 <label>
                     Birthday
                     <input
                         type="date"
                         name="birthday"
                         autocomplete="bday"
-                        required
-        
+
                         #birthday
                         
                     >
