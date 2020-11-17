@@ -10,13 +10,11 @@ import { AccountMenuComponent } from '../account-menu/account-menu.component';
 })
 export class HeaderComponent implements OnInit {
 
-  isSignedIn: boolean;
+  isSignedIn = AuthService.isSignedIn;
 
   openAccountMenu = (accountMenu: AccountMenuComponent) => accountMenu.visible = true;
 
-  constructor(authService: AuthService, public router: Router) {
-    this.isSignedIn = authService.isSignedIn();
-  }
+  constructor(public router: Router) {}
 
   ngOnInit(): void {
   }

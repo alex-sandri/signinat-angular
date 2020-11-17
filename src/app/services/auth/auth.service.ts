@@ -10,7 +10,7 @@ import { SettingsService } from '../settings/settings.service';
 export class AuthService {
   static get token () { return SettingsService.get("session") }
 
-  isSignedIn = () => SettingsService.exists("session");
+  static get isSignedIn () { return SettingsService.exists("session"); }
 
   async signOut() {
     await this.api.deleteToken(AuthService.token as string).finally(() =>

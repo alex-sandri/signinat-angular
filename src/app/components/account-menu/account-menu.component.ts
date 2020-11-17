@@ -18,7 +18,7 @@ export class AccountMenuComponent implements OnInit {
   signOut = () => this.authService.signOut();
 
   constructor(private authService: AuthService, api: ApiService) {
-    if (authService.isSignedIn())
+    if (AuthService.isSignedIn)
     {
       api
         .retrieveToken(AuthService.token as string)

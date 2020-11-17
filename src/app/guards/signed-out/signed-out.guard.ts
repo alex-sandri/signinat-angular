@@ -7,12 +7,12 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   providedIn: 'root'
 })
 export class SignedOutGuard implements CanActivate {
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.auth.isSignedIn())
+    if (AuthService.isSignedIn)
     {
       this.router.navigate([ "" ]);
     }

@@ -8,11 +8,9 @@ import { AuthService } from '../services/auth/auth.service';
 })
 export class IndexComponent implements OnInit {
 
-  isSignedIn: boolean;
+  isSignedIn = AuthService.isSignedIn;
 
-  constructor(authService: AuthService) {
-    this.isSignedIn = authService.isSignedIn();
-  }
+  constructor() {}
 
   ngOnInit(): void {
   }

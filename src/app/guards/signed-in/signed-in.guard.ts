@@ -8,12 +8,12 @@ import { RouterService } from 'src/app/services/router/router.service';
   providedIn: 'root'
 })
 export class SignedInGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: RouterService) {}
+  constructor(private router: RouterService) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (!this.authService.isSignedIn())
+    if (AuthService.isSignedIn)
     {
       this.router.navigateToSignIn(route);
     }
