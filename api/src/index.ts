@@ -498,4 +498,20 @@ app.post("/api/tokens/apps", async (req, res) =>
   res.send(appToken.json());
 });
 
+app.delete("/api/tokens/:id", async (req, res) =>
+{
+  const token = await AuthToken.retrieve(req.params.id);
+
+  if (!token)
+  {
+    res.status(401).send({ status: 401 });
+
+    return;
+  }
+
+  await token.delete();
+
+  res.status(200).send({ status: 200 });
+});
+
 app.listen(3000);

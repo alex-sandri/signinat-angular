@@ -139,6 +139,11 @@ export class AuthToken
         );
     }
 
+    public delete = async (): Promise<void> =>
+    {
+        await db.collection("tokens").doc(this.id).delete();
+    }
+
     private static validate = (data: ApiRequest.Tokens.Create, type: TAuthTokenType): void =>
     {
         switch (type)
