@@ -16,7 +16,7 @@ interface IAuthToken
     app?: string,
 }
 
-interface ISerializedAuthToken
+export interface ISerializedAuthToken
 {
     id: string,
     user: ISerializedUser,

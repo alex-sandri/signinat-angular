@@ -81,11 +81,11 @@ export class SettingsComponent implements OnInit {
 
     if (this.section === "settings") this.section = "general";
 
-    api.retrieveSession(authService.sessionId as string).then(session =>
+    api.retrieveToken(authService.token as string).then(token =>
     {
-      this.firstName = session.user.name.first;
-      this.lastName = session.user.name.last;
-      this.email = session.user.email;
+      this.firstName = token.user.name.first;
+      this.lastName = token.user.name.last;
+      this.email = token.user.email;
     });
 
     api.listApps().then(apps => this.apps = apps);

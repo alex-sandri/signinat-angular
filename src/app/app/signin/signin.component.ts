@@ -20,7 +20,7 @@ export class SigninComponent implements OnInit {
   }
 
   async redirect(app: ISerializedApp): Promise<void> {
-    const token = await this.api.createAppToken({
+    const token = await this.api.createToken({
       app: app.id,
       user: this.auth.userId as string,
     });

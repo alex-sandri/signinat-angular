@@ -7,6 +7,7 @@ import { ISerializedApp } from 'api/src/models/App';
 import { SettingsService } from '../settings/settings.service';
 import { ISerializedAccount } from 'api/src/models/Account';
 import { ISerializedScope } from 'api/src/models/Scope';
+import { ISerializedAuthToken } from 'api/src/models/AuthToken';
 
 @Injectable({
   providedIn: 'root'
@@ -154,9 +155,9 @@ export class ApiService {
     return response as ISerializedScope[];
   }
 
-  public createAppToken = async (data: ApiRequest.Tokens.Create): Promise<string> =>
+  public createToken = async (data: ApiRequest.Tokens.Create): Promise<string> =>
   {
-    const response = await this.http.post(`${ApiService.ENDPOINTS.TOKENS}`, JSON.stringify(data), {
+    const response = await this.http.post(ApiService.ENDPOINTS.TOKENS, JSON.stringify(data), {
       headers: {
         "Authorization": `Bearer ${SettingsService.get("session")}`,
         "Content-Type": "application/json",
@@ -165,5 +166,26 @@ export class ApiService {
     }).toPromise();
 
     return response;
+  }
+
+  public retrieveToken = async (id: string): Promise<ISerializedAuthToken> =>
+  {
+    const response = await this.http.get(`${ApiService.ENDPOINTS.TOKENS}/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).toPromise();
+
+    return response as ISerializedAuthToken;
+  }
+
+  public deleteToken = async (id: string): Promise<void> =>
+  {
+    await this.http.delete(`${ApiService.ENDPOINTS.TOKENS}/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      responseType: "text",
+    }).toPromise();
   }
 }

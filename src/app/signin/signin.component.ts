@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ISerializedSession } from 'api/src/models/Session';
+import { ISerializedAuthToken } from 'api/src/models/AuthToken';
 import { ApiService } from '../services/api/api.service';
 import { SettingsService } from '../services/settings/settings.service';
 
@@ -34,7 +34,7 @@ export class SigninComponent implements OnInit {
 
     this.emailError = this.passwordError = "";
 
-    const response = await this.api.createSession({
+    const response = await this.api.createToken({
       email: this.email.trim(),
       password: this.password,
     });
@@ -46,7 +46,7 @@ export class SigninComponent implements OnInit {
     }
     else
     {
-      SettingsService.set("session", (response.result.data as ISerializedSession).token);
+      SettingsService.set("session", (response.result.data as ISerializedAuthToken).id);
 
       if (this.route.snapshot.queryParams["ref"])
       {

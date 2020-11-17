@@ -1,5 +1,4 @@
 import { ISerializedApp } from "../models/App";
-import { ISerializedSession } from "../models/Session";
 import { ISerializedUser } from "../models/User";
 
 export namespace ApiResponse

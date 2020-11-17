@@ -21,12 +21,12 @@ export class AccountMenuComponent implements OnInit {
     if (authService.isSignedIn())
     {
       api
-        .retrieveSession(authService.sessionId as string)
-        .then(session =>
+        .retrieveToken(authService.token as string)
+        .then(token =>
         {
-          this.firstName = session.user.name.first;
-          this.lastName = session.user.name.last;
-          this.email = session.user.email;
+          this.firstName = token.user.name.first;
+          this.lastName = token.user.name.last;
+          this.email = token.user.email;
         })
         .catch(() =>
         {

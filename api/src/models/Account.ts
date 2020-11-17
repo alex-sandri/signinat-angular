@@ -30,13 +30,13 @@ export class Account
         app: this.app.json(),
     });
 
-    static create = async (session: Session, id: string): Promise<Account> =>
+    static create = async (user: User, id: string): Promise<Account> =>
     {
         if (!(await App.exists(id))) throw new ApiError("app/inexistent");
 
-        if ((await Account.withAppId(session, id)) !== null) throw new ApiError("account/already-exists");
+        if ((await Account.withAppId(user, id)) !== null) throw new ApiError("account/already-exists");
 
-        const account = await db.collection(`users/${session.user.id}/accounts`).add(<IAccount>{
+        const account = await db.collection(`users/${user.id}/accounts`).add(<IAccount>{
             app: id,
         });
 
@@ -46,9 +46,9 @@ export class Account
         );
     }
 
-    static retrieve = async (session: Session, id: string): Promise<Account | null> =>
+    static retrieve = async (user: User, id: string): Promise<Account | null> =>
     {
-        const account = await db.collection(`users/${session.user.id}/accounts`).doc(id).get();
+        const account = await db.collection(`users/${user.id}/accounts`).doc(id).get();
 
         if (!account.exists) return null;
 
