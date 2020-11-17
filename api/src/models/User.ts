@@ -4,6 +4,7 @@ import * as bcrypt from "bcrypt";
 import { ApiRequest } from "../typings/ApiRequest";
 import { ApiError } from "./ApiError";
 import { Scope } from "./Scope";
+import { Account } from "./Account";
 
 const db = firestore();
 
@@ -113,12 +114,16 @@ export class User
         );
     }
 
-    public delete = async (id: string): Promise<void> =>
+    public delete = async (): Promise<void> =>
     {
-        await db.collection("users").doc(id).delete();
+        await db.collection("users").doc(this.id).delete();
 
-        // TODO
-        // Delete accounts collection
+        const accounts = await Account.list(this);
+
+        for (const account of accounts)
+        {
+            await account.delete();
+        }
     }
 
     static withEmail = async (email: string): Promise<User | null> =>

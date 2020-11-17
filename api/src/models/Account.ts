@@ -87,16 +87,16 @@ export class Account
         return accounts;
     }
 
-    static unlink = async (user: User, id: string): Promise<void> => { await db.collection("accounts").doc(id).delete(); }
+    static unlink = async (id: string): Promise<void> => { await db.collection("accounts").doc(id).delete(); }
 
-    static delete = async (user: User, id: string): Promise<void> =>
+    public delete = async (): Promise<void> =>
     {
         // TODO
         // Send POST request to App webhook to request the account deletion
 
         // TODO
         // if successful
-        await Account.unlink(user, id);
+        await Account.unlink(this.id);
     }
 
     static withAppId = async (user: User, app: string): Promise<Account | null> =>

@@ -165,7 +165,7 @@ app.delete("/api/accounts/:id/unlink", async (req, res) =>
     return;
   }
 
-  await Account.unlink(token.user, req.params.id);
+  await Account.unlink(req.params.id);
 
   res.sendStatus(200);
 });
@@ -188,7 +188,9 @@ app.delete("/api/accounts/:id", async (req, res) =>
     return;
   }
 
-  await Account.delete(token.user, req.params.id);
+  const account = await Account.retrieve(token.user, req.params.id);
+
+  await account?.delete();
 
   res.sendStatus(200);
 });
