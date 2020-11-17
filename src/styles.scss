@@ -69,6 +69,11 @@ button,
 
 input
 {
+    &[type=date]::-webkit-calendar-picker-indicator
+    {
+        filter: invert(1);
+    }
+
     &:focus
     {
         color: var(--primary-color);
@@ -152,6 +157,7 @@ fieldset
 {
     border: 2px solid var(--primary-color);
     border-radius: 5px;
+    margin: 0;
 }
 
 select
