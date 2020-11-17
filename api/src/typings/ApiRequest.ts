@@ -34,8 +34,12 @@ export namespace ApiRequest
     {
         export interface Create
         {
-            app: string,
-            user: string,
+            app?: string,
+
+            user?: {
+                email: string,
+                password: string,
+            },
         }
     }
 }
