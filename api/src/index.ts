@@ -427,9 +427,24 @@ app.post("/api/tokens", async (req, res) =>
 
   const data: ApiRequest.Tokens.Create = req.body;
 
-  const appToken = await AuthToken.create(data.app, data.user);
+  let createdToken: string;
 
-  res.send(appToken);
+  if (data.app)
+  {
+    createdToken = await AuthToken.app(data.app, token.user.id);
+  }
+  else if (data.user)
+  {
+    createdToken = await AuthToken.user(data.user.email, data.user.password);
+  }
+  else
+  {
+    res.status(403).send({ error: "Forbidden" });
+
+    return;
+  }
+
+  res.send(createdToken);
 });
 
 app.listen(3000);

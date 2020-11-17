@@ -1,5 +1,8 @@
 import { firestore } from "firebase-admin";
+import * as bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
+import { ApiRequest } from "../typings/ApiRequest";
+import { ApiError } from "./ApiError";
 
 import { App, ISerializedApp } from "./App";
 import { Scope } from "./Scope";
@@ -42,14 +45,33 @@ export class AuthToken
         app: this.app?.json(),
     });
 
-    public static async create(app: string, user: string): Promise<string>
+    public static async app(app: string, user: string): Promise<string>
     {
+        AuthToken.validate({ app }, "app");
+
         const uuid = uuidv4();
 
         await db.collection("tokens").doc(uuid).set(<IAuthToken>{
             app,
             user,
         });
+
+        return uuid;
+    }
+
+    public static async user(email: string, password: string): Promise<string>
+    {
+        AuthToken.validate({ user: { email, password } }, "user");
+
+        const uuid = uuidv4();
+
+        const user = await User.withEmail(email);
+
+        if (!user) throw new ApiError("user/email/inexistent");
+
+        if (!bcrypt.compareSync(password, user.password)) throw new ApiError("user/password/wrong");
+
+        await db.collection("tokens").doc(uuid).set(<IAuthToken>{ user: "TODO" });
 
         return uuid;
     }
@@ -98,5 +120,10 @@ export class AuthToken
 
             app,
         );
+    }
+
+    private static validate = (data: ApiRequest.Tokens.Create, type: TAuthTokenType): void =>
+    {
+        // TODO
     }
 }
