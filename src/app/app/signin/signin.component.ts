@@ -19,11 +19,11 @@ export class SigninComponent implements OnInit {
   }
 
   async redirect(app: ISerializedApp): Promise<void> {
-    const token = await this.api.createToken({ app: app.id });
+    const token = await this.api.createAppToken({ app: app.id });
 
     let url = new URL(app.url);
 
-    url.searchParams.append("SignInAtSession", token.result.data!.id);
+    url.searchParams.append("SignInAtSession", token.id);
 
     location.href = url.toString();
   }

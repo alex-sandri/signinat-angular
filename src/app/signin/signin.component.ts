@@ -34,7 +34,7 @@ export class SigninComponent implements OnInit {
 
     this.emailError = this.passwordError = "";
 
-    const response = await this.api.createToken({
+    const response = await this.api.createUserToken({
       user: {
         email: this.email.trim(),
         password: this.password,

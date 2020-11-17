@@ -155,16 +155,27 @@ export class ApiService {
     return response as ISerializedScope[];
   }
 
-  public createToken = async (data: ApiRequest.Tokens.Create): Promise<ApiResponse.Tokens.Create> =>
+  public createUserToken = async (data: ApiRequest.Tokens.Create): Promise<ApiResponse.Tokens.Create> =>
   {
-    const response = await this.http.post(ApiService.ENDPOINTS.TOKENS, JSON.stringify(data), {
+    const response = await this.http.post(`${ApiService.ENDPOINTS.TOKENS}/users`, JSON.stringify(data), {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).toPromise();
+
+    return response as ApiResponse.Tokens.Create;
+  }
+
+  public createAppToken = async (data: ApiRequest.Tokens.Create): Promise<ISerializedAuthToken> =>
+  {
+    const response = await this.http.post(`${ApiService.ENDPOINTS.TOKENS}/apps`, JSON.stringify(data), {
       headers: {
         "Authorization": `Bearer ${SettingsService.get("session")}`,
         "Content-Type": "application/json",
       },
     }).toPromise();
 
-    return response as ApiResponse.Tokens.Create;
+    return response as ISerializedAuthToken;
   }
 
   public retrieveToken = async (id: string): Promise<ISerializedAuthToken> =>
