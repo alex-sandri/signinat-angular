@@ -24,6 +24,8 @@ export class SignupComponent implements OnInit {
   setEmail = (value: string) => { this.email = value; }
   setPassword = (value: string) => { this.password = value; }
 
+  isAdditionalInformationShown = false;
+
   constructor(private api: ApiService) { }
 
   ngOnInit(): void {

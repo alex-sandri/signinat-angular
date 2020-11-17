@@ -56,6 +56,25 @@
             >
             <small *ngIf="passwordError.length > 0"><mark>&#x2716; {{passwordError}}</mark></small>
         </label>
+        <fieldset>
+            <legend>Additional information</legend>
+            <details (toggle)="isAdditionalInformationShown = !isAdditionalInformationShown">
+                <summary>{{isAdditionalInformationShown ? "Hide" : "Show"}}</summary>
+                <label>
+                    Birthday
+                    <input
+                        type="date"
+                        name="birthday"
+                        autocomplete="bday"
+                        required
+        
+                        #birthday
+                        
+                    >
+                    <small *ngIf="false"><mark>&#x2716; {{""}}</mark></small>
+                </label>
+            </details>
+        </fieldset>
         <button type="submit">Sign Up</button>
     </form>
 </main>
