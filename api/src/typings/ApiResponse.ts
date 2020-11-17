@@ -74,8 +74,7 @@ export namespace ApiResponse
                 data?: ISerializedAuthToken,
             },
             errors: {
-                app?: string,
-                user?: {
+                user: {
                     email: string,
                     password: string,
                 },

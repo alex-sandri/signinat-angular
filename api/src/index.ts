@@ -407,7 +407,46 @@ app.get("/api/tokens/:id", async (req, res) =>
   res.send(token.json());
 });
 
-app.post("/api/tokens", async (req, res) =>
+app.post("/api/tokens/users", async (req, res) =>
+{
+  const data: ApiRequest.Tokens.Create = req.body;
+
+  const response: ApiResponse.Tokens.Create = {
+    result: { valid: true },
+    errors: {
+      user: {
+        email: "",
+        password: "",
+      },
+    },
+  };
+
+  try
+  {
+    const userToken = await AuthToken.user(data.user!.email, data.user!.password);
+
+    response.result.data = userToken.json();
+  }
+  catch (e)
+  {
+    const { id, message } = e as ApiError;
+
+    response.result.valid = false;
+
+    if (id.startsWith("user/email/"))
+    {
+      response.errors.user.email = message;
+    }
+    else if (id.startsWith("user/password/"))
+    {
+      response.errors.user.password = message;
+    }
+  }
+
+  res.send(response);
+});
+
+app.post("/api/tokens/apps", async (req, res) =>
 {
   const token = await AuthToken.retrieve(req.token);
 
@@ -427,56 +466,9 @@ app.post("/api/tokens", async (req, res) =>
 
   const data: ApiRequest.Tokens.Create = req.body;
 
-  const response: ApiResponse.Tokens.Create = {
-    result: { valid: true },
-    errors: { },
-  };
+  const appToken = await AuthToken.app(data.app as string, token.user.id);
 
-  let createdToken: AuthToken;
-
-  if (data.app)
-  {
-    try
-    {
-      createdToken = await AuthToken.app(data.app, token.user.id);
-    }
-    catch (e)
-    {
-      const { message } = e as ApiError;
-
-      response.result.valid = false;
-
-      response.errors.app = message;
-    }
-  }
-  else if (data.user)
-  {
-    try
-    {
-      createdToken = await AuthToken.user(data.user.email, data.user.password);
-    }
-    catch (e)
-    {
-      const { message } = e as ApiError;
-
-      response.result.valid = false;
-
-      response.errors.app = message;
-    }
-  }
-  else
-  {
-    res.status(403).send({ error: "Forbidden" });
-
-    return;
-  }
-
-  if (response.result.valid)
-  {
-    response.result.data = createdToken!.json();
-  }
-
-  res.send(response);
+  res.send(appToken.json());
 });
 
 app.listen(3000);
