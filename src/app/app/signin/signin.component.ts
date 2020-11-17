@@ -24,7 +24,7 @@ export class SigninComponent implements OnInit {
 
     let url = new URL(app.url);
 
-    url.searchParams.append("SignInAtSession", token);
+    url.searchParams.append("SignInAtSession", token.result.data!.id);
 
     location.href = url.toString();
   }
