@@ -75,6 +75,29 @@ app.post("/api/users", async (req, res) =>
   res.send(response);
 });
 
+app.delete("/api/users/:id", async (req, res) =>
+{
+  const token = await AuthToken.retrieve(req.token);
+
+  if (!token)
+  {
+    res.sendStatus(401);
+
+    return;
+  }
+
+  if (token.type !== "user" || token.user.id !== req.params.id)
+  {
+    res.status(403).send({ status: 403 });
+
+    return;
+  }
+
+  await token.user.delete();
+
+  res.status(200).send({ status: 200 });
+});
+
 app.get("/api/accounts", async (req, res) =>
 {
   const token = await AuthToken.retrieve(req.token);
