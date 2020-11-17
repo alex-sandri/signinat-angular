@@ -26,7 +26,6 @@
     </section>
     <section *ngIf="section == 'developer'">
         <h1>Apps</h1>
-        <span *ngIf="apps !== undefined && apps.length === 0"><i>You haven't created any apps yet</i></span>
         <div id="apps">
             <button (click)="setCreateNewAppDialogVisible(true)">
                 <span [style.font-size]="'xx-large'">&#43;</span>
