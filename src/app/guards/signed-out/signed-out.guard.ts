@@ -14,7 +14,7 @@ export class SignedOutGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (AuthService.isSignedIn)
     {
-      this.router.navigate([ "" ]);
+      this.router.navigateByUrl("/");
     }
 
     return true;

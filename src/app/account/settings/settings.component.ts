@@ -28,6 +28,12 @@ export class SettingsComponent implements OnInit {
   createNewAppNameError: string = "";
   createNewAppUrlError: string = "";
 
+  async deleteAccount() {
+    await this.api.deleteUser();
+
+    this.router.navigateByUrl("/");
+  }
+
   setCreateNewAppDialogVisible(visible: boolean) {
     if (visible)
     {

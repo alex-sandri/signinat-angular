@@ -35,6 +35,17 @@ export class ApiService {
     return response as ApiResponse.Users.Create;
   }
 
+  public deleteUser = async (): Promise<void> =>
+  {
+    await this.http.delete(ApiService.ENDPOINTS.USERS, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${SettingsService.get("session")}`,
+      },
+      responseType: "text",
+    }).toPromise();
+  }
+
   public createAccount = async (id: string): Promise<void> =>
   {
     await this.http.post(ApiService.ENDPOINTS.ACCOUNTS, JSON.stringify({ id }), {

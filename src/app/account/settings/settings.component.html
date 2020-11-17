@@ -21,7 +21,7 @@
     <section *ngIf="section == 'advanced'">
         <fieldset>
             <legend>Danger zone</legend>
-            <button>Delete account</button>
+            <button (click)="deleteAccount()">Delete account</button>
         </fieldset>
     </section>
     <section *ngIf="section == 'developer'">

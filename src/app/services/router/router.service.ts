@@ -7,11 +7,7 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 export class RouterService {
 
   navigateToSignIn(route: ActivatedRouteSnapshot) {
-    this.router.navigate([ "signin" ], {
-      queryParams: {
-        ref: route.url.toString().replace(/,/g, "/")
-      },
-    });
+    this.router.navigateByUrl(`/signin?ref=${route.url.toString().replace(/,/g, "/")}`);
   }
 
   constructor(private router: Router) { }
