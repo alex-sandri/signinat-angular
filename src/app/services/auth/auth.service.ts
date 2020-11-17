@@ -12,12 +12,13 @@ export class AuthService {
 
   static get userId () { return SettingsService.get("session.userId"); }
 
-  static get isSignedIn () { return SettingsService.exists("session"); }
+  static get isSignedIn () { return SettingsService.exists("session.token"); }
 
   async signOut() {
     await this.api.deleteToken(AuthService.token as string).finally(() =>
     {
-      SettingsService.delete("session");
+      SettingsService.delete("session.token");
+      SettingsService.delete("session.userId");
 
       this.router.navigateToSignIn(this.route.snapshot);
     });
