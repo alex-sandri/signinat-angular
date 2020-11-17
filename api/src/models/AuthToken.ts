@@ -84,7 +84,7 @@ export class AuthToken
 
         const uuid = uuidv4();
 
-        await db.collection("tokens").doc(uuid).set(<IAuthToken>{ user: "TODO" });
+        await db.collection("tokens").doc(uuid).set(<IAuthToken>{ user: user.id });
 
         return new AuthToken(
             uuid,
