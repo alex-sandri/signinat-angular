@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ISerializedApp } from 'api/src/models/App';
 import { ApiService } from 'src/app/services/api/api.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-signin',
@@ -29,7 +28,7 @@ export class SigninComponent implements OnInit {
     location.href = url.toString();
   }
 
-  constructor(private api: ApiService, private auth: AuthService, router: Router, route: ActivatedRoute) {
+  constructor(private api: ApiService, router: Router, route: ActivatedRoute) {
     api.listAccounts().then(accounts =>
     {
       const appId: string = route.snapshot.params["id"];
