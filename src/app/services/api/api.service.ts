@@ -155,17 +155,16 @@ export class ApiService {
     return response as ISerializedScope[];
   }
 
-  public createToken = async (data: ApiRequest.Tokens.Create): Promise<string> =>
+  public createToken = async (data: ApiRequest.Tokens.Create): Promise<ApiResponse.Tokens.Create> =>
   {
     const response = await this.http.post(ApiService.ENDPOINTS.TOKENS, JSON.stringify(data), {
       headers: {
         "Authorization": `Bearer ${AuthService.token}`,
         "Content-Type": "application/json",
       },
-      responseType: "text",
     }).toPromise();
 
-    return response;
+    return response as ApiResponse.Tokens.Create;
   }
 
   public retrieveToken = async (id: string): Promise<ISerializedAuthToken> =>

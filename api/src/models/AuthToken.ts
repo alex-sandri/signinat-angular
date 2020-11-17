@@ -45,25 +45,36 @@ export class AuthToken
         app: this.app?.json(),
     });
 
-    public static async app(app: string, user: string): Promise<string>
+    public static async app(appId: string, userId: string): Promise<AuthToken>
     {
-        AuthToken.validate({ app }, "app");
+        AuthToken.validate({ app: appId }, "app");
+
+        const user = await User.retrieve(userId);
+
+        if (!user) throw new ApiError("user/inexistent");
+
+        const app = await App.retrieve(appId);
+
+        if (!app) throw new ApiError("app/inexistent");
 
         const uuid = uuidv4();
 
         await db.collection("tokens").doc(uuid).set(<IAuthToken>{
-            app,
-            user,
+            app: appId,
+            user: userId,
         });
 
-        return uuid;
+        return new AuthToken(
+            uuid,
+            "app",
+            user,
+            app,
+        );
     }
 
-    public static async user(email: string, password: string): Promise<string>
+    public static async user(email: string, password: string): Promise<AuthToken>
     {
         AuthToken.validate({ user: { email, password } }, "user");
-
-        const uuid = uuidv4();
 
         const user = await User.withEmail(email);
 
@@ -71,9 +82,15 @@ export class AuthToken
 
         if (!bcrypt.compareSync(password, user.password)) throw new ApiError("user/password/wrong");
 
+        const uuid = uuidv4();
+
         await db.collection("tokens").doc(uuid).set(<IAuthToken>{ user: "TODO" });
 
-        return uuid;
+        return new AuthToken(
+            uuid,
+            "user",
+            user,
+        );
     }
 
     public static async retrieve(id?: string): Promise<AuthToken | null>
@@ -124,6 +141,14 @@ export class AuthToken
 
     private static validate = (data: ApiRequest.Tokens.Create, type: TAuthTokenType): void =>
     {
-        // TODO
+        switch (type)
+        {
+            case "app":
+                // TODO
+                break;
+            case "user":
+                // TODO
+                break;
+        }
     }
 }

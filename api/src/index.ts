@@ -427,15 +427,42 @@ app.post("/api/tokens", async (req, res) =>
 
   const data: ApiRequest.Tokens.Create = req.body;
 
-  let createdToken: string;
+  const response: ApiResponse.Tokens.Create = {
+    result: { valid: true },
+    errors: { },
+  };
+
+  let createdToken: AuthToken;
 
   if (data.app)
   {
-    createdToken = await AuthToken.app(data.app, token.user.id);
+    try
+    {
+      createdToken = await AuthToken.app(data.app, token.user.id);
+    }
+    catch (e)
+    {
+      const { message } = e as ApiError;
+
+      response.result.valid = false;
+
+      response.errors.app = message;
+    }
   }
   else if (data.user)
   {
-    createdToken = await AuthToken.user(data.user.email, data.user.password);
+    try
+    {
+      createdToken = await AuthToken.user(data.user.email, data.user.password);
+    }
+    catch (e)
+    {
+      const { message } = e as ApiError;
+
+      response.result.valid = false;
+
+      response.errors.app = message;
+    }
   }
   else
   {
@@ -444,7 +471,12 @@ app.post("/api/tokens", async (req, res) =>
     return;
   }
 
-  res.send(createdToken);
+  if (response.result.valid)
+  {
+    response.result.data = createdToken!.json();
+  }
+
+  res.send(response);
 });
 
 app.listen(3000);

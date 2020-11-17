@@ -1,4 +1,5 @@
 import { ISerializedApp } from "../models/App";
+import { ISerializedAuthToken } from "../models/AuthToken";
 import { ISerializedUser } from "../models/User";
 
 export namespace ApiResponse
@@ -59,6 +60,24 @@ export namespace ApiResponse
                     webhook: {
                         error: string,
                     },
+                },
+            },
+        }
+    }
+
+    export namespace Tokens
+    {
+        export interface Create
+        {
+            result: {
+                valid: boolean,
+                data?: ISerializedAuthToken,
+            },
+            errors: {
+                app?: string,
+                user?: {
+                    email: string,
+                    password: string,
                 },
             },
         }

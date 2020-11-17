@@ -43,8 +43,8 @@ export class SigninComponent implements OnInit {
 
     if (!response.result.valid)
     {
-      this.emailError = response.errors.email.error;
-      this.passwordError = response.errors.password.error;
+      this.emailError = response.errors.user!.email;
+      this.passwordError = response.errors.user!.password;
     }
     else
     {
