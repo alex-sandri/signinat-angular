@@ -5,6 +5,7 @@ import { ApiRequest } from "../typings/ApiRequest";
 import { ApiError } from "./ApiError";
 import { Scope } from "./Scope";
 import { Account } from "./Account";
+import { App } from "./App";
 
 const db = firestore();
 
@@ -117,6 +118,13 @@ export class User
     public delete = async (): Promise<void> =>
     {
         await db.collection("users").doc(this.id).delete();
+
+        const apps = await App.list(this);
+
+        for (const app of apps)
+        {
+            await app.delete();
+        }
 
         const accounts = await Account.list(this);
 
