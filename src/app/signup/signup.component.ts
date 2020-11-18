@@ -34,8 +34,6 @@ export class SignupComponent implements OnInit {
     },
   ]);
 
-  isAdditionalInformationShown = false;
-
   constructor(private api: ApiService) { }
 
   ngOnInit(): void {
