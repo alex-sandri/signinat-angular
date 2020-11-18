@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormInputs } from '../components/form/form.component';
+import { FormOptions } from '../components/form/form.component';
 import { ApiService } from '../services/api/api.service';
 
 @Component({
@@ -8,12 +8,17 @@ import { ApiService } from '../services/api/api.service';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-  inputs: FormInputs = {
-    firstName: { label: "First Name", name: "first-name", type: "text", required: true, autocomplete: "given-name" },
-    lastName: { label: "Last Name", name: "last-name", type: "text", required: true, autocomplete: "family-name" },
-    email: { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
-    password: { label: "Password", name: "password", type: "password", required: true, autocomplete: "new-password" },
-  };
+  options = new FormOptions([
+    {
+      name: "default",
+      inputs: [
+        { label: "First Name", name: "first-name", type: "text", required: true, autocomplete: "given-name" },
+        { label: "Last Name", name: "last-name", type: "text", required: true, autocomplete: "family-name" },
+        { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
+        { label: "Password", name: "password", type: "password", required: true, autocomplete: "new-password" },
+      ],
+    },
+  ]);
 
   isAdditionalInformationShown = false;
 
@@ -30,19 +35,19 @@ export class SignupComponent implements OnInit {
 
     const response = await this.api.createUser({
       name: {
-        first: this.inputs.firstName.value!.trim(),
-        last: this.inputs.lastName.value!.trim(),
+        first: this.options.getInput("first-name")!.value!.trim(),
+        last: this.options.getInput("last-name")!.value!.trim(),
       },
-      email: this.inputs.email.value!.trim(),
-      password: this.inputs.password.value!,
+      email: this.options.getInput("email")!.value!.trim(),
+      password: this.options.getInput("password")!.value!,
     });
 
     if (!response.result.valid)
     {
-      this.inputs.firstName.error = response.errors.name.first.error;
-      this.inputs.lastName.error = response.errors.name.last.error;
-      this.inputs.email.error = response.errors.email.error;
-      this.inputs.password.error = response.errors.password.error;
+      this.options.getInput("first-name")!.error = response.errors.name.first.error;
+      this.options.getInput("last-name")!.error = response.errors.name.last.error;
+      this.options.getInput("email")!.error = response.errors.email.error;
+      this.options.getInput("password")!.error = response.errors.password.error;
     }
 
     submitButton.disabled = false;

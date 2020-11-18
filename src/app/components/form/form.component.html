@@ -1,5 +1,5 @@
-<form (submit)="onSubmit($event)">
-    <label *ngFor="let input of getInputs()">
+<form (submit)="onSubmit($event)" *ngIf="options !== undefined">
+    <label *ngFor="let input of options.getGroup('default')!.inputs">
         {{input.label}}
         <input
             type="{{input.type}}"

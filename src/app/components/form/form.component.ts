@@ -7,26 +7,31 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class FormComponent implements OnInit {
 
-  @Input("inputs")
-  inputs: FormInputs = {};
+  @Input("options")
+  options!: FormOptions;
 
   @Output() formSubmit = new EventEmitter<HTMLFormElement>();
 
-  getInputs(): FormInput[]
+  getDefaultInputs(): FormInput[]
   {
-    return Object.values(this.inputs);
+    return this.options.getGroup("default")!.inputs;
   }
 
   set(input: FormInput, event: Event)
   {
-    this.getInputs().find(i => i.name === input.name)!.value = (event.composedPath()[0] as HTMLInputElement).value;
+    this.options.getInput(input.name)!.value = (event.composedPath()[0] as HTMLInputElement).value;
   }
 
   async onSubmit(e: Event)
   {
     e.preventDefault();
 
-    this.getInputs().forEach(input => input.error = "");
+    this
+      .options
+      .groups
+      .map(group => group.inputs)
+      .flat()
+      .forEach(input => input.error = "");
 
     this.formSubmit.emit(e.target as HTMLFormElement);
   }
@@ -38,9 +43,34 @@ export class FormComponent implements OnInit {
 
 }
 
-export interface FormInputs
+export class FormOptions
 {
-  [key: string]: FormInput,
+  constructor(public readonly groups: FormGroup[])
+  {}
+
+  public getGroup(name: string): FormGroup | null
+  {
+    return this
+      .groups
+      .find(group => group.name === name)
+      ?? null;
+  }
+
+  public getInput(name: string): FormInput | null
+  {
+    return this
+      .groups
+      .map(group => group.inputs)
+      .flat()
+      .find(input => input.name === name)
+      ?? null;
+  }
+}
+
+export interface FormGroup
+{
+  name: string,
+  inputs: FormInput[],
 }
 
 export interface FormInput
