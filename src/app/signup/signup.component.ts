@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormInput } from '../components/form/form.component';
 import { ApiService } from '../services/api/api.service';
 
 @Component({
@@ -7,6 +8,13 @@ import { ApiService } from '../services/api/api.service';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
+  inputs: FormInput[] = [
+    { label: "First Name", name: "first-name", type: "text", required: true, autocomplete: "given-name", error: "" },
+    { label: "Last Name", name: "last-name", type: "text", required: true, autocomplete: "family-name", error: "" },
+    { label: "Email", name: "email", type: "email", required: true, autocomplete: "email", error: "" },
+    { label: "Password", name: "password", type: "password", required: true, autocomplete: "new-password", error: "" },
+  ];
+
   formValues: {
     firstName: string,
     lastName: string,

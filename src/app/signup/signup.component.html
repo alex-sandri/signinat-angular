@@ -3,59 +3,8 @@
 <main>
     <h1>Sign Up</h1>
     <small>or <a routerLink="/signin">Sign In</a></small>
-    <form #form (submit)="onSubmit($event, form)">
-        <label>
-            First Name
-            <input
-                type="text"
-                name="first-name"
-                autocomplete="given-name"
-                required
-
-                #firstName
-                (input)="formValues.firstName = firstName.value"
-            >
-            <small *ngIf="firstNameError.length > 0"><mark>&#x2716; {{firstNameError}}</mark></small>
-        </label>
-        <label>
-            Last Name
-            <input
-                type="text"
-                name="last-name"
-                autocomplete="family-name"
-                required
-
-                #lastName
-                (input)="formValues.lastName = lastName.value"
-            >
-            <small *ngIf="lastNameError.length > 0"><mark>&#x2716; {{lastNameError}}</mark></small>
-        </label>
-        <label>
-            Email
-            <input
-                type="email"
-                name="email"
-                autocomplete="email"
-                required
-
-                #email
-                (input)="formValues.email = email.value"
-            >
-            <small *ngIf="emailError.length > 0"><mark>&#x2716; {{emailError}}</mark></small>
-        </label>
-        <label>
-            Password
-            <input
-                type="password"
-                name="password"
-                autocomplete="new-password"
-                required
-
-                #password
-                (input)="formValues.password = password.value"
-            >
-            <small *ngIf="passwordError.length > 0"><mark>&#x2716; {{passwordError}}</mark></small>
-        </label>
+    <app-form [inputs]="inputs"></app-form>
+    <!--
         <fieldset>
             <legend>Additional information</legend>
             <details (toggle)="isAdditionalInformationShown = !isAdditionalInformationShown">
@@ -82,8 +31,7 @@
                 </label>
             </details>
         </fieldset>
-        <button type="submit">Sign Up</button>
-    </form>
+-->
 </main>
 
 <app-footer></app-footer>

@@ -1,0 +1,15 @@
+<form #form (submit)="onSubmit($event, form)">
+    <label *ngFor="let input of inputs">
+        {{input.label}}
+        <input
+            type="{{input.type}}"
+            name="{{input.name}}"
+            autocomplete="{{input.autocomplete}}"
+            required="{{input.required}}"
+
+            (input)="set(input.name, $event)"
+        >
+        <small *ngIf="input.error.length > 0"><mark>&#x2716; {{input.error}}</mark></small>
+    </label>
+    <button type="submit">Sign Up</button>
+</form>
