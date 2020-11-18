@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ISerializedAuthToken } from 'api/src/models/AuthToken';
+import { FormOptions } from '../components/form/form.component';
 import { ApiService } from '../services/api/api.service';
 import { SettingsService } from '../services/settings/settings.service';
 
@@ -10,41 +10,37 @@ import { SettingsService } from '../services/settings/settings.service';
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
-
-  email: string = "";
-  password: string = "";
-
-  emailError: string = "";
-  passwordError: string = "";
-
-  setEmail = (value: string) => { this.email = value; }
-  setPassword = (value: string) => { this.password = value; }
+  options = new FormOptions([
+    {
+      name: "default",
+      inputs: [
+        { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
+        { label: "Password", name: "password", type: "password", required: true, autocomplete: "current-password" },
+      ],
+    },
+  ]);
 
   constructor(private api: ApiService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
   }
 
-  async onSubmit(e: Event, form: HTMLFormElement): Promise<void> {
-    e.preventDefault();
-
+  async onSubmit(form: HTMLFormElement): Promise<void> {
     const submitButton = form.querySelector("button[type=submit]") as HTMLButtonElement;
 
     submitButton.disabled = true;
 
-    this.emailError = this.passwordError = "";
-
     const response = await this.api.createUserToken({
       user: {
-        email: this.email.trim(),
-        password: this.password,
+        email: this.options.getInput("email")!.value!.trim(),
+        password: this.options.getInput("password")!.value!,
       },
     });
 
     if (!response.result.valid)
     {
-      this.emailError = response.errors.user!.email;
-      this.passwordError = response.errors.user!.password;
+      this.options.getInput("email")!.error = response.errors.user.email;
+      this.options.getInput("password")!.error = response.errors.user.password;
     }
     else
     {
