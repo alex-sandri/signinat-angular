@@ -58,6 +58,7 @@ export class User
         let firstName = this.firstName;
         let lastName = this.lastName;
         let email = this.email;
+        let birthday = this.birthday;
 
         if (!scopes.some(scope => scope.canAccess("user.profile.name.first")))
         {
@@ -74,13 +75,18 @@ export class User
             email = "";
         }
 
+        if (!scopes.some(scope => scope.canAccess("user.profile.birthday")))
+        {
+            birthday = undefined;
+        }
+
         return new User(
             this.id,
             firstName,
             lastName,
             email,
             "", // Remove password from filtered user
-            this.birthday, // TODO: Add birthday scope
+            birthday,
         );
     }
 
