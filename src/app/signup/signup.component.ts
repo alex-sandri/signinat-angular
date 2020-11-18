@@ -9,10 +9,10 @@ import { ApiService } from '../services/api/api.service';
 })
 export class SignupComponent implements OnInit {
   inputs: FormInput[] = [
-    { label: "First Name", name: "first-name", type: "text", required: true, autocomplete: "given-name", error: "" },
-    { label: "Last Name", name: "last-name", type: "text", required: true, autocomplete: "family-name", error: "" },
-    { label: "Email", name: "email", type: "email", required: true, autocomplete: "email", error: "" },
-    { label: "Password", name: "password", type: "password", required: true, autocomplete: "new-password", error: "" },
+    { label: "First Name", name: "first-name", type: "text", required: true, autocomplete: "given-name" },
+    { label: "Last Name", name: "last-name", type: "text", required: true, autocomplete: "family-name" },
+    { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
+    { label: "Password", name: "password", type: "password", required: true, autocomplete: "new-password" },
   ];
 
   formValues: {

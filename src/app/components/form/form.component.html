@@ -7,9 +7,9 @@
             autocomplete="{{input.autocomplete}}"
             required="{{input.required}}"
 
-            (input)="set(input.name, $event)"
+            (input)="set(input, $event)"
         >
-        <small *ngIf="input.error.length > 0"><mark>&#x2716; {{input.error}}</mark></small>
+        <small *ngIf="input.error && input.error.length > 0"><mark>&#x2716; {{input.error}}</mark></small>
     </label>
     <button type="submit">Sign Up</button>
 </form>

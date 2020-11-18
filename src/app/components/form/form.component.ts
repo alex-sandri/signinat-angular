@@ -10,19 +10,25 @@ export class FormComponent implements OnInit {
   @Input("inputs")
   inputs: FormInput[] = [];
 
-  values: {
-    [key: string]: string,
-  } = {};
+  @Input("submit")
+  submit: (inputs: FormInput[]) => Promise<void> = async () => {};
 
-  set(input: string, e: Event)
+  set(input: FormInput, event: Event)
   {
-    console.log(e.type);
-    this.values[input];
+    this.inputs.find(i => i.name === input.name)!.value = (event.composedPath()[0] as HTMLInputElement).value;
   }
 
-  onSubmit(e: Event, form: HTMLFormElement)
+  async onSubmit(e: Event, form: HTMLFormElement)
   {
     e.preventDefault();
+
+    const submitButton = form.querySelector("button[type=submit]") as HTMLButtonElement;
+
+    submitButton.disabled = true;
+
+    await this.submit(this.inputs);
+
+    submitButton.disabled = false;
   }
 
   constructor() { }
@@ -39,5 +45,7 @@ export interface FormInput
   type: "text" | "email" | "password" | "date",
   required: boolean,
   autocomplete: string,
-  error: string,
+
+  value?: string,
+  error?: string,
 }
