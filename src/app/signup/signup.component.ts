@@ -18,6 +18,12 @@ export class SignupComponent implements OnInit {
         { label: "Password", name: "password", type: "password", required: true, autocomplete: "new-password" },
       ],
     },
+    {
+      name: "Additional information",
+      inputs: [
+        { label: "Birthday", name: "birthday", type: "date", required: false, autocomplete: "bday" },
+      ],
+    },
   ]);
 
   isAdditionalInformationShown = false;

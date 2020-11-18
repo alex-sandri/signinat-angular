@@ -56,6 +56,13 @@ export class FormOptions
       ?? null;
   }
 
+  public getNonDefaultGroups(): FormGroup[]
+  {
+    return this
+      .groups
+      .filter(group => group.name !== "default");
+  }
+
   public getInput(name: string): FormInput | null
   {
     return this
@@ -71,6 +78,8 @@ export interface FormGroup
 {
   name: string,
   inputs: FormInput[],
+
+  open?: boolean,
 }
 
 export interface FormInput

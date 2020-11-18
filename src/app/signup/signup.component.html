@@ -4,34 +4,6 @@
     <h1>Sign Up</h1>
     <small>or <a routerLink="/signin">Sign In</a></small>
     <app-form [options]="options" (formSubmit)="onSubmit($event)"></app-form>
-    <!--
-        <fieldset>
-            <legend>Additional information</legend>
-            <details (toggle)="isAdditionalInformationShown = !isAdditionalInformationShown">
-                <summary>{{isAdditionalInformationShown ? "Hide" : "Show"}}</summary>
-                <br>
-                <small>
-                    <mark>
-                        This information is not required to create an account but some apps may require it,
-                        so when signing into an app for the first time we may ask you
-                        to add this information to your account.
-                    </mark>
-                </small>
-                <label>
-                    Birthday
-                    <input
-                        type="date"
-                        name="birthday"
-                        autocomplete="bday"
-
-                        #birthday
-                        
-                    >
-                    <small *ngIf="false"><mark>&#x2716; {{""}}</mark></small>
-                </label>
-            </details>
-        </fieldset>
--->
 </main>
 
 <app-footer></app-footer>

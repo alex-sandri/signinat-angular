@@ -11,5 +11,31 @@
         >
         <small *ngIf="input.error && input.error.length > 0"><mark>&#x2716; {{input.error}}</mark></small>
     </label>
+    <fieldset *ngFor="let group of options.getNonDefaultGroups()">
+        <legend>{{group.name}}</legend>
+        <details (toggle)="group.open = !group.open">
+            <summary>{{group.open ? "Hide" : "Show"}}</summary>
+            <br>
+            <small>
+                <mark>
+                    This information is not required to create an account but some apps may require it,
+                    so when signing into an app for the first time we may ask you
+                    to add this information to your account.
+                </mark>
+            </small>
+            <label *ngFor="let input of group.inputs">
+                {{input.label}}
+                <input
+                    type="{{input.type}}"
+                    name="{{input.name}}"
+                    autocomplete="{{input.autocomplete}}"
+                    required="{{input.required}}"
+        
+                    (input)="set(input, $event)"
+                >
+                <small *ngIf="input.error && input.error.length > 0"><mark>&#x2716; {{input.error}}</mark></small>
+            </label>
+        </details>
+    </fieldset>
     <button type="submit">Sign Up</button>
 </form>
