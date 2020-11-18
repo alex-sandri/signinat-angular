@@ -8,14 +8,19 @@ import { Component, Input, OnInit } from '@angular/core';
 export class FormComponent implements OnInit {
 
   @Input("inputs")
-  inputs: FormInput[] = [];
+  inputs: FormInputs = {};
 
   @Input("submit")
-  submit: (inputs: FormInput[]) => Promise<void> = async () => {};
+  submit: () => Promise<boolean> = async () => { return true; };
+
+  getInputs(): FormInput[]
+  {
+    return Object.values(this.inputs);
+  }
 
   set(input: FormInput, event: Event)
   {
-    this.inputs.find(i => i.name === input.name)!.value = (event.composedPath()[0] as HTMLInputElement).value;
+    this.getInputs().find(i => i.name === input.name)!.value = (event.composedPath()[0] as HTMLInputElement).value;
   }
 
   async onSubmit(e: Event, form: HTMLFormElement)
@@ -26,7 +31,12 @@ export class FormComponent implements OnInit {
 
     submitButton.disabled = true;
 
-    await this.submit(this.inputs);
+    this.getInputs().forEach(input => input.error = "");
+
+    if (await this.submit())
+    {
+      form.reset();
+    }
 
     submitButton.disabled = false;
   }
@@ -36,6 +46,11 @@ export class FormComponent implements OnInit {
   ngOnInit(): void {
   }
 
+}
+
+export interface FormInputs
+{
+  [key: string]: FormInput,
 }
 
 export interface FormInput

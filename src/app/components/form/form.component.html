@@ -1,5 +1,5 @@
 <form #form (submit)="onSubmit($event, form)">
-    <label *ngFor="let input of inputs">
+    <label *ngFor="let input of getInputs()">
         {{input.label}}
         <input
             type="{{input.type}}"

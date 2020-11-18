@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormInput } from '../components/form/form.component';
+import { FormInputs } from '../components/form/form.component';
 import { ApiService } from '../services/api/api.service';
 
 @Component({
@@ -8,29 +8,12 @@ import { ApiService } from '../services/api/api.service';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-  inputs: FormInput[] = [
-    { label: "First Name", name: "first-name", type: "text", required: true, autocomplete: "given-name" },
-    { label: "Last Name", name: "last-name", type: "text", required: true, autocomplete: "family-name" },
-    { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
-    { label: "Password", name: "password", type: "password", required: true, autocomplete: "new-password" },
-  ];
-
-  formValues: {
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-  } = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
+  inputs: FormInputs = {
+    firstName: { label: "First Name", name: "first-name", type: "text", required: true, autocomplete: "given-name" },
+    lastName: { label: "Last Name", name: "last-name", type: "text", required: true, autocomplete: "family-name" },
+    email: { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
+    password: { label: "Password", name: "password", type: "password", required: true, autocomplete: "new-password" },
   };
-
-  firstNameError: string = "";
-  lastNameError: string = "";
-  emailError: string = "";
-  passwordError: string = "";
 
   isAdditionalInformationShown = false;
 
@@ -39,37 +22,25 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  async onSubmit(e: Event, form: HTMLFormElement): Promise<void> {
-    e.preventDefault();
-
-    const submitButton = form.querySelector("button[type=submit]") as HTMLButtonElement;
-
-    submitButton.disabled = true;
-
-    this.firstNameError = this.lastNameError = this.emailError = this.passwordError = "";
-
+  async onSubmit(): Promise<boolean> {
     const response = await this.api.createUser({
       name: {
-        first: this.formValues.firstName.trim(),
-        last: this.formValues.lastName.trim(),
+        first: this.inputs.firstName.value!.trim(),
+        last: this.inputs.lastName.value!.trim(),
       },
-      email: this.formValues.email.trim(),
-      password: this.formValues.password,
+      email: this.inputs.email.value!.trim(),
+      password: this.inputs.password.value!,
     });
 
     if (!response.result.valid)
     {
-      this.firstNameError = response.errors.name.first.error;
-      this.lastNameError = response.errors.name.last.error;
-      this.emailError = response.errors.email.error;
-      this.passwordError = response.errors.password.error;
-    }
-    else
-    {
-      form.reset();
+      this.inputs.firstName.error = response.errors.name.first.error;
+      this.inputs.lastName.error = response.errors.name.last.error;
+      this.inputs.email.error = response.errors.email.error;
+      this.inputs.password.error = response.errors.password.error;
     }
 
-    submitButton.disabled = false;
+    return response.result.valid;
   }
 
 }
