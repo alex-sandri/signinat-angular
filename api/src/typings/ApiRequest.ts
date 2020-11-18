@@ -10,6 +10,7 @@ export namespace ApiRequest
             },
             email: string,
             password: string,
+            birthday?: string,
         }
     }
 

@@ -52,6 +52,7 @@ export class SignupComponent implements OnInit {
       },
       email: this.options.getInput("email")!.value!.trim(),
       password: this.options.getInput("password")!.value!,
+      birthday: this.options.getInput("birthday")!.value!,
     });
 
     if (!response.result.valid)

@@ -11,6 +11,10 @@ admin.initializeApp({
   databaseURL: "https://sign-in-at.firebaseio.com",
 });
 
+admin.firestore().settings({
+  ignoreUndefinedProperties: true,
+});
+
 import { ApiRequest } from "./typings/ApiRequest";
 import { ApiResponse } from "./typings/ApiResponse";
 import { ApiError } from "./models/ApiError";
@@ -38,6 +42,7 @@ app.post("/api/users", async (req, res) =>
       name: { first: { error: "" }, last: { error: "" } },
       email: { error: "" },
       password: { error: "" },
+      birthday: "",
     },
   };
 
@@ -69,6 +74,7 @@ app.post("/api/users", async (req, res) =>
       case "user/password/weak":
         response.errors.password.error = message;
         break;
+      // TODO: Birthday errors
     }
   }
 

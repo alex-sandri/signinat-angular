@@ -27,6 +27,7 @@ export namespace ApiResponse
                 password: {
                     error: string,
                 },
+                birthday: string,
             },
         }
     }

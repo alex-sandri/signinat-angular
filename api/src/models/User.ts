@@ -17,6 +17,7 @@ interface IUser
     },
     email: string,
     password: string,
+    birthday?: firestore.Timestamp
 }
 
 export interface ISerializedUser
@@ -27,6 +28,7 @@ export interface ISerializedUser
         last: string,
     },
     email: string,
+    birthday?: Date,
 }
 
 export class User
@@ -37,6 +39,7 @@ export class User
         public readonly lastName: string,
         public readonly email: string,
         public readonly password: string,
+        public readonly birthday?: Date,
     ) {}
 
     public json = (): ISerializedUser =>
@@ -47,6 +50,7 @@ export class User
             last: this.lastName,
         },
         email: this.email,
+        birthday: this.birthday,
     });
 
     public filter = (scopes: Scope[]): User =>
@@ -76,6 +80,7 @@ export class User
             lastName,
             email,
             "", // Remove password from filtered user
+            this.birthday, // TODO: Add birthday scope
         );
     }
 
@@ -87,7 +92,12 @@ export class User
 
         data.password = bcrypt.hashSync(data.password, 15);
 
-        const user = await db.collection("users").add(<IUser>data);
+        const user = await db.collection("users").add(<IUser>{
+            name: { first: data.name.first, last: data.name.last },
+            email: data.email,
+            password: data.password,
+            birthday: data.birthday ? firestore.Timestamp.fromDate(new Date(data.birthday)) : undefined,
+        });
 
         return new User(
             user.id,
@@ -95,6 +105,7 @@ export class User
             data.name.last,
             data.email,
             data.password,
+            data.birthday ? new Date(data.birthday) : undefined,
         );
     }
 
@@ -112,6 +123,7 @@ export class User
             data.name.last,
             data.email,
             data.password,
+            data.birthday ? data.birthday.toDate() : undefined,
         );
     }
 
