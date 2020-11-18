@@ -5,7 +5,7 @@
             type="{{input.type}}"
             name="{{input.name}}"
             autocomplete="{{input.autocomplete}}"
-            required="{{input.required}}"
+            [attr.required]="input.required ? '' : null"
 
             (input)="set(input, $event)"
         >
@@ -29,8 +29,8 @@
                     type="{{input.type}}"
                     name="{{input.name}}"
                     autocomplete="{{input.autocomplete}}"
-                    required="{{input.required}}"
-        
+                    [attr.required]="input.required ? '' : null"
+
                     (input)="set(input, $event)"
                 >
                 <small *ngIf="input.error && input.error.length > 0"><mark>&#x2716; {{input.error}}</mark></small>
