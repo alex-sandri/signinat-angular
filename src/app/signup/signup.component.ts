@@ -9,20 +9,22 @@ import { ApiService } from '../services/api/api.service';
 })
 export class SignupComponent implements OnInit {
 
-  firstName: string = "";
-  lastName: string = "";
-  email: string = "";
-  password: string = "";
+  formValues: {
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+  } = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  };
 
   firstNameError: string = "";
   lastNameError: string = "";
   emailError: string = "";
   passwordError: string = "";
-
-  setFirstName = (value: string) => { this.firstName = value; }
-  setLastName = (value: string) => { this.lastName = value; }
-  setEmail = (value: string) => { this.email = value; }
-  setPassword = (value: string) => { this.password = value; }
 
   isAdditionalInformationShown = false;
 
@@ -42,11 +44,11 @@ export class SignupComponent implements OnInit {
 
     const response = await this.api.createUser({
       name: {
-        first: this.firstName.trim(),
-        last: this.lastName.trim(),
+        first: this.formValues.firstName.trim(),
+        last: this.formValues.lastName.trim(),
       },
-      email: this.email.trim(),
-      password: this.password,
+      email: this.formValues.email.trim(),
+      password: this.formValues.password,
     });
 
     if (!response.result.valid)

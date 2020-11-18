@@ -13,7 +13,7 @@
                 required
 
                 #firstName
-                (input)="setFirstName(firstName.value)"
+                (input)="formValues.firstName = firstName.value"
             >
             <small *ngIf="firstNameError.length > 0"><mark>&#x2716; {{firstNameError}}</mark></small>
         </label>
@@ -26,7 +26,7 @@
                 required
 
                 #lastName
-                (input)="setLastName(lastName.value)"
+                (input)="formValues.lastName = lastName.value"
             >
             <small *ngIf="lastNameError.length > 0"><mark>&#x2716; {{lastNameError}}</mark></small>
         </label>
@@ -39,7 +39,7 @@
                 required
 
                 #email
-                (input)="setEmail(email.value)"
+                (input)="formValues.email = email.value"
             >
             <small *ngIf="emailError.length > 0"><mark>&#x2716; {{emailError}}</mark></small>
         </label>
@@ -52,7 +52,7 @@
                 required
 
                 #password
-                (input)="setPassword(password.value)"
+                (input)="formValues.password = password.value"
             >
             <small *ngIf="passwordError.length > 0"><mark>&#x2716; {{passwordError}}</mark></small>
         </label>
