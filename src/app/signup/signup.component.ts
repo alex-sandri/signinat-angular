@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiResponse } from 'api/src/typings/ApiResponse';
 import { ApiService } from '../services/api/api.service';
 
 @Component({
@@ -8,7 +7,6 @@ import { ApiService } from '../services/api/api.service';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-
   formValues: {
     firstName: string,
     lastName: string,
