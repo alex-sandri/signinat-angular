@@ -3,7 +3,7 @@
 <main>
     <h1>Sign Up</h1>
     <small>or <a routerLink="/signin">Sign In</a></small>
-    <app-form [inputs]="inputs" [submit]="onSubmit"></app-form>
+    <app-form [inputs]="inputs" (formSubmit)="onSubmit($event)"></app-form>
     <!--
         <fieldset>
             <legend>Additional information</legend>
