@@ -21,6 +21,8 @@
 
             name="{{input.name}}"
             [attr.multiple]="(input.options && input.options.multiple) ? '' : null"
+
+            (change)="set(input, $event)"
         >
             <option value="{{option.value}}" *ngFor="let option of input.selectOptions">{{option.value}}</option>
         </select>

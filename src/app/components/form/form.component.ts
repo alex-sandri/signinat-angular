@@ -19,7 +19,15 @@ export class FormComponent implements OnInit {
 
   set(input: FormInput, event: Event)
   {
-    this.options.getInput(input.name)!.value = (event.composedPath()[0] as HTMLInputElement).value;
+    switch (input.type)
+    {
+      case "select":
+        this.options.getInput(input.name)!.selectedValues = Array.from((event.target as HTMLSelectElement).selectedOptions).map(opt => opt.value);
+        break;
+      default:
+        this.options.getInput(input.name)!.value = (event.composedPath()[0] as HTMLInputElement).value;
+        break;
+    }
   }
 
   async onSubmit(e: Event)
@@ -112,5 +120,5 @@ export interface FormInput
   }[],
 
   // Used with type `select`
-  selectedValues?: string[]
+  selectedValues?: string[],
 }
