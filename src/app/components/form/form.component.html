@@ -2,6 +2,8 @@
     <label *ngFor="let input of options.getGroup('default')!.inputs">
         {{input.label}}
         <input
+            *ngIf="input.type !== 'select'"
+
             type="{{input.type}}"
             name="{{input.name}}"
             [attr.autocomplete]="input.autocomplete ? input.autocomplete : null"
@@ -9,6 +11,14 @@
 
             (input)="set(input, $event)"
         >
+        <select
+            *ngIf="input.type === 'select'"
+
+            name="{{input.name}}"
+            [attr.multiple]="(input.options && input.options.multiple) ? '' : null"
+        >
+            <option value="{{option.value}}" *ngFor="let option of input.selectOptions">{{option.value}}</option>
+        </select>
         <small *ngIf="input.error && input.error.length > 0"><mark>&#x2716; {{input.error}}</mark></small>
     </label>
     <fieldset *ngFor="let group of options.getNonDefaultGroups()">
