@@ -50,49 +50,7 @@
 
 <dialog #createNewAppDialog>
     <h1>Create new App</h1>
-    <form
-        #createNewAppForm
-        (submit)="createNewAppFormOnSubmit(
-            $event,
-            appName.value,
-            appUrl.value,
-            appScopes.selectedOptions
-        )"
-    >
-        <label>
-            App Name
-            <input
-                type="text"
-                name="name"
-                required
-
-                #appName
-            >
-        </label>
-        <label>
-            URL
-            <input
-                type="url"
-                name="url"
-                required
-
-                #appUrl
-            >
-        </label>
-        <label>
-            Scopes
-            <select
-                name="scopes"
-                multiple
-
-                #appScopes
-            >
-                <option *ngFor="let scope of scopes">{{scope.value}}</option>
-            </select>
-        </label>
-        <button type="submit">Create</button>
-        <button type="button" (click)="setCreateNewAppDialogVisible(false)">Cancel</button>
-    </form>
+    <app-form [options]="createNewAppFormOptions" (formSubmit)="createNewAppFormOnSubmit($event)"></app-form>
 </dialog>
 
 <footer>

@@ -92,10 +92,22 @@ export interface FormInput
 {
   label: string,
   name: string,
-  type: "text" | "email" | "password" | "date",
+  type: "text" | "email" | "password" | "date" | "url" | "select",
   required: boolean,
-  autocomplete: string,
 
+  autocomplete?: string,
   value?: string,
   error?: string,
+
+  options?: {
+    multiple?: boolean, // Used with type `select`
+  },
+
+  // Used with type `select`
+  selectOptions?: {
+    value: string,
+  }[],
+
+  // Used with type `select`
+  selectedValues?: string[]
 }

@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ISerializedApp } from 'api/src/models/App';
 import { ISerializedScope } from 'api/src/models/Scope';
+import { FormOptions } from 'src/app/components/form/form.component';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
@@ -11,9 +12,18 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
+  createNewAppFormOptions = new FormOptions([
+    {
+      name: "default",
+      inputs: [
+        { label: "App Name", name: "name", type: "text", required: true },
+        { label: "URL", name: "url", type: "url", required: true },
+        { label: "Scopes", name: "scopes", type: "select", required: true, options: { multiple: true }, },
+      ],
+    },
+  ]);
 
   @ViewChild("createNewAppDialog") createNewAppDialog!: ElementRef<HTMLDialogElement>;
-  @ViewChild("createNewAppForm") createNewAppForm!: ElementRef<HTMLFormElement>;
 
   section: string;
 
@@ -22,11 +32,6 @@ export class SettingsComponent implements OnInit {
   email: string = "";
 
   apps!: ISerializedApp[];
-
-  scopes: ISerializedScope[] = [];
-
-  createNewAppNameError: string = "";
-  createNewAppUrlError: string = "";
 
   async deleteAccount() {
     await this.api.deleteUser();
@@ -43,7 +48,7 @@ export class SettingsComponent implements OnInit {
     {
       this.createNewAppDialog.nativeElement.close();
 
-      this.createNewAppForm.nativeElement.reset();
+      this.createNewAppDialog.nativeElement.querySelector("form")!.reset();
     }
   }
 
@@ -53,26 +58,21 @@ export class SettingsComponent implements OnInit {
     this.router.navigateByUrl(`account/settings/${section}`);
   }
 
-  async createNewAppFormOnSubmit(e: Event, name: string, url: string, scopes: HTMLCollection) {
-    e.preventDefault();
-
-    const submitButton = this.createNewAppForm.nativeElement.querySelector("button[type=submit]") as HTMLButtonElement;
+  async createNewAppFormOnSubmit(form: HTMLFormElement) {
+    const submitButton = form.querySelector("button[type=submit]") as HTMLButtonElement;
 
     submitButton.disabled = true;
 
-    this.createNewAppNameError = this.createNewAppUrlError = "";
-
     const response = await this.api.createApp({
-      name: name.trim(),
-      url: url.trim(),
-      scopes: Array.from(scopes).map(scope => (scope as HTMLElement).innerText),
+      name: this.createNewAppFormOptions.getInput("name")!.value!.trim(),
+      url: this.createNewAppFormOptions.getInput("url")!.value!.trim(),
+      scopes: this.createNewAppFormOptions.getInput("scopes")!.selectedValues!,
     });
 
     if (!response.result.valid)
     {
-      this.createNewAppNameError = response.errors.name.error;
-
-      this.createNewAppUrlError = response.errors.url.error;
+      this.createNewAppFormOptions.getInput("name")!.error = response.errors.name.error;
+      this.createNewAppFormOptions.getInput("url")!.error = response.errors.url.error;
     }
     else
     {
@@ -96,7 +96,9 @@ export class SettingsComponent implements OnInit {
 
     api.listApps().then(apps => this.apps = apps);
 
-    api.listScopes().then(scopes => this.scopes = scopes);
+    api
+      .listScopes()
+      .then(scopes => this.createNewAppFormOptions.getInput("scopes")!.selectOptions = scopes);
   }
 
   ngOnInit(): void {
