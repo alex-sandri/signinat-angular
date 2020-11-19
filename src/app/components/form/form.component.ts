@@ -10,7 +10,11 @@ export class FormComponent implements OnInit {
   @Input("options")
   options!: FormOptions;
 
-  @Output() formSubmit = new EventEmitter<HTMLFormElement>();
+  @Output()
+  formSubmit = new EventEmitter<HTMLFormElement>();
+
+  @Output()
+  formCancel = new EventEmitter<void>();
 
   getDefaultInputs(): FormInput[]
   {
@@ -44,6 +48,11 @@ export class FormComponent implements OnInit {
     this.formSubmit.emit(e.target as HTMLFormElement);
   }
 
+  async cancel()
+  {
+    this.formCancel.emit();
+  }
+
   constructor() { }
 
   ngOnInit(): void {
@@ -53,11 +62,11 @@ export class FormComponent implements OnInit {
 
 export class FormOptions
 {
-  // TODO: Cancel button
   constructor(
     public readonly name: string,
     public readonly groups: FormGroup[],
     public readonly submitButtonText: string = "Submit",
+    public readonly showCancelButton: boolean = false,
   ) {}
 
   public getGroup(name: string): FormGroup | null

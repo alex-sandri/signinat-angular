@@ -25,6 +25,7 @@ export class SettingsComponent implements OnInit {
       },
     ],
     "Create",
+    true,
   );
 
   @ViewChild("createNewAppDialog") createNewAppDialog!: ElementRef<HTMLDialogElement>;

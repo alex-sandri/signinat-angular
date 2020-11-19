@@ -52,4 +52,13 @@
         </details>
     </fieldset>
     <button type="submit">{{options.submitButtonText}}</button>
+    <button
+        *ngIf="options.showCancelButton"
+
+        type="button"
+
+        (click)="cancel()"
+    >
+        Cancel
+    </button>
 </form>
