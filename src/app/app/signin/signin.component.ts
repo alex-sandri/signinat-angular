@@ -46,6 +46,9 @@ export class SigninComponent implements OnInit {
             return;
           }
 
+          // TODO
+          // Check if the user has all fields required to sign in
+
           this.app = app;
         })
         .catch(() =>
