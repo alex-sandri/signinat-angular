@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ISerializedApp } from 'api/src/models/App';
 import { ISerializedScope } from 'api/src/models/Scope';
+import { ISerializedUser } from 'api/src/models/User';
 import { FormOptions } from 'src/app/components/form/form.component';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -32,9 +33,7 @@ export class SettingsComponent implements OnInit {
 
   section: string;
 
-  firstName: string = "";
-  lastName: string = "";
-  email: string = "";
+  user!: ISerializedUser;
 
   apps!: ISerializedApp[];
 
@@ -92,12 +91,7 @@ export class SettingsComponent implements OnInit {
 
     if (this.section === "settings") this.section = "general";
 
-    api.retrieveToken(AuthService.token as string).then(token =>
-    {
-      this.firstName = token.user.name.first;
-      this.lastName = token.user.name.last;
-      this.email = token.user.email;
-    });
+    api.retrieveToken(AuthService.token as string).then(token => this.user = token.user);
 
     api.listApps().then(apps => this.apps = apps);
 

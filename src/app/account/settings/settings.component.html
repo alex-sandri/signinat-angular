@@ -1,30 +1,44 @@
 <app-header></app-header>
 
+<ng-template #notAvailable>
+    <small>
+        <i>Not Available</i>
+    </small>
+</ng-template>
+
 <main>
-    <section *ngIf="section == 'general'">
-        <fieldset>
+    <section *ngIf="section === 'general'">
+        <fieldset *ngIf="user !== undefined">
             <legend>Profile</legend>
             <div class="field">
-                <h4 class="name">First Name</h4>
-                <small>{{firstName}}</small>
+                <b>First Name</b>
+                <br>
+                <small>{{user.name.first}}</small>
             </div>
             <div class="field">
-                <h4 class="name">Last Name</h4>
-                <small>{{lastName}}</small>
+                <b>Last Name</b>
+                <br>
+                <small>{{user.name.last}}</small>
             </div>
             <div class="field">
-                <h4 class="name">Email</h4>
-                <small>{{email}}</small>
+                <b>Email</b>
+                <br>
+                <small>{{user.email}}</small>
+            </div>
+            <div class="field">
+                <b>Birthday</b>
+                <br>
+                <small *ngIf="user.birthday; else notAvailable">{{user.birthday}}</small>
             </div>
         </fieldset>
     </section>
-    <section *ngIf="section == 'advanced'">
+    <section *ngIf="section === 'advanced'">
         <fieldset>
             <legend>Danger zone</legend>
             <button (click)="deleteAccount()">Delete account</button>
         </fieldset>
     </section>
-    <section *ngIf="section == 'developer'">
+    <section *ngIf="section === 'developer'">
         <h1>Apps</h1>
         <div id="apps">
             <button (click)="setCreateNewAppDialogVisible(true)">
