@@ -1,41 +1,6 @@
-form label,
-form label > *
+form
 {
-    display: block;
-}
-
-form label
-{
-    margin: 15px 0;
-}
-
-form label small:not(:empty)
-{
-    margin-top: 5px;
-}
-
-form input,
-form button
-{
-    width: 100%;
-}
-
-form button
-{
-    margin-top: 30px;
-}
-
-select
-{
-    width: 100%;
-    font-family: inherit;
-    padding: 5px;
-    border: 2px solid var(--primary-color);
-    border-radius: 5px;
-    outline: none;
-}
-
-h1
+    h1
     {
         margin: 0;
     }
@@ -44,3 +9,41 @@ h1
     {
         color: inherit;
     }
+
+    label
+    {
+        margin: 15px 0;
+
+        &,
+        & > *
+        {
+            display: block;
+        }
+
+        small
+        {
+            margin-top: 5px;
+        }
+    }
+
+    input,
+    button
+    {
+        width: 100%;
+    }
+
+    select
+    {
+        width: 100%;
+        font-family: inherit;
+        padding: 5px;
+        border: 2px solid var(--primary-color);
+        border-radius: 5px;
+        outline: none;
+    }
+
+    button[type=submit]
+    {
+        margin-top: 30px;
+    }
+}
