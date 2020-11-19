@@ -8,31 +8,35 @@ import { ApiService } from '../services/api/api.service';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-  options = new FormOptions([
-    {
-      name: "default",
-      inputs: [
-        { label: "First Name", name: "first-name", type: "text", required: true, autocomplete: "given-name" },
-        { label: "Last Name", name: "last-name", type: "text", required: true, autocomplete: "family-name" },
-        { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
-        { label: "Password", name: "password", type: "password", required: true, autocomplete: "new-password" },
-      ],
-    },
-    {
-      name: "Additional information",
-      description: {
-        text: `
-          This information is not required to create an account but some apps may require it,
-          so when signing into an app for the first time we may ask you
-          to add this information to your account.
-        `,
-        options: { mark: true },
+  options = new FormOptions(
+    "Sign Up",
+    [
+      {
+        name: "default",
+        inputs: [
+          { label: "First Name", name: "first-name", type: "text", required: true, autocomplete: "given-name" },
+          { label: "Last Name", name: "last-name", type: "text", required: true, autocomplete: "family-name" },
+          { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
+          { label: "Password", name: "password", type: "password", required: true, autocomplete: "new-password" },
+        ],
       },
-      inputs: [
-        { label: "Birthday", name: "birthday", type: "date", required: false, autocomplete: "bday" },
-      ],
-    },
-  ]);
+      {
+        name: "Additional information",
+        description: {
+          text: `
+            This information is not required to create an account but some apps may require it,
+            so when signing into an app for the first time we may ask you
+            to add this information to your account.
+          `,
+          options: { mark: true },
+        },
+        inputs: [
+          { label: "Birthday", name: "birthday", type: "date", required: false, autocomplete: "bday" },
+        ],
+      },
+    ],
+    "Sign Up",
+  );
 
   constructor(private api: ApiService) { }
 

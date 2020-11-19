@@ -45,8 +45,11 @@ export class FormComponent implements OnInit {
 
 export class FormOptions
 {
-  constructor(public readonly groups: FormGroup[])
-  {}
+  constructor(
+    public readonly name: string,
+    public readonly groups: FormGroup[],
+    public readonly submitButtonText: string = "Submit",
+  ) {}
 
   public getGroup(name: string): FormGroup | null
   {

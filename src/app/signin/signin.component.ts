@@ -10,15 +10,19 @@ import { SettingsService } from '../services/settings/settings.service';
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
-  options = new FormOptions([
-    {
-      name: "default",
-      inputs: [
-        { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
-        { label: "Password", name: "password", type: "password", required: true, autocomplete: "current-password" },
-      ],
-    },
-  ]);
+  options = new FormOptions(
+    "Sign In",
+    [
+      {
+        name: "default",
+        inputs: [
+          { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
+          { label: "Password", name: "password", type: "password", required: true, autocomplete: "current-password" },
+        ],
+      },
+    ],
+    "Sign In",
+  );
 
   constructor(private api: ApiService, private router: Router, private route: ActivatedRoute) { }
 

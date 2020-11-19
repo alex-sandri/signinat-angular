@@ -12,16 +12,20 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-  createNewAppFormOptions = new FormOptions([
-    {
-      name: "default",
-      inputs: [
-        { label: "App Name", name: "name", type: "text", required: true },
-        { label: "URL", name: "url", type: "url", required: true },
-        { label: "Scopes", name: "scopes", type: "select", required: true, options: { multiple: true }, },
-      ],
-    },
-  ]);
+  createNewAppFormOptions = new FormOptions(
+    "Create new App",
+    [
+      {
+        name: "default",
+        inputs: [
+          { label: "App Name", name: "name", type: "text", required: true },
+          { label: "URL", name: "url", type: "url", required: true },
+          { label: "Scopes", name: "scopes", type: "select", required: true, options: { multiple: true }, },
+        ],
+      },
+    ],
+    "Create",
+  );
 
   @ViewChild("createNewAppDialog") createNewAppDialog!: ElementRef<HTMLDialogElement>;
 
