@@ -1,27 +1,23 @@
 import axios from "axios";
 
-import { App } from "./App";
-
-interface WebhookBody
-{
-    id: string,
-    signature: string, // TODO
-    data: any,
-}
+import { ISerializedApp } from "./App";
 
 export class Webhook
 {
     /**
      * @returns `boolean` Request success
     */
-    public static send = async (app: App, body: WebhookBody): Promise<boolean> =>
+    public static send = async (app: ISerializedApp, data: any): Promise<boolean> =>
     {
         const response = await axios.post(
-            app.webhook,
-            body,
+            app.api.webhook.url,
+            {
+                id: "TODO",
+                data,
+            },
             {
                 headers: {
-                    "Authorization": `Bearer ${app.webhook}`,
+                    "Authorization": `Bearer ${app.api.webhook.signature}`,
                 },
             },
         );

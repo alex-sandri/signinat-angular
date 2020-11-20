@@ -16,7 +16,10 @@ interface IApp
     owner: string,
     api: {
         key: string,
-        webhook: string,
+        webhook: {
+            url: string,
+            signature: string,
+        },
     },
 }
 
@@ -29,7 +32,10 @@ export interface ISerializedApp
     // TODO: Send API key only if the signed in user is the owner
     api: {
         key: string,
-        webhook: string,
+        webhook: {
+            url: string,
+            signature: string,
+        },
     },
     scopes: ISerializedScope[],
 }
@@ -42,7 +48,8 @@ export class App
         public readonly url: string,
         public readonly owner: User,
         public readonly apiKey: string,
-        public readonly webhook: string,
+        public readonly webhookUrl: string,
+        public readonly webhookSignature: string,
         public readonly scopes: Scope[],
     ) {}
 
@@ -54,7 +61,10 @@ export class App
         owner: this.owner.json(),
         api: {
             key: this.apiKey,
-            webhook: this.webhook,
+            webhook: {
+                url: this.webhookUrl,
+                signature: this.webhookSignature,
+            },
         },
         scopes: this.scopes.map(scope => scope.json()),
     });
@@ -67,7 +77,8 @@ export class App
             json.url,
             User.from(json.owner),
             json.api.key,
-            json.api.webhook,
+            json.api.webhook.url,
+            json.api.webhook.signature,
             Scope.from(json.scopes.map(scope => scope.value)),
         );
     }
@@ -97,7 +108,8 @@ export class App
             data.url,
             user,
             apiKey,
-            "", // TODO,
+            "", // TODO
+            "", // TODO
             Scope.from(data.scopes),
         );
     }
@@ -120,7 +132,8 @@ export class App
             data.url,
             owner,
             data.api.key,
-            data.api.webhook,
+            data.api.webhook.url,
+            data.api.webhook.signature,
             scopes,
         );
     }
@@ -141,7 +154,8 @@ export class App
                 data.url,
                 user,
                 data.api.key,
-                data.api.webhook,
+                data.api.webhook.url,
+                data.api.webhook.signature,
                 [], // Scopes are not sent with a LIST operation
             ));
         });
