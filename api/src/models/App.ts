@@ -170,7 +170,7 @@ export class App
     public update = async (data: ApiRequest.Apps.Update): Promise<void> =>
     {
         await db.collection("apps").doc(this.id).update({
-            "api.webhook": data.api.webhook,
+            "api.webhook.url": data.api.webhook,
         });
     }
 
