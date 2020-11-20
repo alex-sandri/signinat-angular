@@ -194,7 +194,9 @@ app.delete("/api/accounts/:id/unlink", async (req, res) =>
     return;
   }
 
-  await Account.unlink(req.params.id);
+  const account = await Account.retrieve(token.user, req.params.id);
+
+  await account?.unlink();
 
   res.status(200).send({ status: 200 });
 });

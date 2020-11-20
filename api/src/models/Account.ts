@@ -107,7 +107,7 @@ export class Account
         return accounts;
     }
 
-    static unlink = async (id: string): Promise<void> => { await db.collection("accounts").doc(id).delete(); }
+    public unlink = async (): Promise<void> => { await db.collection("accounts").doc(this.id).delete(); }
 
     public delete = async (): Promise<void> =>
     {
@@ -116,7 +116,7 @@ export class Account
 
         // TODO
         // if successful
-        await Account.unlink(this.id);
+        await this.unlink();
     }
 
     static withAppId = async (user: User, app: string): Promise<Account | null> =>
