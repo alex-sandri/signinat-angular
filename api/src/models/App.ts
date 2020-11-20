@@ -59,6 +59,19 @@ export class App
         scopes: this.scopes.map(scope => scope.json()),
     });
 
+    public static from = (json: ISerializedApp): App =>
+    {
+        return new App(
+            json.id,
+            json.name,
+            json.url,
+            User.from(json.owner),
+            json.api.key,
+            json.api.webhook,
+            Scope.from(json.scopes.map(scope => scope.value)),
+        );
+    }
+
     static create = async (user: User, data: ApiRequest.Apps.Create): Promise<App> =>
     {
         App.validate(data);

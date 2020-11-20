@@ -28,6 +28,7 @@ export interface ISerializedUser
         last: string,
     },
     email: string,
+    password: string,
     birthday?: Date,
 }
 
@@ -50,8 +51,21 @@ export class User
             last: this.lastName,
         },
         email: this.email,
+        password: this.password,
         birthday: this.birthday,
     });
+
+    public static from = (json: ISerializedUser): User =>
+    {
+        return new User(
+            json.id,
+            json.name.first,
+            json.name.last,
+            json.email,
+            json.password,
+            json.birthday,
+        );
+    }
 
     public filter = (scopes: Scope[]): User =>
     {
