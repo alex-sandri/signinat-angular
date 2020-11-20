@@ -3,6 +3,7 @@ import { firestore } from "firebase-admin";
 import { ApiError } from "./ApiError";
 import { App, ISerializedApp } from "./App";
 import { ISerializedUser, User } from "./User";
+import { Webhook } from "./Webhook";
 
 const db = firestore();
 
@@ -111,12 +112,18 @@ export class Account
 
     public delete = async (): Promise<void> =>
     {
-        // TODO
-        // Send POST request to App webhook to request the account deletion
+        const success = await Webhook.send(
+            this.app.json(),
+            "user.deleted",
+            {
+                id: this.user.id,
+            },
+        );
 
-        // TODO
-        // if successful
-        await this.unlink();
+        if (success)
+        {
+            await this.unlink();
+        }
     }
 
     static withAppId = async (user: User, app: string): Promise<Account | null> =>
