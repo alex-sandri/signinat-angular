@@ -97,6 +97,10 @@ export class App
             owner: user.id,
             api: {
                 key: apiKey,
+                webhook: {
+                    url: "",
+                    signature: uuidv4(),
+                },
             },
         });
 
