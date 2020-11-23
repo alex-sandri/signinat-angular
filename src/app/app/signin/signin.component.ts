@@ -12,6 +12,10 @@ export class SigninComponent implements OnInit {
 
   app!: ISerializedApp;
 
+  requestsFullAccess!: boolean;
+
+  isSignInButtonDisabled!: boolean;
+
   async onSignIn(): Promise<void> {
     await this.api.createAccount(this.app.id);
 
@@ -47,6 +51,10 @@ export class SigninComponent implements OnInit {
           }
 
           this.app = app;
+
+          this.requestsFullAccess = app.scopes[0].value === "user";
+
+          this.isSignInButtonDisabled = this.requestsFullAccess;
         })
         .catch(() =>
         {

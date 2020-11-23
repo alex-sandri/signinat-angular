@@ -5,7 +5,7 @@
 <main *ngIf="app !== undefined">
     <h1>{{app.name}}</h1>
     <small><a href="{{app.url}}" target="_blank">{{app.url}}</a></small>
-    <p *ngIf="app.scopes[0].value == 'user'" id="full-access-warning">
+    <p *ngIf="requestsFullAccess" id="full-access-warning">
         <mark>
             <span>&#9888;</span>
             <b>
@@ -13,9 +13,25 @@
                 <br>
                 <u>Proceed only if you trust this app.</u>
             </b>
+            <label>
+                I trust this app
+                <input
+                    #trustApp
+
+                    type="checkbox"
+
+                    (input)="isSignInButtonDisabled = !trustApp.checked"
+                >
+            </label>
         </mark>
     </p>
     <p>This app wants to access:</p>
     <app-scope-list [scopes]="app.scopes"></app-scope-list>
-    <button (click)="onSignIn()">Sign In @ <b>{{app.name}}</b></button>
+    <button
+        [attr.disabled]="isSignInButtonDisabled ? '' : null"
+
+        (click)="onSignIn()"
+    >
+        Sign In @ <b>{{app.name}}</b>
+    </button>
 </main>
