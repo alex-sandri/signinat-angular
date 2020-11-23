@@ -1,6 +1,9 @@
+import { firestore } from "firebase-admin";
 import axios from "axios";
 
 import { ISerializedApp } from "./App";
+
+const db = firestore();
 
 type TWebhookType =
     "user.deleted";
@@ -21,10 +24,16 @@ export class Webhook
         data: IWebhookUserDeleted,
     ): Promise<boolean> =>
     {
+        const snapshot = await db.collection("webhooks").add({
+            app: app.id,
+            type,
+            data,
+        });
+
         const response = await axios.post(
             app.api.webhook.url,
             {
-                id: "TODO",
+                id: snapshot.id,
                 type,
                 data,
             },
