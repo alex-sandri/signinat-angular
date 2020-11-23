@@ -8,6 +8,13 @@ const db = firestore();
 type TWebhookType =
     "user.deleted";
 
+interface IWebhook
+{
+    app: string,
+    type: TWebhookType,
+    data: IWebhookUserDeleted,
+}
+
 interface IWebhookUserDeleted
 {
     id: string,
@@ -24,7 +31,7 @@ export class Webhook
         data: IWebhookUserDeleted,
     ): Promise<boolean> =>
     {
-        const snapshot = await db.collection("webhooks").add({
+        const snapshot = await db.collection("webhooks").add(<IWebhook>{
             app: app.id,
             type,
             data,
