@@ -2,17 +2,28 @@ import { firestore } from "firebase-admin";
 import axios from "axios";
 
 import { ISerializedApp } from "./App";
+import { ISerializedUser } from "./User";
 
 const db = firestore();
 
 type TWebhookType =
-    "user.deleted";
+    "user.created"
+    | "user.deleted";
+
+type TWebhookData =
+    IWebhookUserCreated
+    | IWebhookUserDeleted;
 
 interface IWebhook
 {
     app: string,
     type: TWebhookType,
-    data: IWebhookUserDeleted,
+    data: TWebhookData,
+}
+
+interface IWebhookUserCreated
+{
+    user: ISerializedUser,
 }
 
 interface IWebhookUserDeleted
@@ -28,7 +39,7 @@ export class Webhook
     public static send = async (
         app: ISerializedApp,
         type: TWebhookType,
-        data: IWebhookUserDeleted,
+        data: TWebhookData,
     ): Promise<boolean> =>
     {
         const snapshot = await db.collection("webhooks").add(<IWebhook>{
