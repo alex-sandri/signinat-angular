@@ -44,6 +44,14 @@ export class Account
             user: user.id,
         });
 
+        await Webhook.send(
+            app.json(),
+            "user.created",
+            {
+                user: user.json(),
+            },
+        );
+
         return new Account(
             account.id,
             app,
