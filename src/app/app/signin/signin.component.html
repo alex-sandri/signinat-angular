@@ -8,21 +8,23 @@
     <p *ngIf="requestsFullAccess" id="full-access-warning">
         <mark>
             <span>&#9888;</span>
-            <b>
-                This app wants to access everything about your account, this means no restrictions.
-                <br>
-                <u>Proceed only if you trust this app.</u>
-            </b>
-            <label>
-                I trust this app
-                <input
-                    #trustApp
-
-                    type="checkbox"
-
-                    (input)="isSignInButtonDisabled = !trustApp.checked"
-                >
-            </label>
+            <div>
+                <b>
+                    This app wants to access everything about your account, this means no restrictions.
+                    <br>
+                    <u>Proceed only if you trust this app.</u>
+                </b>
+                <label>
+                    I trust this app
+                    <input
+                        #trustApp
+    
+                        type="checkbox"
+    
+                        (input)="isSignInButtonDisabled = !trustApp.checked"
+                    >
+                </label>
+            </div>
         </mark>
     </p>
     <p>This app wants to access:</p>

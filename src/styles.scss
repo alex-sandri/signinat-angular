@@ -50,6 +50,8 @@ input,
 button,
 .button
 {
+    display: block;
+    margin: 0;
     padding: 10px;
     font-family: inherit;
     border: 2px solid var(--primary-color);
@@ -57,7 +59,6 @@ button,
     color: var(--secondary-color);
     background-color: var(--primary-color);
     outline: none;
-    display: block;
     font-size: medium;
 
     &:disabled
