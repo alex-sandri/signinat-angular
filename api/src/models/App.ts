@@ -90,6 +90,7 @@ export class App
         if ((await App.withUrl(data.url)) !== null) throw new ApiError("app/url/already-exists");
 
         const apiKey = uuidv4();
+        const webhookSignature = uuidv4();
 
         const app = await db.collection("apps").add(<IApp>{
             name: data.name,
@@ -99,7 +100,7 @@ export class App
                 key: apiKey,
                 webhook: {
                     url: "",
-                    signature: uuidv4(),
+                    signature: webhookSignature,
                 },
             },
         });
@@ -112,8 +113,8 @@ export class App
             data.url,
             user,
             apiKey,
-            "", // TODO
-            "", // TODO
+            "", // A newly created app does not have a webhook URL
+            webhookSignature,
             Scope.from(data.scopes),
         );
     }
