@@ -35,20 +35,18 @@ export class Account
         user: this.user.json(),
     });
 
-    static create = async (user: User, id: string): Promise<Account> =>
+    static create = async (user: User, app: App): Promise<Account> =>
     {
-        if (!(await App.exists(id))) throw new ApiError("app/inexistent");
-
-        if ((await Account.withAppId(user, id)) !== null) throw new ApiError("account/already-exists");
+        if ((await Account.withAppId(user, app.id)) !== null) throw new ApiError("account/already-exists");
 
         const account = await db.collection("accounts").add(<IAccount>{
-            app: id,
+            app: app.id,
             user: user.id,
         });
 
         return new Account(
             account.id,
-            await App.retrieve(id) as App,
+            app,
             user,
         );
     }

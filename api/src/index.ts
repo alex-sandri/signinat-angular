@@ -153,8 +153,6 @@ app.get("/api/accounts/:id", async (req, res) =>
 
 app.post("/api/accounts", async (req, res) =>
 {
-  const id: string = req.body.id;
-
   const token = await AuthToken.retrieve(req.token);
 
   if (!token)
@@ -171,7 +169,16 @@ app.post("/api/accounts", async (req, res) =>
     return;
   }
 
-  await Account.create(token.user, id);
+  const app = await App.retrieve(req.body.id);
+
+  if (!app)
+  {
+    res.status(403).send({ status: 403 });
+
+    return;
+  }
+
+  await Account.create(token.user, app);
 
   res.status(200).send({ status: 200 });
 });
