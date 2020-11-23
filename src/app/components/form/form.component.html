@@ -32,11 +32,6 @@
         <legend>{{group.name}}</legend>
         <details (toggle)="group.open = !group.open">
             <summary>{{group.open ? "Hide" : "Show"}}</summary>
-            <small *ngIf="group.description">
-                <br>
-                <span *ngIf="!group.description.options || !group.description.options.mark">{{group.description.text}}</span>
-                <mark *ngIf="group.description.options && group.description.options.mark">{{group.description.text}}</mark>
-            </small>
             <label *ngFor="let input of group.inputs">
                 {{input.label}}
                 <input

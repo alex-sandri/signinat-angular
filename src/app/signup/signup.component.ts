@@ -22,14 +22,6 @@ export class SignupComponent implements OnInit {
       },
       {
         name: "Additional information",
-        description: {
-          text: `
-            This information is not required to create an account but some apps may require it,
-            so when signing into an app for the first time we may ask you
-            to add this information to your account.
-          `,
-          options: { mark: true },
-        },
         inputs: [
           { label: "Birthday", name: "birthday", type: "date", required: false, autocomplete: "bday" },
         ],

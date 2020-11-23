@@ -98,12 +98,6 @@ export class FormOptions
 export interface FormGroup
 {
   name: string,
-  description?: {
-    text: string,
-    options?: {
-      mark?: boolean,
-    },
-  },
   inputs: FormInput[],
 
   open?: boolean,
