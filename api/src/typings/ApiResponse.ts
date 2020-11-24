@@ -30,6 +30,21 @@ export namespace ApiResponse
                 birthday: string,
             },
         }
+
+        export interface Update
+        {
+            result: {
+                valid: boolean,
+                data?: ISerializedUser,
+            },
+            errors: {
+                name: {
+                    first: string,
+                    last: string,
+                },
+                email: string,
+            },
+        }
     }
 
     export namespace Apps

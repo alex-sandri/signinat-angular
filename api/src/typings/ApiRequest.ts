@@ -12,6 +12,15 @@ export namespace ApiRequest
             password: string,
             birthday?: string,
         }
+
+        export interface Update
+        {
+            name: {
+                first: string,
+                last: string,
+            },
+            email: string,
+        }
     }
 
     export namespace Apps

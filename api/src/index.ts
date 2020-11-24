@@ -81,6 +81,71 @@ app.post("/api/users", async (req, res) =>
   res.send(response);
 });
 
+app.put("/api/users/:id", async (req, res) =>
+{
+  const token = await AuthToken.retrieve(req.token);
+
+  if (!token)
+  {
+    res.status(401).send({ status: 401 });
+
+    return;
+  }
+
+  if (token.type !== "user")
+  {
+    res.status(403).send({ status: 403 });
+
+    return;
+  }
+
+  const data: ApiRequest.Users.Update = req.body;
+
+  const response: ApiResponse.Users.Update = {
+    result: { valid: true },
+    errors: {
+      name: { first: "", last: "" },
+      email: "",
+    },
+  };
+
+  try
+  {
+    const user = await User.retrieve(req.params.id);
+
+    if (user)
+    {
+      user.update(data);
+
+      response.result.data = user.json();
+    }
+  }
+  catch (e)
+  {
+    const { id, message } = e as ApiError;
+
+    response.result.valid = false;
+
+    switch (id)
+    {
+      case "user/name/first/empty":
+        response.errors.name.first = message;
+        break;
+      case "user/name/last/empty":
+        response.errors.name.last = message;
+        break;
+      case "user/email/empty":
+      case "user/email/already-exists":
+        response.errors.email = message;
+        break;
+    }
+  }
+
+  res
+    .status(response.result.valid ? 200 : 400)
+    .send(response);
+});
+
 app.delete("/api/users/:id", async (req, res) =>
 {
   const token = await AuthToken.retrieve(req.token);

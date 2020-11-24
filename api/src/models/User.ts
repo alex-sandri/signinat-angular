@@ -147,6 +147,17 @@ export class User
         );
     }
 
+    public update = async (data: ApiRequest.Users.Update): Promise<void> =>
+    {
+        User.validate(data);
+
+        await db.collection("apps").doc(this.id).update({
+            "name.first": data.name.first,
+            "name.last": data.name.last,
+            "email": data.email,
+        });
+    }
+
     public delete = async (): Promise<void> =>
     {
         await db.collection("users").doc(this.id).delete();
@@ -179,10 +190,7 @@ export class User
 
     static exists = async (email: string): Promise<boolean> => (await User.withEmail(email)) !== null;
 
-    /**
-     * @throws `Error` if data is not valid
-     */
-    static validate = (data: ApiRequest.Users.Create): void =>
+    static validate = (data: ApiRequest.Users.Create | ApiRequest.Users.Update): void =>
     {
         if (data.name.first.length === 0) throw new ApiError("user/name/first/empty");
 
@@ -190,7 +198,10 @@ export class User
 
         if (data.email.length === 0) throw new ApiError("user/email/empty");
 
-        if (data.password.length === 0) throw new ApiError("user/password/empty");
-        else if (data.password.length < 8) throw new ApiError("user/password/weak");
+        if ("password" in data)
+        {
+            if (data.password.length === 0) throw new ApiError("user/password/empty");
+            else if (data.password.length < 8) throw new ApiError("user/password/weak");
+        }
     }
 }
