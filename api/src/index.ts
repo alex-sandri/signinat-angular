@@ -36,14 +36,9 @@ app.post("/api/users", async (req, res) =>
 {
   const data: ApiRequest.Users.Create = req.body;
 
-  const response: ApiResponse.Users.Create = {
+  const response: ApiResponse = {
     result: { valid: true },
-    errors: {
-      name: { first: "", last: "" },
-      email: "",
-      password: "",
-      birthday: "",
-    },
+    errors: [],
   };
 
   try
@@ -54,30 +49,9 @@ app.post("/api/users", async (req, res) =>
   }
   catch (e)
   {
-    const { id, message } = e as ApiError;
-
     response.result.valid = false;
 
-    if (id.startsWith("user/name/first/"))
-    {
-      response.errors.name.first = message;
-    }
-    else if (id.startsWith("user/name/last/"))
-    {
-      response.errors.name.last = message;
-    }
-    else if (id.startsWith("user/email/"))
-    {
-      response.errors.email = message;
-    }
-    else if (id.startsWith("user/password/"))
-    {
-      response.errors.password = message;
-    }
-    else if (id.startsWith("user/birthday/"))
-    {
-      response.errors.birthday = message;
-    }
+    response.errors.push((e as ApiError).json());
   }
 
   res.send(response);
@@ -103,12 +77,9 @@ app.put("/api/users/:id", async (req, res) =>
 
   const data: ApiRequest.Users.Update = req.body;
 
-  const response: ApiResponse.Users.Update = {
+  const response: ApiResponse = {
     result: { valid: true },
-    errors: {
-      name: { first: "", last: "" },
-      email: "",
-    },
+    errors: [],
   };
 
   try
@@ -124,23 +95,9 @@ app.put("/api/users/:id", async (req, res) =>
   }
   catch (e)
   {
-    const { id, message } = e as ApiError;
-
     response.result.valid = false;
 
-    switch (id)
-    {
-      case "user/name/first/empty":
-        response.errors.name.first = message;
-        break;
-      case "user/name/last/empty":
-        response.errors.name.last = message;
-        break;
-      case "user/email/empty":
-      case "user/email/already-exists":
-        response.errors.email = message;
-        break;
-    }
+    response.errors.push((e as ApiError).json());
   }
 
   res
@@ -367,12 +324,9 @@ app.post("/api/apps", async (req, res) =>
 
   const data: ApiRequest.Apps.Create = req.body;
 
-  const response: ApiResponse.Apps.Create = {
+  const response: ApiResponse = {
     result: { valid: true },
-    errors: {
-      name: "",
-      url: "",
-    },
+    errors: [],
   };
 
   try
@@ -383,15 +337,9 @@ app.post("/api/apps", async (req, res) =>
   }
   catch (e)
   {
-    const { id, message } = e as ApiError;
-
     response.result.valid = false;
 
-    switch (id)
-    {
-      case "app/name/empty": response.errors.name = message; break;
-      case "app/url/already-exists": response.errors.url = message; break;
-    }
+    response.errors.push((e as ApiError).json());
   }
 
   res.send(response);
@@ -424,13 +372,9 @@ app.put("/api/apps/:id", async (req, res) =>
 
   const data: ApiRequest.Apps.Update = req.body;
 
-  const response: ApiResponse.Apps.Update = {
+  const response: ApiResponse = {
     result: { valid: true },
-    errors: {
-      api: {
-        webhook: "",
-      },
-    },
+    errors: [],
   };
 
   try
@@ -446,17 +390,9 @@ app.put("/api/apps/:id", async (req, res) =>
   }
   catch (e)
   {
-    const { id, message } = e as ApiError;
-
     response.result.valid = false;
 
-    switch (id)
-    {
-      case "app/webhook/url/empty":
-      case "app/webhook/url/invalid":
-        response.errors.api.webhook = message;
-        break;
-    }
+    response.errors.push((e as ApiError).json());
   }
 
   if (response.result.valid) res.send(response);
@@ -520,14 +456,9 @@ app.post("/api/tokens/users", async (req, res) =>
 {
   const data: ApiRequest.Tokens.Create = req.body;
 
-  const response: ApiResponse.Tokens.Create = {
+  const response: ApiResponse = {
     result: { valid: true },
-    errors: {
-      user: {
-        email: "",
-        password: "",
-      },
-    },
+    errors: [],
   };
 
   try
@@ -538,18 +469,9 @@ app.post("/api/tokens/users", async (req, res) =>
   }
   catch (e)
   {
-    const { id, message } = e as ApiError;
-
     response.result.valid = false;
 
-    if (id.startsWith("user/email/"))
-    {
-      response.errors.user.email = message;
-    }
-    else if (id.startsWith("user/password/"))
-    {
-      response.errors.user.password = message;
-    }
+    response.errors.push((e as ApiError).json());
   }
 
   res.send(response);

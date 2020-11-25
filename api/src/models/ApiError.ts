@@ -1,3 +1,9 @@
+export interface ISerializedApiError
+{
+    id: TApiErrorType,
+    message: string,
+}
+
 export class ApiError
 {
     public readonly message: string;
@@ -40,6 +46,12 @@ export class ApiError
             default: this.message = "Unknown error"; break;
         }
     }
+
+    public json = (): ISerializedApiError =>
+    ({
+        id: this.id,
+        message: this.message,
+    });
 }
 
 type TApiErrorType =
