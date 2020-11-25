@@ -2,29 +2,38 @@ export class ApiError
 {
     public readonly message: string;
 
-    private static readonly EMPTY_FIELD = "This field cannot be empty";
-
     constructor(public id: TApiErrorType)
     {
         switch (id)
         {
-            case "user/name/first/empty": this.message = ApiError.EMPTY_FIELD; break;
+            // ACCOUNT
+            case "account/already-exists": this.message = "An account with this app already exists"; break;
 
-            case "user/name/last/empty": this.message = ApiError.EMPTY_FIELD; break;
+            // APP
+            case "app/inexistent": this.message = "This app does not exist"; break;
 
-            case "user/email/empty": this.message = ApiError.EMPTY_FIELD; break;
+            case "app/name/empty": this.message = "The name cannot be empty"; break;
+
+            case "app/url/empty": this.message = "The URL cannot be empty"; break;
+            case "app/url/already-exists": this.message = "An app with this URL already exists"; break;
+
+            // USER
+            case "user/inexistent": this.message = "This user does not exist"; break;
+
+            case "user/name/first/empty": this.message = "The first name cannot be empty"; break;
+
+            case "user/name/last/empty": this.message = "The last name cannot be empty"; break;
+
+            case "user/email/empty": this.message = "The email cannot be empty"; break;
             case "user/email/already-exists": this.message = "A user with this email already exists"; break;
             case "user/email/inexistent": this.message = "A user with this email does not exist"; break;
 
-            case "user/password/empty": this.message = ApiError.EMPTY_FIELD; break;
+            case "user/password/required": this.message = "The password is required"; break;
+            case "user/password/empty": this.message = "The password cannot be empty"; break;
             case "user/password/weak": this.message = "Please enter a stronger password"; break;
             case "user/password/wrong": this.message = "Wrong password"; break;
 
-            case "app/name/empty": this.message = ApiError.EMPTY_FIELD; break;
-
-            case "app/url/empty": this.message = ApiError.EMPTY_FIELD; break;
-            case "app/url/already-exists": this.message = "An app with this URL already exists"; break;
-
+            // DEFAULT
             default: this.message = "Unknown error"; break;
         }
     }
