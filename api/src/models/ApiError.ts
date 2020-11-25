@@ -4,7 +4,7 @@ export class ApiError
 
     private static readonly EMPTY_FIELD = "This field cannot be empty";
 
-    constructor(public id: string)
+    constructor(public id: TApiErrorType)
     {
         switch (id)
         {
@@ -29,3 +29,31 @@ export class ApiError
         }
     }
 }
+
+type TApiErrorType =
+    // ACCOUNT
+      "account/already-exists"
+
+    // APP
+    | "app/inexistent"
+
+    | "app/name/empty"
+
+    | "app/url/empty"
+    | "app/url/already-exists"
+
+    // USER
+    | "user/inexistent"
+
+    | "user/name/first/empty"
+
+    | "user/name/last/empty"
+
+    | "user/email/empty"
+    | "user/email/already-exists"
+    | "user/email/inexistent"
+
+    | "user/password/required"
+    | "user/password/empty"
+    | "user/password/weak"
+    | "user/password/wrong";
