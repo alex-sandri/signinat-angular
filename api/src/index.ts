@@ -39,9 +39,9 @@ app.post("/api/users", async (req, res) =>
   const response: ApiResponse.Users.Create = {
     result: { valid: true },
     errors: {
-      name: { first: { error: "" }, last: { error: "" } },
-      email: { error: "" },
-      password: { error: "" },
+      name: { first: "", last: "" },
+      email: "",
+      password: "",
       birthday: "",
     },
   };
@@ -58,23 +58,25 @@ app.post("/api/users", async (req, res) =>
 
     response.result.valid = false;
 
-    switch (id)
+    if (id.startsWith("user/name/first/"))
     {
-      case "user/name/first/empty":
-        response.errors.name.first.error = message;
-        break;
-      case "user/name/last/empty":
-        response.errors.name.last.error = message;
-        break;
-      case "user/email/empty":
-      case "user/email/already-exists":
-        response.errors.email.error = message;
-        break;
-      case "user/password/empty":
-      case "user/password/weak":
-        response.errors.password.error = message;
-        break;
-      // TODO: Birthday errors
+      response.errors.name.first = message;
+    }
+    else if (id.startsWith("user/name/last/"))
+    {
+      response.errors.name.last = message;
+    }
+    else if (id.startsWith("user/email/"))
+    {
+      response.errors.email = message;
+    }
+    else if (id.startsWith("user/password/"))
+    {
+      response.errors.password = message;
+    }
+    else if (id.startsWith("user/birthday/"))
+    {
+      response.errors.birthday = message;
     }
   }
 

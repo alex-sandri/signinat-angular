@@ -106,7 +106,7 @@ export class User
 
     static create = async (data: ApiRequest.Users.Create): Promise<User> =>
     {
-        User.validate(data);
+        User.validate(data, "create");
 
         if (await User.exists(data.email)) throw new ApiError("user/email/already-exists");
 
@@ -149,7 +149,7 @@ export class User
 
     public update = async (data: ApiRequest.Users.Update): Promise<void> =>
     {
-        User.validate(data);
+        User.validate(data, "update");
 
         await db.collection("apps").doc(this.id).update({
             "name.first": data.name.first,
@@ -190,7 +190,7 @@ export class User
 
     static exists = async (email: string): Promise<boolean> => (await User.withEmail(email)) !== null;
 
-    static validate = (data: ApiRequest.Users.Create | ApiRequest.Users.Update): void =>
+    static validate = (data: ApiRequest.Users.Create | ApiRequest.Users.Update, type: "create" | "update"): void =>
     {
         if (data.name.first.length === 0) throw new ApiError("user/name/first/empty");
 
@@ -198,9 +198,10 @@ export class User
 
         if (data.email.length === 0) throw new ApiError("user/email/empty");
 
-        if ("password" in data)
+        if (type === "create")
         {
-            if (data.password.length === 0) throw new ApiError("user/password/empty");
+            if (!("password" in data)) throw new ApiError("user/password/required");
+            else if (data.password.length === 0) throw new ApiError("user/password/empty");
             else if (data.password.length < 8) throw new ApiError("user/password/weak");
         }
     }

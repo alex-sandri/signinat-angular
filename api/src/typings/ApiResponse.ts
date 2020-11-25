@@ -14,19 +14,11 @@ export namespace ApiResponse
             },
             errors: {
                 name: {
-                    first: {
-                        error: string,
-                    },
-                    last: {
-                        error: string,
-                    },
+                    first: string,
+                    last: string,
                 },
-                email: {
-                    error: string,
-                },
-                password: {
-                    error: string,
-                },
+                email: string,
+                password: string,
                 birthday: string,
             },
         }
