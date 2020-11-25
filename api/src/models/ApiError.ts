@@ -17,6 +17,9 @@ export class ApiError
             case "app/url/empty": this.message = "The URL cannot be empty"; break;
             case "app/url/already-exists": this.message = "An app with this URL already exists"; break;
 
+            case "app/webhook/url/empty": this.message = "The webhook URL cannot be empty"; break;
+            case "app/webhook/url/invalid": this.message = "The webhook URL is invalid"; break;
+
             // USER
             case "user/inexistent": this.message = "This user does not exist"; break;
 
@@ -50,6 +53,9 @@ type TApiErrorType =
 
     | "app/url/empty"
     | "app/url/already-exists"
+
+    | "app/webhook/url/empty"
+    | "app/webhook/url/invalid"
 
     // USER
     | "user/inexistent"

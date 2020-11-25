@@ -452,8 +452,8 @@ app.put("/api/apps/:id", async (req, res) =>
 
     switch (id)
     {
-      case "app/webhook/empty":
-      case "app/webhook/invalid":
+      case "app/webhook/url/empty":
+      case "app/webhook/url/invalid":
         response.errors.api.webhook = message;
         break;
     }
