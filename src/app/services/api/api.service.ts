@@ -26,13 +26,13 @@ export class ApiService {
     TOKENS: `${ApiService.BASE_ENDPOINT}/tokens`,
   };
 
-  public createUser = async (data: ApiRequest.Users.Create): Promise<ApiResponse.Users.Create> =>
+  public createUser = async (data: ApiRequest.Users.Create): Promise<ApiResponse> =>
   {
     const response = await this.http.post(ApiService.ENDPOINTS.USERS, JSON.stringify(data), {
       headers: { "Content-Type": "application/json" },
     }).toPromise();
 
-    return response as ApiResponse.Users.Create;
+    return response as ApiResponse;
   }
 
   public deleteUser = async (): Promise<void> =>
@@ -95,7 +95,7 @@ export class ApiService {
     }).toPromise();
   }
 
-  public createApp = async (data: ApiRequest.Apps.Create): Promise<ApiResponse.Apps.Create> =>
+  public createApp = async (data: ApiRequest.Apps.Create): Promise<ApiResponse> =>
   {
     const response = await this.http.post(ApiService.ENDPOINTS.APPS, JSON.stringify(data), {
       headers: {
@@ -104,7 +104,7 @@ export class ApiService {
       },
     }).toPromise();
 
-    return response as ApiResponse.Apps.Create;
+    return response as ApiResponse;
   }
 
   public retrieveApp = async (id: string): Promise<ISerializedApp> =>
@@ -129,7 +129,7 @@ export class ApiService {
     return response as ISerializedApp[];
   }
 
-  public updateApp = async (id: string, data: ApiRequest.Apps.Update): Promise<ApiResponse.Apps.Update> =>
+  public updateApp = async (id: string, data: ApiRequest.Apps.Update): Promise<ApiResponse> =>
   {
     const response = await this.http.put(`${ApiService.ENDPOINTS.APPS}/${id}`, JSON.stringify(data), {
       headers: {
@@ -138,7 +138,7 @@ export class ApiService {
       },
     }).toPromise();
 
-    return response as ApiResponse.Apps.Update;
+    return response as ApiResponse;
   }
 
   public deleteApp = async (id: string): Promise<void> =>
@@ -161,7 +161,7 @@ export class ApiService {
     return response as ISerializedScope[];
   }
 
-  public createUserToken = async (data: ApiRequest.Tokens.Create): Promise<ApiResponse.Tokens.Create> =>
+  public createUserToken = async (data: ApiRequest.Tokens.Create): Promise<ApiResponse> =>
   {
     const response = await this.http.post(`${ApiService.ENDPOINTS.TOKENS}/users`, JSON.stringify(data), {
       headers: {
@@ -169,7 +169,7 @@ export class ApiService {
       },
     }).toPromise();
 
-    return response as ApiResponse.Tokens.Create;
+    return response as ApiResponse;
   }
 
   public createAppToken = async (data: ApiRequest.Tokens.Create): Promise<ISerializedAuthToken> =>

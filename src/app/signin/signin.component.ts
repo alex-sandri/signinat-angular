@@ -43,8 +43,8 @@ export class SigninComponent implements OnInit {
 
     if (!response.result.valid)
     {
-      this.options.getInput("email")!.error = response.errors.user.email;
-      this.options.getInput("password")!.error = response.errors.user.password;
+      this.options.getInput("email")!.error = response.errors.find(e => e.id.startsWith("user/email/"))?.message;
+      this.options.getInput("password")!.error = response.errors.find(e => e.id.startsWith("user/password/"))?.message;
     }
     else
     {

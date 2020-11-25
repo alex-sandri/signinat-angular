@@ -53,10 +53,10 @@ export class SignupComponent implements OnInit {
 
     if (!response.result.valid)
     {
-      this.options.getInput("first-name")!.error = response.errors.name.first;
-      this.options.getInput("last-name")!.error = response.errors.name.last;
-      this.options.getInput("email")!.error = response.errors.email;
-      this.options.getInput("password")!.error = response.errors.password;
+      this.options.getInput("first-name")!.error = response.errors.find(e => e.id.startsWith("user/name/first/"))?.message;
+      this.options.getInput("last-name")!.error = response.errors.find(e => e.id.startsWith("user/name/last/"))?.message;
+      this.options.getInput("email")!.error = response.errors.find(e => e.id.startsWith("user/email/"))?.message;
+      this.options.getInput("password")!.error = response.errors.find(e => e.id.startsWith("user/password/"))?.message;
     }
 
     submitButton.disabled = false;
