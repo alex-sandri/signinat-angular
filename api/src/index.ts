@@ -370,8 +370,8 @@ app.post("/api/apps", async (req, res) =>
   const response: ApiResponse.Apps.Create = {
     result: { valid: true },
     errors: {
-      name: { error: "" },
-      url: { error: ""},
+      name: "",
+      url: "",
     },
   };
 
@@ -389,8 +389,8 @@ app.post("/api/apps", async (req, res) =>
 
     switch (id)
     {
-      case "app/name/empty": response.errors.name.error = message; break;
-      case "app/url/already-exists": response.errors.url.error = message; break;
+      case "app/name/empty": response.errors.name = message; break;
+      case "app/url/already-exists": response.errors.url = message; break;
     }
   }
 
@@ -428,7 +428,7 @@ app.put("/api/apps/:id", async (req, res) =>
     result: { valid: true },
     errors: {
       api: {
-        webhook: { error: "" },
+        webhook: "",
       },
     },
   };
@@ -454,7 +454,7 @@ app.put("/api/apps/:id", async (req, res) =>
     {
       case "app/webhook/empty":
       case "app/webhook/invalid":
-        response.errors.api.webhook.error = message;
+        response.errors.api.webhook = message;
         break;
     }
   }

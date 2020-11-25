@@ -48,12 +48,8 @@ export namespace ApiResponse
                 data?: ISerializedApp,
             },
             errors: {
-                name: {
-                    error: string,
-                },
-                url: {
-                    error: string,
-                },
+                name: string,
+                url: string,
             },
         }
 
@@ -65,9 +61,7 @@ export namespace ApiResponse
             },
             errors: {
                 api: {
-                    webhook: {
-                        error: string,
-                    },
+                    webhook: string,
                 },
             },
         }

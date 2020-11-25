@@ -75,8 +75,8 @@ export class SettingsComponent implements OnInit {
 
     if (!response.result.valid)
     {
-      this.createNewAppFormOptions.getInput("name")!.error = response.errors.name.error;
-      this.createNewAppFormOptions.getInput("url")!.error = response.errors.url.error;
+      this.createNewAppFormOptions.getInput("name")!.error = response.errors.name;
+      this.createNewAppFormOptions.getInput("url")!.error = response.errors.url;
     }
     else
     {
