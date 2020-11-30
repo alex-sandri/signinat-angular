@@ -24,6 +24,18 @@ export interface ISerializedScope
     includes: ISerializedScope[],
 }
 
+/**
+ * @todo
+ * 
+ * When a user creates an account save the app scopes
+ * and when that token is used an app can only access
+ * those scopes and not more or less if the app
+ * updates the scopes it needs, this is to safeguard
+ * the user against malicious apps that might ask for
+ * only one scope and then, after and update, ask for
+ * full control of the user account.
+ */
+
 export class Scope
 {
     public static readonly ROOT = new Scope("user");
