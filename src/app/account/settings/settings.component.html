@@ -6,9 +6,9 @@
     </small>
 </ng-template>
 
-<main>
-    <section *ngIf="section === 'general'">
-        <fieldset *ngIf="user !== undefined">
+<main *ngIf="user !== undefined">
+    <section *ngIf="section === 'general'" class="editable">
+        <fieldset>
             <legend>Profile</legend>
             <div class="field">
                 <b>First Name</b>
@@ -31,6 +31,7 @@
                 <small *ngIf="user.birthday; else notAvailable">{{user.birthday}}</small>
             </div>
         </fieldset>
+        <button>Edit</button>
     </section>
     <section *ngIf="section === 'advanced'">
         <fieldset>
