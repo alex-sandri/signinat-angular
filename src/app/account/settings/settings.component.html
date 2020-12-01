@@ -42,7 +42,7 @@
     <section *ngIf="section === 'developer'">
         <h1>Apps</h1>
         <div id="apps">
-            <button (click)="setCreateNewAppDialogVisible(true)">
+            <button (click)="setDialogVisible(createNewAppDialog, true)">
                 <span [style.font-size]="'xx-large'">&#43;</span>
                 <br>
                 Create new App
@@ -68,7 +68,7 @@
         [options]="createNewAppFormOptions"
         
         (formSubmit)="createNewAppFormOnSubmit($event)"
-        (formCancel)="setCreateNewAppDialogVisible(false)"
+        (formCancel)="setDialogVisible(createNewAppDialog, false)"
     >
     </app-form>
 </dialog>
@@ -78,6 +78,7 @@
         [options]="updateProfileFormOptions"
         
         (formSubmit)="updateProfileFormOnSubmit($event)"
+        (formCancel)="setDialogVisible(updateProfileDialog, false)"
     >
     </app-form>
 </dialog>

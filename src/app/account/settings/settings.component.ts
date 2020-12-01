@@ -67,19 +67,6 @@ export class SettingsComponent implements OnInit {
     this.router.navigateByUrl("/");
   }
 
-  setCreateNewAppDialogVisible(visible: boolean) {
-    if (visible)
-    {
-      this.createNewAppDialog.nativeElement.showModal();
-    }
-    else
-    {
-      this.createNewAppDialog.nativeElement.close();
-
-      this.createNewAppDialog.nativeElement.querySelector("form")!.reset();
-    }
-  }
-
   setDialogVisible(dialog: HTMLDialogElement, visible: boolean)
   {
     if (visible)
@@ -118,7 +105,31 @@ export class SettingsComponent implements OnInit {
     }
     else
     {
-      this.setCreateNewAppDialogVisible(false);
+      this.setDialogVisible(this.createNewAppDialog.nativeElement, false);
+    }
+
+    submitButton.disabled = false;
+  }
+
+  async updateProfileFormOnSubmit(form: HTMLFormElement) {
+    const submitButton = form.querySelector("button[type=submit]") as HTMLButtonElement;
+
+    submitButton.disabled = true;
+
+    const response = await this.api.createApp({
+      name: this.createNewAppFormOptions.getInput("name")!.value!.trim(),
+      url: this.createNewAppFormOptions.getInput("url")!.value!.trim(),
+      scopes: this.createNewAppFormOptions.getInput("scopes")!.selectedValues!,
+    });
+
+    if (!response.result.valid)
+    {
+      this.createNewAppFormOptions.getInput("name")!.error = response.errors.find(e => e.id.startsWith("app/name/"))?.message;
+      this.createNewAppFormOptions.getInput("url")!.error = response.errors.find(e => e.id.startsWith("app/url/"))?.message;
+    }
+    else
+    {
+      this.setDialogVisible(this.updateProfileDialog.nativeElement, false);
     }
 
     submitButton.disabled = false;
