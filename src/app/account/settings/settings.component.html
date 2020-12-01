@@ -31,7 +31,7 @@
                 <small *ngIf="user.birthday; else notAvailable">{{user.birthday}}</small>
             </div>
         </fieldset>
-        <button>Edit</button>
+        <button (click)="setDialogVisible(updateProfileDialog, true)">Edit</button>
     </section>
     <section *ngIf="section === 'advanced'">
         <fieldset>
@@ -69,6 +69,15 @@
         
         (formSubmit)="createNewAppFormOnSubmit($event)"
         (formCancel)="setCreateNewAppDialogVisible(false)"
+    >
+    </app-form>
+</dialog>
+
+<dialog #updateProfileDialog>
+    <app-form
+        [options]="updateProfileFormOptions"
+        
+        (formSubmit)="updateProfileFormOnSubmit($event)"
     >
     </app-form>
 </dialog>

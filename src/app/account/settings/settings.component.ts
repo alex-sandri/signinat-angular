@@ -29,7 +29,31 @@ export class SettingsComponent implements OnInit {
     true,
   );
 
+  updateProfileFormOptions = new FormOptions(
+    "Profile",
+    [
+      {
+        name: "default",
+        inputs: [
+          { label: "First Name", name: "first-name", type: "text", required: true, autocomplete: "given-name" },
+          { label: "Last Name", name: "last-name", type: "text", required: true, autocomplete: "family-name" },
+          { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
+          { label: "Password", name: "password", type: "password", required: true, autocomplete: "new-password" },
+        ],
+      },
+      {
+        name: "Additional information",
+        inputs: [
+          { label: "Birthday", name: "birthday", type: "date", required: false, autocomplete: "bday" },
+        ],
+      },
+    ],
+    "Update",
+    true,
+  );
+
   @ViewChild("createNewAppDialog") createNewAppDialog!: ElementRef<HTMLDialogElement>;
+  @ViewChild("updateProfileDialog") updateProfileDialog!: ElementRef<HTMLDialogElement>;
 
   section: string;
 
@@ -53,6 +77,20 @@ export class SettingsComponent implements OnInit {
       this.createNewAppDialog.nativeElement.close();
 
       this.createNewAppDialog.nativeElement.querySelector("form")!.reset();
+    }
+  }
+
+  setDialogVisible(dialog: HTMLDialogElement, visible: boolean)
+  {
+    if (visible)
+    {
+      dialog.showModal();
+    }
+    else
+    {
+      dialog.querySelector("form")!.reset();
+
+      dialog.close();
     }
   }
 
