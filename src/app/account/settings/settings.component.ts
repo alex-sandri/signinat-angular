@@ -116,16 +116,22 @@ export class SettingsComponent implements OnInit {
 
     submitButton.disabled = true;
 
-    const response = await this.api.createApp({
-      name: this.createNewAppFormOptions.getInput("name")!.value!.trim(),
-      url: this.createNewAppFormOptions.getInput("url")!.value!.trim(),
-      scopes: this.createNewAppFormOptions.getInput("scopes")!.selectedValues!,
+    const response = await this.api.createUser({
+      name: {
+        first: this.updateProfileFormOptions.getInput("first-name")!.value!.trim(),
+        last: this.updateProfileFormOptions.getInput("last-name")!.value!.trim(),
+      },
+      email: this.updateProfileFormOptions.getInput("email")!.value!.trim(),
+      password: this.updateProfileFormOptions.getInput("password")!.value!,
+      birthday: this.updateProfileFormOptions.getInput("birthday")!.value!,
     });
 
     if (!response.result.valid)
     {
-      this.createNewAppFormOptions.getInput("name")!.error = response.errors.find(e => e.id.startsWith("app/name/"))?.message;
-      this.createNewAppFormOptions.getInput("url")!.error = response.errors.find(e => e.id.startsWith("app/url/"))?.message;
+      this.updateProfileFormOptions.getInput("first-name")!.error = response.errors.find(e => e.id.startsWith("user/name/first/"))?.message;
+      this.updateProfileFormOptions.getInput("last-name")!.error = response.errors.find(e => e.id.startsWith("user/name/last/"))?.message;
+      this.updateProfileFormOptions.getInput("email")!.error = response.errors.find(e => e.id.startsWith("user/email/"))?.message;
+      this.updateProfileFormOptions.getInput("password")!.error = response.errors.find(e => e.id.startsWith("user/password/"))?.message;
     }
     else
     {
