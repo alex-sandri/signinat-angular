@@ -35,12 +35,8 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  async onSubmit(form: HTMLFormElement): Promise<void>
+  async onSubmit(end: () => void): Promise<void>
   {
-    const submitButton = form.querySelector("button[type=submit]") as HTMLButtonElement;
-
-    submitButton.disabled = true;
-
     const response = await this.api.createUser({
       name: {
         first: this.options.getInput("first-name")!.value!.trim(),
@@ -59,7 +55,6 @@ export class SignupComponent implements OnInit {
       this.options.getInput("password")!.error = response.errors.find(e => e.id.startsWith("user/password/"))?.message;
     }
 
-    submitButton.disabled = false;
+    end();
   }
-
 }

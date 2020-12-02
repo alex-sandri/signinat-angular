@@ -11,7 +11,7 @@ export class FormComponent implements OnInit {
   options!: FormOptions;
 
   @Output()
-  formSubmit = new EventEmitter<HTMLFormElement>();
+  formSubmit = new EventEmitter<() => void>();
 
   @Output()
   formCancel = new EventEmitter<void>();
@@ -45,7 +45,15 @@ export class FormComponent implements OnInit {
       .flat()
       .forEach(input => input.error = "");
 
-    this.formSubmit.emit(e.target as HTMLFormElement);
+    const form = e.target as HTMLFormElement;
+
+    const submitButton = form.querySelector("button[type=submit]") as HTMLButtonElement;
+
+    submitButton.disabled = true;
+
+    const callback = () => submitButton.disabled = false;
+
+    this.formSubmit.emit(callback);
   }
 
   async cancel()

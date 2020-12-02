@@ -29,11 +29,8 @@ export class SigninComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  async onSubmit(form: HTMLFormElement): Promise<void> {
-    const submitButton = form.querySelector("button[type=submit]") as HTMLButtonElement;
-
-    submitButton.disabled = true;
-
+  async onSubmit(end: () => void): Promise<void>
+  {
     const response = await this.api.createUserToken({
       user: {
         email: this.options.getInput("email")!.value!.trim(),
@@ -61,7 +58,6 @@ export class SigninComponent implements OnInit {
       }
     }
 
-    submitButton.disabled = false;
+    end();
   }
-
 }

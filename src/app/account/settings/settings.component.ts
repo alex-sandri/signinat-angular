@@ -61,7 +61,8 @@ export class SettingsComponent implements OnInit {
 
   apps!: ISerializedApp[];
 
-  async deleteAccount() {
+  async deleteAccount()
+  {
     await this.api.deleteUser();
 
     this.router.navigateByUrl("/");
@@ -81,17 +82,15 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  setSection(section: string) {
+  setSection(section: string)
+  {
     this.section = section;
 
     this.router.navigateByUrl(`account/settings/${section}`);
   }
 
-  async createNewAppFormOnSubmit(form: HTMLFormElement) {
-    const submitButton = form.querySelector("button[type=submit]") as HTMLButtonElement;
-
-    submitButton.disabled = true;
-
+  async createNewAppFormOnSubmit(end: () => void)
+  {
     const response = await this.api.createApp({
       name: this.createNewAppFormOptions.getInput("name")!.value!.trim(),
       url: this.createNewAppFormOptions.getInput("url")!.value!.trim(),
@@ -108,14 +107,11 @@ export class SettingsComponent implements OnInit {
       this.setDialogVisible(this.createNewAppDialog.nativeElement, false);
     }
 
-    submitButton.disabled = false;
+    end();
   }
 
-  async updateProfileFormOnSubmit(form: HTMLFormElement) {
-    const submitButton = form.querySelector("button[type=submit]") as HTMLButtonElement;
-
-    submitButton.disabled = true;
-
+  async updateProfileFormOnSubmit(end: () => void)
+  {
     const response = await this.api.createUser({
       name: {
         first: this.updateProfileFormOptions.getInput("first-name")!.value!.trim(),
@@ -138,10 +134,11 @@ export class SettingsComponent implements OnInit {
       this.setDialogVisible(this.updateProfileDialog.nativeElement, false);
     }
 
-    submitButton.disabled = false;
+    end();
   }
 
-  constructor(private api: ApiService, private router: Router) {
+  constructor(private api: ApiService, private router: Router)
+  {
     this.section = router.url.split("/").pop() as string;
 
     if (this.section === "settings") this.section = "general";
@@ -155,7 +152,6 @@ export class SettingsComponent implements OnInit {
       .then(scopes => this.createNewAppFormOptions.getInput("scopes")!.selectOptions = scopes);
   }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void
+  {}
 }
