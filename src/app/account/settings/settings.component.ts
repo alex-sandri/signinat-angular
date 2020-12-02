@@ -112,14 +112,17 @@ export class SettingsComponent implements OnInit {
 
   async updateProfileFormOnSubmit(end: () => void)
   {
-    const response = await this.api.createUser({
+    const response = await this.api.updateUser({
       name: {
         first: this.updateProfileFormOptions.getInput("first-name")!.value!.trim(),
         last: this.updateProfileFormOptions.getInput("last-name")!.value!.trim(),
       },
       email: this.updateProfileFormOptions.getInput("email")!.value!.trim(),
+      /**
+      @todo
       password: this.updateProfileFormOptions.getInput("password")!.value!,
       birthday: this.updateProfileFormOptions.getInput("birthday")!.value!,
+      */
     });
 
     if (!response.result.valid)
@@ -143,7 +146,15 @@ export class SettingsComponent implements OnInit {
 
     if (this.section === "settings") this.section = "general";
 
-    api.retrieveToken(AuthService.token as string).then(token => this.user = token.user);
+    api.retrieveToken(AuthService.token as string).then(token =>
+    {
+      this.user = token.user;
+
+      this.updateProfileFormOptions.getInput("first-name")!.value = this.user.name.first;
+      this.updateProfileFormOptions.getInput("last-name")!.value = this.user.name.last;
+      this.updateProfileFormOptions.getInput("email")!.value = this.user.email;
+      this.updateProfileFormOptions.getInput("password")!.value = this.user.password;
+    });
 
     api.listApps().then(apps => this.apps = apps);
 

@@ -35,6 +35,22 @@ export class ApiService {
     return response as ApiResponse;
   }
 
+  public updateUser = async (data: ApiRequest.Users.Update): Promise<ApiResponse> =>
+  {
+    const response = await this.http.put(
+      `${ApiService.ENDPOINTS.USERS}/${SettingsService.get("session.userId")}`,
+      JSON.stringify(data),
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${SettingsService.get("session.token")}`,
+        },
+      },
+    ).toPromise();
+
+    return response as ApiResponse;
+  }
+
   public deleteUser = async (): Promise<void> =>
   {
     await this.http.delete(`${ApiService.ENDPOINTS.USERS}/${SettingsService.get("session.userId")}`, {
