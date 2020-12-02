@@ -4,46 +4,22 @@
     <small *ngIf="options.name === 'Sign Up'">or <a routerLink="/signin">Sign In</a></small>
     <small *ngIf="options.name === 'Sign In'">or <a routerLink="/signup">Sign Up</a></small>
     
-    <label *ngFor="let input of options.getGroup('default')!.inputs">
-        {{input.label}}
-        <input
-            *ngIf="input.type !== 'select'"
+    <app-input
+        *ngFor="let input of options.getGroup('default')!.inputs"
 
-            type="{{input.type}}"
-            name="{{input.name}}"
-            [attr.autocomplete]="input.autocomplete ? input.autocomplete : null"
-            [attr.required]="input.required ? '' : null"
-
-            (input)="set(input, $event)"
-        >
-        <select
-            *ngIf="input.type === 'select'"
-
-            name="{{input.name}}"
-            [attr.multiple]="(input.options && input.options.multiple) ? '' : null"
-
-            (change)="set(input, $event)"
-        >
-            <option value="{{option.value}}" *ngFor="let option of input.selectOptions">{{option.value}}</option>
-        </select>
-        <small *ngIf="input.error && input.error.length > 0"><mark>&#x2716; {{input.error}}</mark></small>
-    </label>
+        [options]="input"
+    >
+    </app-input>
     <fieldset *ngFor="let group of options.getNonDefaultGroups()">
         <legend>{{group.name}}</legend>
         <details (toggle)="group.open = !group.open">
             <summary>{{group.open ? "Hide" : "Show"}}</summary>
-            <label *ngFor="let input of group.inputs">
-                {{input.label}}
-                <input
-                    type="{{input.type}}"
-                    name="{{input.name}}"
-                    autocomplete="{{input.autocomplete}}"
-                    [attr.required]="input.required ? '' : null"
+            <app-input
+                *ngFor="let input of group.inputs"
 
-                    (input)="set(input, $event)"
-                >
-                <small *ngIf="input.error && input.error.length > 0"><mark>&#x2716; {{input.error}}</mark></small>
-            </label>
+                [options]="input"
+            >
+            </app-input>
         </details>
     </fieldset>
     <button type="submit">{{options.submitButtonText}}</button>

@@ -1,0 +1,31 @@
+<label>
+    {{options.label}}
+    <input
+        *ngIf="options.type !== 'select'"
+
+        type="{{options.type}}"
+        name="{{options.name}}"
+        value="{{options.value}}"
+        [attr.autocomplete]="options.autocomplete ? options.autocomplete : null"
+        [attr.required]="options.required ? '' : null"
+
+        (input)="set($event)"
+    >
+    <select
+        *ngIf="options.type === 'select'"
+
+        name="{{options.name}}"
+        [attr.multiple]="(options.options && options.options.multiple) ? '' : null"
+
+        (change)="set($event)"
+    >
+        <option
+            *ngFor="let option of options.selectOptions"
+
+            value="{{option.value}}"
+        >
+            {{option.value}}
+        </option>
+    </select>
+    <small *ngIf="options.error && options.error.length > 0"><mark>&#x2716; {{options.error}}</mark></small>
+</label>

@@ -22,6 +22,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { AboutComponent } from './about/about.component';
 import { ScopeListComponent } from './components/scope-list/scope-list.component';
 import { FormComponent } from './components/form/form.component';
+import { InputComponent } from './components/form/input/input.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { FormComponent } from './components/form/form.component';
     SpinnerComponent,
     AboutComponent,
     ScopeListComponent,
-    FormComponent
+    FormComponent,
+    InputComponent
   ],
   imports: [
     BrowserModule,
