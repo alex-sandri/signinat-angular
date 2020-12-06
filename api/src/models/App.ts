@@ -93,8 +93,8 @@ export class App
         const webhookSignature = uuidv4();
 
         const app = await db.collection("apps").add(<IApp>{
-            name: data.name,
-            url: data.url,
+            name: data.name.trim(),
+            url: data.url.trim(),
             owner: user.id,
             api: {
                 key: apiKey,

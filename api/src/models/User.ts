@@ -113,8 +113,11 @@ export class User
         data.password = bcrypt.hashSync(data.password, 15);
 
         const user = await db.collection("users").add(<IUser>{
-            name: { first: data.name.first, last: data.name.last },
-            email: data.email,
+            name: {
+                first: data.name.first.trim(),
+                last: data.name.last.trim(),
+            },
+            email: data.email.trim(),
             password: data.password,
             birthday: data.birthday ? firestore.Timestamp.fromDate(new Date(data.birthday)) : undefined,
         });

@@ -33,7 +33,7 @@ export class SigninComponent implements OnInit {
   {
     const response = await this.api.createUserToken({
       user: {
-        email: this.options.getInput("email")!.value!.trim(),
+        email: this.options.getInput("email")!.value!,
         password: this.options.getInput("password")!.value!,
       },
     });

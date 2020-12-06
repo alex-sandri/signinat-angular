@@ -39,10 +39,10 @@ export class SignupComponent implements OnInit {
   {
     const response = await this.api.createUser({
       name: {
-        first: this.options.getInput("first-name")!.value!.trim(),
-        last: this.options.getInput("last-name")!.value!.trim(),
+        first: this.options.getInput("first-name")!.value!,
+        last: this.options.getInput("last-name")!.value!,
       },
-      email: this.options.getInput("email")!.value!.trim(),
+      email: this.options.getInput("email")!.value!,
       password: this.options.getInput("password")!.value!,
       birthday: this.options.getInput("birthday")!.value!,
     });

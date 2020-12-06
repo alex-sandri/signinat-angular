@@ -74,7 +74,12 @@ export class AuthToken
 
     public static async user(email: string, password: string): Promise<AuthToken>
     {
-        AuthToken.validate({ user: { email, password } }, "user");
+        AuthToken.validate({
+            user: {
+                email: email.trim(),
+                password,
+            },
+        }, "user");
 
         const user = await User.withEmail(email);
 
