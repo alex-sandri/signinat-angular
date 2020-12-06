@@ -114,10 +114,10 @@ export class SettingsComponent implements OnInit {
   {
     const response = await this.api.updateUser({
       name: {
-        first: this.updateProfileFormOptions.getInput("first-name")!.value!.trim(),
-        last: this.updateProfileFormOptions.getInput("last-name")!.value!.trim(),
+        first: this.updateProfileFormOptions.getInput("first-name")!.value!,
+        last: this.updateProfileFormOptions.getInput("last-name")!.value!,
       },
-      email: this.updateProfileFormOptions.getInput("email")!.value!.trim(),
+      email: this.updateProfileFormOptions.getInput("email")!.value!,
       /**
       @todo
       password: this.updateProfileFormOptions.getInput("password")!.value!,
