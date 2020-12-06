@@ -89,6 +89,9 @@ export class App
 
         if ((await App.withUrl(data.url)) !== null) throw new ApiError("app/url/already-exists");
 
+        // TODO
+        // Validate `data.url`
+
         const apiKey = uuidv4();
         const webhookSignature = uuidv4();
 
@@ -170,6 +173,9 @@ export class App
 
     public update = async (data: ApiRequest.Apps.Update): Promise<void> =>
     {
+        // TODO
+        // Validate `data.api.webhook`
+
         await db.collection("apps").doc(this.id).update({
             "api.webhook.url": data.api.webhook,
         });
