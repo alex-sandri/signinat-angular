@@ -10,9 +10,9 @@ import { SettingsService } from '../services/settings/settings.service';
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
-  options = new FormOptions(
-    "Sign In",
-    [
+  options: FormOptions = {
+    name: "Sign In",
+    groups: [
       {
         name: "default",
         inputs: [
@@ -21,8 +21,8 @@ export class SigninComponent implements OnInit {
         ],
       },
     ],
-    "Sign In",
-  );
+    submitButtonText: "Sign In",
+  };
 
   constructor(private api: ApiService, private router: Router, private route: ActivatedRoute) { }
 
@@ -33,15 +33,15 @@ export class SigninComponent implements OnInit {
   {
     const response = await this.api.createUserToken({
       user: {
-        email: this.options.getInput("email")!.value!,
-        password: this.options.getInput("password")!.value!,
+        email: this.options.groups[0].inputs[0].value!,
+        password: this.options.groups[0].inputs[1]!.value!,
       },
     });
 
     if (!response.result.valid)
     {
-      this.options.getInput("email")!.error = response.errors.find(e => e.id.startsWith("user/email/"))?.message;
-      this.options.getInput("password")!.error = response.errors.find(e => e.id.startsWith("user/password/"))?.message;
+      this.options.groups[0].inputs[0].error = response.errors.find(e => e.id.startsWith("user/email/"))?.message;
+      this.options.groups[0].inputs[1].error = response.errors.find(e => e.id.startsWith("user/password/"))?.message;
     }
     else
     {

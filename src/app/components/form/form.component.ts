@@ -5,8 +5,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })
-export class FormComponent implements OnInit {
-
+export class FormComponent implements OnInit
+{
   @Input("options")
   options!: FormOptions;
 
@@ -18,7 +18,35 @@ export class FormComponent implements OnInit {
 
   getDefaultInputs(): FormInput[]
   {
-    return this.options.getGroup("default")!.inputs;
+    return this.getGroup("default")!.inputs;
+  }
+
+  public getGroup(name: string): FormGroup | null
+  {
+    return this
+      .options
+      .groups
+      .find(group => group.name === name)
+      ?? null;
+  }
+
+  public getNonDefaultGroups(): FormGroup[]
+  {
+    return this
+      .options
+      .groups
+      .filter(group => group.name !== "default");
+  }
+
+  public getInput(name: string): FormInput | null
+  {
+    return this
+      .options
+      .groups
+      .map(group => group.inputs)
+      .flat()
+      .find(input => input.name === name)
+      ?? null;
   }
 
   async onSubmit(e: Event)
@@ -48,46 +76,25 @@ export class FormComponent implements OnInit {
     this.formCancel.emit();
   }
 
-  constructor() { }
+  constructor()
+  {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void
+  {}
 }
 
-export class FormOptions
+export interface FormOptions
 {
-  constructor(
-    public readonly name: string,
-    public readonly groups: FormGroup[],
-    public readonly submitButtonText: string = "Submit",
-    public readonly showCancelButton: boolean = false,
-  ) {}
-
-  public getGroup(name: string): FormGroup | null
-  {
-    return this
-      .groups
-      .find(group => group.name === name)
-      ?? null;
-  }
-
-  public getNonDefaultGroups(): FormGroup[]
-  {
-    return this
-      .groups
-      .filter(group => group.name !== "default");
-  }
-
-  public getInput(name: string): FormInput | null
-  {
-    return this
-      .groups
-      .map(group => group.inputs)
-      .flat()
-      .find(input => input.name === name)
-      ?? null;
-  }
+  name: string,
+  groups: FormGroup[],
+  /**
+   * @default "Submit"
+   */
+  submitButtonText?: string,
+  /**
+   * @default false
+   */
+  showCancelButton?: boolean,
 }
 
 export interface FormGroup

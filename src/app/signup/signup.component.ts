@@ -8,9 +8,9 @@ import { ApiService } from '../services/api/api.service';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-  options = new FormOptions(
-    "Sign Up",
-    [
+  options: FormOptions = {
+    name: "Sign Up",
+    groups: [
       {
         name: "default",
         inputs: [
@@ -27,8 +27,8 @@ export class SignupComponent implements OnInit {
         ],
       },
     ],
-    "Sign Up",
-  );
+    submitButtonText: "Sign Up",
+  };
 
   constructor(private api: ApiService) { }
 
@@ -39,20 +39,20 @@ export class SignupComponent implements OnInit {
   {
     const response = await this.api.createUser({
       name: {
-        first: this.options.getInput("first-name")!.value!,
-        last: this.options.getInput("last-name")!.value!,
+        first: this.options.groups[0].inputs[0].value!,
+        last: this.options.groups[0].inputs[1].value!,
       },
-      email: this.options.getInput("email")!.value!,
-      password: this.options.getInput("password")!.value!,
-      birthday: this.options.getInput("birthday")!.value!,
+      email: this.options.groups[0].inputs[2].value!,
+      password: this.options.groups[0].inputs[3].value!,
+      birthday: this.options.groups[1].inputs[0].value!,
     });
 
     if (!response.result.valid)
     {
-      this.options.getInput("first-name")!.error = response.errors.find(e => e.id.startsWith("user/name/first/"))?.message;
-      this.options.getInput("last-name")!.error = response.errors.find(e => e.id.startsWith("user/name/last/"))?.message;
-      this.options.getInput("email")!.error = response.errors.find(e => e.id.startsWith("user/email/"))?.message;
-      this.options.getInput("password")!.error = response.errors.find(e => e.id.startsWith("user/password/"))?.message;
+      this.options.groups[0].inputs[0].error = response.errors.find(e => e.id.startsWith("user/name/first/"))?.message;
+      this.options.groups[0].inputs[1].error = response.errors.find(e => e.id.startsWith("user/name/last/"))?.message;
+      this.options.groups[0].inputs[2].error = response.errors.find(e => e.id.startsWith("user/email/"))?.message;
+      this.options.groups[0].inputs[3].error = response.errors.find(e => e.id.startsWith("user/password/"))?.message;
     }
 
     end();

@@ -11,10 +11,13 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })
-export class SettingsComponent implements OnInit {
-  createNewAppFormOptions = new FormOptions(
-    "Create new App",
-    [
+export class SettingsComponent implements OnInit
+{
+  user?: ISerializedUser = this.auth.user;
+
+  createNewAppFormOptions: FormOptions = {
+    name: "Create new App",
+    groups: [
       {
         name: "default",
         inputs: [
@@ -24,19 +27,19 @@ export class SettingsComponent implements OnInit {
         ],
       },
     ],
-    "Create",
-    true,
-  );
+    submitButtonText: "Create",
+    showCancelButton: true,
+  };
 
-  updateProfileFormOptions = new FormOptions(
-    "Profile",
-    [
+  updateProfileFormOptions: FormOptions = {
+    name: "Profile",
+    groups: [
       {
         name: "default",
         inputs: [
-          { label: "First Name", name: "first-name", type: "text", required: true, autocomplete: "given-name" },
-          { label: "Last Name", name: "last-name", type: "text", required: true, autocomplete: "family-name" },
-          { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
+          { label: "First Name", name: "first-name", type: "text", required: true, autocomplete: "given-name", value: this.user?.name.first },
+          { label: "Last Name", name: "last-name", type: "text", required: true, autocomplete: "family-name", value: this.user?.name.last },
+          { label: "Email", name: "email", type: "email", required: true, autocomplete: "email", value: this.user?.email },
         ],
       },
       {
@@ -46,16 +49,14 @@ export class SettingsComponent implements OnInit {
         ],
       },
     ],
-    "Update",
-    true,
-  );
+    submitButtonText: "Update",
+    showCancelButton: true,
+  };
 
   @ViewChild("createNewAppDialog") createNewAppDialog!: ElementRef<HTMLDialogElement>;
   @ViewChild("updateProfileDialog") updateProfileDialog!: ElementRef<HTMLDialogElement>;
 
   section: string;
-
-  user?: ISerializedUser = this.auth.user;
 
   apps!: ISerializedApp[];
 
@@ -90,15 +91,15 @@ export class SettingsComponent implements OnInit {
   async createNewAppFormOnSubmit(end: () => void)
   {
     const response = await this.api.createApp({
-      name: this.createNewAppFormOptions.getInput("name")!.value!,
-      url: this.createNewAppFormOptions.getInput("url")!.value!,
-      scopes: this.createNewAppFormOptions.getInput("scopes")!.selectedValues!,
+      name: this.createNewAppFormOptions.groups[0].inputs[0].value!,
+      url: this.createNewAppFormOptions.groups[0].inputs[1].value!,
+      scopes: this.createNewAppFormOptions.groups[0].inputs[2].selectedValues!,
     });
 
     if (!response.result.valid)
     {
-      this.createNewAppFormOptions.getInput("name")!.error = response.errors.find(e => e.id.startsWith("app/name/"))?.message;
-      this.createNewAppFormOptions.getInput("url")!.error = response.errors.find(e => e.id.startsWith("app/url/"))?.message;
+      this.createNewAppFormOptions.groups[0].inputs[0].error = response.errors.find(e => e.id.startsWith("app/name/"))?.message;
+      this.createNewAppFormOptions.groups[0].inputs[1].error = response.errors.find(e => e.id.startsWith("app/url/"))?.message;
     }
     else
     {
@@ -112,21 +113,21 @@ export class SettingsComponent implements OnInit {
   {
     const response = await this.api.updateUser({
       name: {
-        first: this.updateProfileFormOptions.getInput("first-name")!.value!,
-        last: this.updateProfileFormOptions.getInput("last-name")!.value!,
+        first: this.updateProfileFormOptions.groups[0].inputs[0].value!,
+        last: this.updateProfileFormOptions.groups[0].inputs[1].value!,
       },
-      email: this.updateProfileFormOptions.getInput("email")!.value!,
+      email: this.updateProfileFormOptions.groups[0].inputs[2].value!,
       /**
       @todo
-      birthday: this.updateProfileFormOptions.getInput("birthday")!.value!,
+      birthday: this.updateProfileFormOptions.groups[1].inputs[0].value!,
       */
     });
 
     if (!response.result.valid)
     {
-      this.updateProfileFormOptions.getInput("first-name")!.error = response.errors.find(e => e.id.startsWith("user/name/first/"))?.message;
-      this.updateProfileFormOptions.getInput("last-name")!.error = response.errors.find(e => e.id.startsWith("user/name/last/"))?.message;
-      this.updateProfileFormOptions.getInput("email")!.error = response.errors.find(e => e.id.startsWith("user/email/"))?.message;
+      this.updateProfileFormOptions.groups[0].inputs[0].error = response.errors.find(e => e.id.startsWith("user/name/first/"))?.message;
+      this.updateProfileFormOptions.groups[0].inputs[1].error = response.errors.find(e => e.id.startsWith("user/name/last/"))?.message;
+      this.updateProfileFormOptions.groups[0].inputs[2].error = response.errors.find(e => e.id.startsWith("user/email/"))?.message;
     }
     else
     {
@@ -146,7 +147,7 @@ export class SettingsComponent implements OnInit {
 
     api
       .listScopes()
-      .then(scopes => this.createNewAppFormOptions.getInput("scopes")!.selectOptions = scopes);
+      .then(scopes => this.createNewAppFormOptions.groups[0].inputs[2].selectOptions = scopes);
   }
 
   ngOnInit(): void

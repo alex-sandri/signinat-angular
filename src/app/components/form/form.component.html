@@ -5,12 +5,12 @@
     <small *ngIf="options.name === 'Sign In'">or <a routerLink="/signup">Sign Up</a></small>
     
     <app-input
-        *ngFor="let input of options.getGroup('default')!.inputs"
+        *ngFor="let input of getGroup('default')!.inputs"
 
         [options]="input"
     >
     </app-input>
-    <fieldset *ngFor="let group of options.getNonDefaultGroups()">
+    <fieldset *ngFor="let group of getNonDefaultGroups()">
         <legend>{{group.name}}</legend>
         <details (toggle)="group.open = !group.open">
             <summary>{{group.open ? "Hide" : "Show"}}</summary>
@@ -22,7 +22,7 @@
             </app-input>
         </details>
     </fieldset>
-    <button type="submit">{{options.submitButtonText}}</button>
+    <button type="submit">{{options.submitButtonText || "Submit"}}</button>
     <button
         *ngIf="options.showCancelButton"
 
