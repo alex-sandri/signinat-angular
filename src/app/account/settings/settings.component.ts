@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ISerializedApp } from 'api/src/models/App';
-import { ISerializedScope } from 'api/src/models/Scope';
 import { ISerializedUser } from 'api/src/models/User';
 import { FormOptions } from 'src/app/components/form/form.component';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -38,7 +37,6 @@ export class SettingsComponent implements OnInit {
           { label: "First Name", name: "first-name", type: "text", required: true, autocomplete: "given-name" },
           { label: "Last Name", name: "last-name", type: "text", required: true, autocomplete: "family-name" },
           { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
-          { label: "Password", name: "password", type: "password", required: true, autocomplete: "new-password" },
         ],
       },
       {
@@ -120,7 +118,6 @@ export class SettingsComponent implements OnInit {
       email: this.updateProfileFormOptions.getInput("email")!.value!,
       /**
       @todo
-      password: this.updateProfileFormOptions.getInput("password")!.value!,
       birthday: this.updateProfileFormOptions.getInput("birthday")!.value!,
       */
     });
@@ -130,7 +127,6 @@ export class SettingsComponent implements OnInit {
       this.updateProfileFormOptions.getInput("first-name")!.error = response.errors.find(e => e.id.startsWith("user/name/first/"))?.message;
       this.updateProfileFormOptions.getInput("last-name")!.error = response.errors.find(e => e.id.startsWith("user/name/last/"))?.message;
       this.updateProfileFormOptions.getInput("email")!.error = response.errors.find(e => e.id.startsWith("user/email/"))?.message;
-      this.updateProfileFormOptions.getInput("password")!.error = response.errors.find(e => e.id.startsWith("user/password/"))?.message;
     }
     else
     {
@@ -153,7 +149,6 @@ export class SettingsComponent implements OnInit {
       this.updateProfileFormOptions.getInput("first-name")!.value = this.user.name.first;
       this.updateProfileFormOptions.getInput("last-name")!.value = this.user.name.last;
       this.updateProfileFormOptions.getInput("email")!.value = this.user.email;
-      this.updateProfileFormOptions.getInput("password")!.value = this.user.password;
     });
 
     api.listApps().then(apps => this.apps = apps);
