@@ -13,15 +13,24 @@ export class AppComponent
 
   user?: ISerializedUser;
 
+  canLoad = false;
+
   constructor(auth: AuthService)
   {
-    if (!auth.token) return;
+    if (!auth.token)
+    {
+      this.canLoad = true;
+
+      return;
+    }
 
     auth.signIn().then(user =>
     {
       if (!user) return;
 
       this.user = user;
+
+      this.canLoad = true;
     });
   }
 }
