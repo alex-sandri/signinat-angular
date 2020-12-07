@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ISerializedUser } from 'api/src/models/User';
 import { ApiService } from '../api/api.service';
 import { RouterService } from '../router/router.service';
 import { SettingsService } from '../settings/settings.service';
@@ -7,15 +8,31 @@ import { SettingsService } from '../settings/settings.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
-  static get token () { return SettingsService.get("session.token"); }
+export class AuthService
+{
+  private _user?: ISerializedUser;
 
-  static get userId () { return SettingsService.get("session.userId"); }
+  get token () { return SettingsService.get("session.token"); }
 
-  static get isSignedIn () { return SettingsService.exists("session.token"); }
+  get user() { return this._user; }
 
-  async signOut() {
-    await this.api.deleteToken(AuthService.token as string).finally(() =>
+  async signIn(): Promise<ISerializedUser | null>
+  {
+    if (!this.token) return null;
+
+    await this.api
+      .retrieveToken(this.token)
+      .then(token => this._user = token.user)
+      .catch(this.signOut);
+
+    return this.user ?? null;
+  }
+
+  async signOut()
+  {
+    if (!this.token) return;
+
+    await this.api.deleteToken(this.token).finally(() =>
     {
       SettingsService.delete("session.token");
       SettingsService.delete("session.userId");
@@ -24,5 +41,6 @@ export class AuthService {
     });
   }
 
-  constructor(private api: ApiService, private router: RouterService, private route: ActivatedRoute) { }
+  constructor(private api: ApiService, private router: RouterService, private route: ActivatedRoute)
+  {}
 }

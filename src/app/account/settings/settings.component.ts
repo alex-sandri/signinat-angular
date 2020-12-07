@@ -55,7 +55,7 @@ export class SettingsComponent implements OnInit {
 
   section: string;
 
-  user!: ISerializedUser;
+  user?: ISerializedUser = this.auth.user;
 
   apps!: ISerializedApp[];
 
@@ -136,20 +136,11 @@ export class SettingsComponent implements OnInit {
     end();
   }
 
-  constructor(private api: ApiService, private router: Router)
+  constructor(private auth: AuthService, private api: ApiService, private router: Router)
   {
     this.section = router.url.split("/").pop() as string;
 
     if (this.section === "settings") this.section = "general";
-
-    api.retrieveToken(AuthService.token as string).then(token =>
-    {
-      this.user = token.user;
-
-      this.updateProfileFormOptions.getInput("first-name")!.value = this.user.name.first;
-      this.updateProfileFormOptions.getInput("last-name")!.value = this.user.name.last;
-      this.updateProfileFormOptions.getInput("email")!.value = this.user.email;
-    });
 
     api.listApps().then(apps => this.apps = apps);
 

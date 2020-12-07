@@ -6,13 +6,13 @@ import { AuthService } from '../services/auth/auth.service';
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.scss']
 })
-export class IndexComponent implements OnInit {
+export class IndexComponent implements OnInit
+{
+  user = this.auth.user;
 
-  isSignedIn = AuthService.isSignedIn;
+  constructor(private auth: AuthService)
+  {}
 
-  constructor() {}
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void
+  {}
 }

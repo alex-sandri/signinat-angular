@@ -8,15 +8,15 @@ import { AccountMenuComponent } from '../account-menu/account-menu.component';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
-
-  isSignedIn = AuthService.isSignedIn;
+export class HeaderComponent implements OnInit
+{
+  user = this.auth.user;
 
   openAccountMenu = (accountMenu: AccountMenuComponent) => accountMenu.visible = true;
 
-  constructor(public router: Router) {}
+  constructor(private auth: AuthService, public router: Router)
+  {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void
+  {}
 }
