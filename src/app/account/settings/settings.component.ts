@@ -56,10 +56,10 @@ export class SettingsComponent implements OnInit
   };
 
   @ViewChild("createNewAppForm")
-  createNewAppForm!: ComponentRef<FormComponent>;
+  createNewAppForm!: FormComponent;
 
   @ViewChild("updateProfileForm")
-  updateProfileForm!: ComponentRef<FormComponent>;
+  updateProfileForm!: FormComponent;
 
   section: string;
 
@@ -94,7 +94,7 @@ export class SettingsComponent implements OnInit
     }
     else
     {
-      this.createNewAppForm.instance.remove();
+      this.createNewAppForm.remove();
     }
 
     end();
@@ -122,7 +122,7 @@ export class SettingsComponent implements OnInit
     }
     else
     {
-      this.updateProfileForm.instance.remove();
+      this.updateProfileForm.remove();
     }
 
     end();
