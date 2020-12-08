@@ -1,8 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ComponentRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ISerializedApp } from 'api/src/models/App';
 import { ISerializedUser } from 'api/src/models/User';
-import { FormOptions } from 'src/app/components/form/form.component';
+import { FormComponent, FormOptions } from 'src/app/components/form/form.component';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
@@ -29,6 +29,7 @@ export class SettingsComponent implements OnInit
     ],
     submitButtonText: "Create",
     showCancelButton: true,
+    hidden: true,
   };
 
   updateProfileFormOptions: FormOptions = {
@@ -51,10 +52,14 @@ export class SettingsComponent implements OnInit
     ],
     submitButtonText: "Update",
     showCancelButton: true,
+    hidden: true,
   };
 
-  @ViewChild("createNewAppDialog") createNewAppDialog!: ElementRef<HTMLDialogElement>;
-  @ViewChild("updateProfileDialog") updateProfileDialog!: ElementRef<HTMLDialogElement>;
+  @ViewChild("createNewAppForm")
+  createNewAppForm!: ComponentRef<FormComponent>;
+
+  @ViewChild("updateProfileForm")
+  updateProfileForm!: ComponentRef<FormComponent>;
 
   section: string;
 
@@ -67,18 +72,9 @@ export class SettingsComponent implements OnInit
     this.router.navigateByUrl("/");
   }
 
-  setDialogVisible(dialog: HTMLDialogElement, visible: boolean)
+  showForm(form: FormComponent)
   {
-    if (visible)
-    {
-      dialog.showModal();
-    }
-    else
-    {
-      dialog.querySelector("form")!.reset();
-
-      dialog.close();
-    }
+    form.showModal();
   }
 
   setSection(section: string)
@@ -103,7 +99,7 @@ export class SettingsComponent implements OnInit
     }
     else
     {
-      this.setDialogVisible(this.createNewAppDialog.nativeElement, false);
+      this.createNewAppForm.instance.remove();
     }
 
     end();
@@ -131,7 +127,7 @@ export class SettingsComponent implements OnInit
     }
     else
     {
-      this.setDialogVisible(this.updateProfileDialog.nativeElement, false);
+      this.updateProfileForm.instance.remove();
     }
 
     end();

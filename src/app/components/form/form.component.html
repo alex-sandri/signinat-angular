@@ -1,4 +1,10 @@
-<form (submit)="onSubmit($event)" *ngIf="options !== undefined">
+<form
+    #form
+
+    *ngIf="options !== undefined"
+
+    (submit)="onSubmit($event)"
+>
     <h1>{{options.name}}</h1>
 
     <small *ngIf="options.name === 'Sign Up'">or <a routerLink="/signin">Sign In</a></small>

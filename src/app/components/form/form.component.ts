@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-form',
@@ -13,8 +13,8 @@ export class FormComponent implements OnInit
   @Output()
   formSubmit = new EventEmitter<() => void>();
 
-  @Output()
-  formCancel = new EventEmitter<void>();
+  @ViewChild("form")
+  form!: ElementRef<HTMLFormElement>;
 
   getDefaultInputs(): FormInput[]
   {
@@ -71,9 +71,48 @@ export class FormComponent implements OnInit
     this.formSubmit.emit(callback);
   }
 
+  public show(): void
+  {
+    this.options.hidden = false;
+  }
+
+  public showModal(): void
+  {
+    const dialog = document.createElement("dialog");
+
+    dialog.setAttribute("data-form", this.options.name);
+
+    dialog.appendChild(this.form.nativeElement);
+
+    document.body.appendChild(dialog);
+
+    dialog.showModal();
+  }
+
+  public hide(): void
+  {
+    this.options.hidden = true;
+
+    document.querySelector(`dialog[data-form=${this.options.name}]`)?.remove();
+  }
+
+  public remove(): void
+  {
+    this.hide();
+
+    // TODO: Remove element
+  }
+
+  public reset(): void
+  {
+    this.form.nativeElement.reset();
+  }
+
   async cancel()
   {
-    this.formCancel.emit();
+    this.hide();
+
+    this.reset();
   }
 
   constructor()
@@ -95,6 +134,10 @@ export interface FormOptions
    * @default false
    */
   showCancelButton?: boolean,
+  /**
+   * @default false
+   */
+  hidden?: boolean,
 }
 
 export interface FormGroup
