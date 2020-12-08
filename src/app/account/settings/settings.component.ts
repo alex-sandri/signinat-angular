@@ -94,7 +94,7 @@ export class SettingsComponent implements OnInit
     }
     else
     {
-      this.createNewAppForm.remove();
+      this.createNewAppForm.hide();
     }
 
     end();
@@ -122,7 +122,7 @@ export class SettingsComponent implements OnInit
     }
     else
     {
-      this.updateProfileForm.remove();
+      this.updateProfileForm.hide();
     }
 
     end();

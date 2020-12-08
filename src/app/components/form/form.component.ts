@@ -96,13 +96,6 @@ export class FormComponent implements OnInit
     document.querySelector(`dialog[data-form="${this.options.name}"]`)?.remove();
   }
 
-  public remove(): void
-  {
-    this.hide();
-
-    // TODO: Remove element
-  }
-
   public reset(): void
   {
     this.form.nativeElement.reset();
