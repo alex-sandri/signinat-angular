@@ -93,7 +93,7 @@ export class FormComponent implements OnInit
   {
     this.options.hidden = true;
 
-    document.querySelector(`dialog[data-form=${this.options.name}]`)?.remove();
+    document.querySelector(`dialog[data-form="${this.options.name}"]`)?.remove();
   }
 
   public remove(): void
