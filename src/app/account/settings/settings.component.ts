@@ -72,11 +72,6 @@ export class SettingsComponent implements OnInit
     this.router.navigateByUrl("/");
   }
 
-  showForm(form: FormComponent)
-  {
-    form.showModal();
-  }
-
   setSection(section: string)
   {
     this.section = section;
