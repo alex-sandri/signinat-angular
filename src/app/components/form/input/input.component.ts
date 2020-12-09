@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormInput } from '../form.component';
 
 @Component({
@@ -11,6 +11,9 @@ export class InputComponent implements OnInit {
   @Input("options")
   options!: FormInput;
 
+  @ViewChild("input")
+  input?: ElementRef<HTMLInputElement>;
+
   set(event: Event)
   {
     switch (this.options.type)
@@ -22,6 +25,15 @@ export class InputComponent implements OnInit {
         this.options.value = (event.composedPath()[0] as HTMLInputElement).value;
         break;
     }
+  }
+
+  // TODO
+  // Reset 'select' element
+  public reset()
+  {
+    if (!this.input) return;
+
+    this.input.nativeElement.value = this.options.value ?? "";
   }
 
   constructor()

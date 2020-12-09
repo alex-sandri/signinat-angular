@@ -1,4 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { InputComponent } from './input/input.component';
 
 @Component({
   selector: 'app-form',
@@ -15,6 +16,9 @@ export class FormComponent implements OnInit
 
   @ViewChild("form")
   form!: ElementRef<HTMLFormElement>;
+
+  @ViewChildren(InputComponent)
+  inputs!: QueryList<InputComponent>;
 
   getDefaultInputs(): FormInput[]
   {
@@ -99,6 +103,8 @@ export class FormComponent implements OnInit
   public reset(): void
   {
     this.form.nativeElement.reset();
+
+    this.inputs.forEach(input => input.reset());
   }
 
   async cancel()
