@@ -2,10 +2,10 @@ import { firestore } from "firebase-admin";
 import * as bcrypt from "bcrypt";
 
 import { ApiRequest } from "../typings/ApiRequest";
-import { ApiError } from "./ApiError";
 import { Scope } from "./Scope";
 import { Account } from "./Account";
 import { App } from "./App";
+import { Validator } from "../utilities/Validator";
 
 const db = firestore();
 
@@ -106,9 +106,12 @@ export class User
 
     static create = async (data: ApiRequest.Users.Create): Promise<User> =>
     {
-        User.validate(data, "create");
+        const result = await Validator.of("create").user(data);
 
-        if (await User.exists(data.email)) throw new ApiError("user/email/already-exists");
+        if (!result.valid)
+        {
+            throw result;
+        }
 
         data.password = bcrypt.hashSync(data.password, 15);
 
@@ -152,12 +155,23 @@ export class User
 
     public update = async (data: ApiRequest.Users.Update): Promise<void> =>
     {
-        User.validate(data, "update");
+        const result = await Validator.of("update").user(data);
+
+        if (!result.valid)
+        {
+            throw result;
+        }
+
+        const firstName: string = data.name?.first ?? this.firstName;
+        const lastName: string = data.name?.last ?? this.lastName;
+        const email: string = data.email ?? this.email;
+        const birthday: string | undefined = data.birthday ?? this.birthday?.toDateString();
 
         await db.collection("apps").doc(this.id).update({
-            "name.first": data.name.first,
-            "name.last": data.name.last,
-            "email": data.email,
+            "name.first": firstName,
+            "name.last": lastName,
+            email,
+            birthday,
         });
     }
 
@@ -192,20 +206,4 @@ export class User
     }
 
     static exists = async (email: string): Promise<boolean> => (await User.withEmail(email)) !== null;
-
-    static validate = (data: ApiRequest.Users.Create | ApiRequest.Users.Update, type: "create" | "update"): void =>
-    {
-        if (data.name.first.length === 0) throw new ApiError("user/name/first/empty");
-
-        if (data.name.last.length === 0) throw new ApiError("user/name/last/empty");
-
-        if (data.email.length === 0) throw new ApiError("user/email/empty");
-
-        if (type === "create")
-        {
-            if (!("password" in data)) throw new ApiError("user/password/required");
-            else if (data.password.length === 0) throw new ApiError("user/password/empty");
-            else if (data.password.length < 8) throw new ApiError("user/password/weak");
-        }
-    }
 }

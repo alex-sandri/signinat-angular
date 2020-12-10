@@ -15,11 +15,12 @@ export namespace ApiRequest
 
         export interface Update
         {
-            name: {
-                first: string,
-                last: string,
+            name?: {
+                first?: string,
+                last?: string,
             },
-            email: string,
+            email?: string,
+            birthday?: string,
         }
     }
 
