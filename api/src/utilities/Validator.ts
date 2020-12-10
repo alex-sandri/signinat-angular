@@ -72,7 +72,7 @@ export class Validator
     }
 }
 
-class ValidatorResult
+export class ValidatorResult
 {
     public readonly errors: Set<TApiErrorType> = new Set();
 

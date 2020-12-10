@@ -23,6 +23,7 @@ import { User } from "./models/User";
 import { Account } from "./models/Account";
 import { Scope } from "./models/Scope";
 import { AuthToken } from "./models/AuthToken";
+import { ValidatorResult } from "./utilities/Validator";
 
 const app = express();
 
@@ -51,7 +52,10 @@ app.post("/api/users", async (req, res) =>
   {
     response.result.valid = false;
 
-    response.errors.push((e as ApiError).json());
+    if (e instanceof ValidatorResult)
+    {
+      response.errors = Array.from(e.errors).map(error => new ApiError(error).json());
+    }
   }
 
   res.send(response);
@@ -97,7 +101,10 @@ app.put("/api/users/:id", async (req, res) =>
   {
     response.result.valid = false;
 
-    response.errors.push((e as ApiError).json());
+    if (e instanceof ValidatorResult)
+    {
+      response.errors = Array.from(e.errors).map(error => new ApiError(error).json());
+    }
   }
 
   res
