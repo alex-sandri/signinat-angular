@@ -1,4 +1,4 @@
-import { TApiErrorType } from "../models/ApiError";
+import { ApiError, ISerializedApiError, TApiErrorType } from "../models/ApiError";
 import { User } from "../models/User";
 
 type TValidatorType = "create" | "update";
@@ -12,6 +12,12 @@ interface IUser
     email?: string,
     password?: string,
     birthday?: string,
+}
+
+interface ISerializedValidatorResult
+{
+    valid: boolean,
+    errors: ISerializedApiError[],
 }
 
 export class Validator
@@ -84,5 +90,13 @@ export class ValidatorResult
     public add(error: TApiErrorType): void
     {
         this.errors.add(error);
+    }
+
+    public json(): ISerializedValidatorResult
+    {
+        return {
+            valid: this.valid,
+            errors: Array.from(this.errors).map(error => new ApiError(error).json()),
+        };
     }
 }

@@ -54,7 +54,7 @@ app.post("/api/users", async (req, res) =>
 
     if (e instanceof ValidatorResult)
     {
-      response.errors = Array.from(e.errors).map(error => new ApiError(error).json());
+      response.errors = e.json().errors;
     }
   }
 
@@ -103,7 +103,7 @@ app.put("/api/users/:id", async (req, res) =>
 
     if (e instanceof ValidatorResult)
     {
-      response.errors = Array.from(e.errors).map(error => new ApiError(error).json());
+      response.errors = e.json().errors;
     }
   }
 
