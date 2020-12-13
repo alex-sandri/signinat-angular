@@ -53,9 +53,9 @@ export class Validator
             return result;
         }
 
-        if (user.birthday)
+        if (!Utilities.isNullOrUndefined(user.birthday))
         {
-            if (user.birthday.length === 0) result.add("user/birthday/empty");
+            if (Utilities.isEmpty(user.birthday)) result.add("user/birthday/empty");
             else if (!Utilities.isString(user.birthday)) result.add("user/birthday/invalid");
             else if (!dayjs(user.birthday, ValidatorConstants.BIRTHDAY_FORMAT)) result.add("user/birthday/invalid");
         }

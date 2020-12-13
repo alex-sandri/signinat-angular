@@ -9,4 +9,9 @@ export default class Utilities
     {
         return typeof a === "string";
     }
+
+    public static isEmpty(a: string): boolean
+    {
+        return a.length === 0;
+    }
 }
