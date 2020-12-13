@@ -56,7 +56,7 @@ export class Validator
         if (user.birthday)
         {
             if (user.birthday.length === 0) result.add("user/birthday/empty");
-            else if (typeof user.birthday !== "string") result.add("user/birthday/invalid");
+            else if (!Utilities.isString(user.birthday)) result.add("user/birthday/invalid");
             else if (!dayjs(user.birthday, ValidatorConstants.BIRTHDAY_FORMAT)) result.add("user/birthday/invalid");
         }
 
@@ -67,21 +67,21 @@ export class Validator
                 else
                 {
                     if (!user.name.first) result.add("user/name/first/required");
-                    else if (typeof user.name.first !== "string") result.add("user/name/first/invalid");
+                    else if (!Utilities.isString(user.name.first)) result.add("user/name/first/invalid");
                     else if (user.name.first.length === 0) result.add("user/name/first/empty");
 
                     if (!user.name.last) result.add("user/name/last/required");
-                    else if (typeof user.name.last !== "string") result.add("user/name/last/invalid");
+                    else if (!Utilities.isString(user.name.last)) result.add("user/name/last/invalid");
                     else if (user.name.last.length === 0) result.add("user/name/last/empty");
                 }
 
                 if (!user.email) result.add("user/email/required");
-                else if (typeof user.email !== "string") result.add("user/email/invalid");
+                else if (!Utilities.isString(user.email)) result.add("user/email/invalid");
                 else if (user.email.length === 0) result.add("user/email/empty");
                 else if (await User.exists(user.email)) result.add("user/email/already-exists");
 
                 if (!user.password) result.add("user/password/required");
-                else if (typeof user.password !== "string") result.add("user/password/invalid");
+                else if (!Utilities.isString(user.password)) result.add("user/password/invalid");
                 else if (user.password.length === 0) result.add("user/password/empty");
                 else if (user.password.length < ValidatorConstants.PASSWORD_MIN_LENGTH) result.add("user/password/weak");
                 break;
