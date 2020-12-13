@@ -70,7 +70,27 @@ export class Validator
                 else if (user.password.length < 8) result.add("user/password/weak");
                 break;
             case "update":
-                // TODO
+                if (user.name?.first)
+                {
+                    if (user.name.first.length === 0) result.add("user/name/first/empty");
+                }
+
+                if (user.name?.last)
+                {
+                    if (user.name.last.length === 0) result.add("user/name/last/empty");
+                }
+
+                if (user.email)
+                {
+                    if (user.email.length === 0) result.add("user/email/empty");
+                    else if (await User.exists(user.email)) result.add("user/email/already-exists");
+                }
+
+                if (user.password)
+                {
+                    if (user.password.length === 0) result.add("user/password/empty");
+                    else if (user.password.length < 8) result.add("user/password/weak");
+                }
                 break;
         }
 
