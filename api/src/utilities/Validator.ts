@@ -2,6 +2,7 @@ import * as dayjs from "dayjs";
 
 import { ApiError, ISerializedApiError, TApiErrorType } from "../models/ApiError";
 import { User } from "../models/User";
+import Utilities from "./Utilities";
 
 dayjs.extend(require("dayjs/plugin/customParseFormat"));
 
@@ -45,7 +46,7 @@ export class Validator
     {
         let result = new ValidatorResult();
 
-        if (!user)
+        if (Utilities.isNullOrUndefined(user))
         {
             result.add("user/required");
 
