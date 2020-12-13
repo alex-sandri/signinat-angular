@@ -57,7 +57,7 @@ export class Validator
         {
             if (user.birthday.length === 0) result.add("user/birthday/empty");
             else if (typeof user.birthday !== "string") result.add("user/birthday/invalid");
-            else if (!dayjs(user.birthday, "YYYY-MM-DD")) result.add("user/birthday/invalid");
+            else if (!dayjs(user.birthday, ValidatorConstants.BIRTHDAY_FORMAT)) result.add("user/birthday/invalid");
         }
 
         switch (this.type)
@@ -83,7 +83,7 @@ export class Validator
                 if (!user.password) result.add("user/password/required");
                 else if (typeof user.password !== "string") result.add("user/password/invalid");
                 else if (user.password.length === 0) result.add("user/password/empty");
-                else if (user.password.length < 8) result.add("user/password/weak");
+                else if (user.password.length < ValidatorConstants.PASSWORD_MIN_LENGTH) result.add("user/password/weak");
                 break;
             case "update":
                 // TODO: Add else case for invalid types
@@ -107,7 +107,7 @@ export class Validator
                 if (typeof user.password === "string")
                 {
                     if (user.password.length === 0) result.add("user/password/empty");
-                    else if (user.password.length < 8) result.add("user/password/weak");
+                    else if (user.password.length < ValidatorConstants.PASSWORD_MIN_LENGTH) result.add("user/password/weak");
                 }
                 break;
         }
@@ -137,4 +137,10 @@ export class ValidatorResult
             errors: Array.from(this.errors).map(error => new ApiError(error).json()),
         };
     }
+}
+
+class ValidatorConstants
+{
+    public static readonly PASSWORD_MIN_LENGTH = 8;
+    public static readonly BIRTHDAY_FORMAT = "YYYY-MM-DD";
 }
