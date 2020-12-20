@@ -1,5 +1,9 @@
 <app-header></app-header>
 
+<main *ngIf="account === undefined">
+    <spinner [fill]="true"></spinner>
+</main>
+
 <main *ngIf="account !== undefined">
     <h1>{{account.app.name}}</h1>
     <small><a href="{{account.app.url}}" target="_blank">{{account.app.url}}</a></small>
