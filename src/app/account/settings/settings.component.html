@@ -47,7 +47,7 @@
                 <br>
                 Create new App
             </button>
-            <app-spinner *ngIf="apps === undefined"></app-spinner>
+            <spinner *ngIf="apps === undefined"></spinner>
             <a
                 class="button app"
                 routerLink="/app/manage/{{app.id}}"
