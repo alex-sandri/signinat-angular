@@ -155,7 +155,7 @@ export class User
 
     public update = async (data: ApiRequest.Users.Update): Promise<void> =>
     {
-        const result = await Validator.of("update").user(data);
+        const result = await Validator.of("update").user(data, this.json());
 
         if (!result.valid)
         {
@@ -165,9 +165,13 @@ export class User
         const firstName: string = data.name?.first ?? this.firstName;
         const lastName: string = data.name?.last ?? this.lastName;
         const email: string = data.email ?? this.email;
-        const birthday: string | undefined = data.birthday ?? this.birthday?.toDateString();
+        const birthday: firestore.Timestamp | undefined = data.birthday
+            ? firestore.Timestamp.fromDate(new Date(data.birthday))
+            : (this.birthday
+                ? firestore.Timestamp.fromDate(this.birthday)
+                : undefined);
 
-        await db.collection("apps").doc(this.id).update({
+        await db.collection("users").doc(this.id).update({
             "name.first": firstName,
             "name.last": lastName,
             email,

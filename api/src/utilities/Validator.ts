@@ -1,7 +1,7 @@
 import * as dayjs from "dayjs";
 
 import { ApiError, ISerializedApiError, TApiErrorType } from "../models/ApiError";
-import { User } from "../models/User";
+import { ISerializedUser, User } from "../models/User";
 import Utilities from "./Utilities";
 
 dayjs.extend(require("dayjs/plugin/customParseFormat"));
@@ -39,10 +39,11 @@ export class Validator
      * Validates a user object
      * 
      * @param user The user object to validate
+     * @param old The old user (required only when type is `update`)
      * 
      * @returns `Promise<ValidatorResult>` Validation success
      */
-    public async user(user?: IUser): Promise<ValidatorResult>
+    public async user(user?: IUser, old?: ISerializedUser): Promise<ValidatorResult>
     {
         let result = new ValidatorResult();
 
@@ -88,6 +89,13 @@ export class Validator
             case "update":
                 // TODO: Add else case for invalid types
 
+                if (Utilities.isNullOrUndefined(old))
+                {
+                    result.add("user/required");
+
+                    return result;
+                }
+
                 if (!Utilities.isNullOrUndefined(user.name))
                 {
                     if (Utilities.isString(user.name.first))
@@ -104,7 +112,7 @@ export class Validator
                 if (Utilities.isString(user.email))
                 {
                     if (Utilities.isEmpty(user.email)) result.add("user/email/empty");
-                    else if (await User.exists(user.email)) result.add("user/email/already-exists");
+                    else if (user.email !== old.email && await User.exists(user.email)) result.add("user/email/already-exists");
                 }
 
                 if (Utilities.isString(user.password))
