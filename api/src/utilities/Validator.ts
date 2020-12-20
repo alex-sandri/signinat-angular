@@ -68,45 +68,48 @@ export class Validator
                 {
                     if (!user.name.first) result.add("user/name/first/required");
                     else if (!Utilities.isString(user.name.first)) result.add("user/name/first/invalid");
-                    else if (user.name.first.length === 0) result.add("user/name/first/empty");
+                    else if (Utilities.isEmpty(user.name.first)) result.add("user/name/first/empty");
 
                     if (!user.name.last) result.add("user/name/last/required");
                     else if (!Utilities.isString(user.name.last)) result.add("user/name/last/invalid");
-                    else if (user.name.last.length === 0) result.add("user/name/last/empty");
+                    else if (Utilities.isEmpty(user.name.last)) result.add("user/name/last/empty");
                 }
 
                 if (!user.email) result.add("user/email/required");
                 else if (!Utilities.isString(user.email)) result.add("user/email/invalid");
-                else if (user.email.length === 0) result.add("user/email/empty");
+                else if (Utilities.isEmpty(user.email)) result.add("user/email/empty");
                 else if (await User.exists(user.email)) result.add("user/email/already-exists");
 
                 if (!user.password) result.add("user/password/required");
                 else if (!Utilities.isString(user.password)) result.add("user/password/invalid");
-                else if (user.password.length === 0) result.add("user/password/empty");
+                else if (Utilities.isEmpty(user.password)) result.add("user/password/empty");
                 else if (user.password.length < ValidatorConstants.PASSWORD_MIN_LENGTH) result.add("user/password/weak");
                 break;
             case "update":
                 // TODO: Add else case for invalid types
 
-                if (typeof user.name?.first === "string")
+                if (!Utilities.isNullOrUndefined(user.name))
                 {
-                    if (user.name.first.length === 0) result.add("user/name/first/empty");
+                    if (Utilities.isString(user.name.first))
+                    {
+                        if (Utilities.isEmpty(user.name.first)) result.add("user/name/first/empty");
+                    }
+
+                    if (Utilities.isString(user.name.last))
+                    {
+                        if (Utilities.isEmpty(user.name.last)) result.add("user/name/last/empty");
+                    }
                 }
 
-                if (typeof user.name?.last === "string")
+                if (Utilities.isString(user.email))
                 {
-                    if (user.name.last.length === 0) result.add("user/name/last/empty");
-                }
-
-                if (typeof user.email === "string")
-                {
-                    if (user.email.length === 0) result.add("user/email/empty");
+                    if (Utilities.isEmpty(user.email)) result.add("user/email/empty");
                     else if (await User.exists(user.email)) result.add("user/email/already-exists");
                 }
 
-                if (typeof user.password === "string")
+                if (Utilities.isString(user.password))
                 {
-                    if (user.password.length === 0) result.add("user/password/empty");
+                    if (Utilities.isEmpty(user.password)) result.add("user/password/empty");
                     else if (user.password.length < ValidatorConstants.PASSWORD_MIN_LENGTH) result.add("user/password/weak");
                 }
                 break;

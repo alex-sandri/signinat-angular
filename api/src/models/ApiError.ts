@@ -29,17 +29,23 @@ export class ApiError
             case "user/inexistent": this.message = "This user does not exist"; break;
             case "user/name/required": this.message = "The name is required"; break;
             case "user/name/first/required": this.message = "The first name is required"; break;
+            case "user/name/first/invalid": this.message = "The first name is invalid"; break;
             case "user/name/first/empty": this.message = "The first name cannot be empty"; break;
             case "user/name/last/required": this.message = "The last name is required"; break;
+            case "user/name/last/invalid": this.message = "The last name is invalid"; break;
             case "user/name/last/empty": this.message = "The last name cannot be empty"; break;
             case "user/email/required": this.message = "The email is required"; break;
+            case "user/email/invalid": this.message = "The email is invalid"; break;
             case "user/email/empty": this.message = "The email cannot be empty"; break;
             case "user/email/already-exists": this.message = "A user with this email already exists"; break;
             case "user/email/inexistent": this.message = "A user with this email does not exist"; break;
             case "user/password/required": this.message = "The password is required"; break;
+            case "user/password/invalid": this.message = "The password is invalid"; break;
             case "user/password/empty": this.message = "The password cannot be empty"; break;
             case "user/password/weak": this.message = "Please enter a stronger password"; break;
             case "user/password/wrong": this.message = "Wrong password"; break;
+            case "user/birthday/empty": this.message = "The birthday cannot be empty"; break;
+            case "user/birthday/invalid": this.message = "The birthday is invalid"; break;
         }
     }
 
@@ -68,14 +74,20 @@ export type TApiErrorType =
     | "user/inexistent"
     | "user/name/required"
     | "user/name/first/required"
+    | "user/name/first/invalid"
     | "user/name/first/empty"
     | "user/name/last/required"
+    | "user/name/last/invalid"
     | "user/name/last/empty"
     | "user/email/required"
+    | "user/email/invalid"
     | "user/email/empty"
     | "user/email/already-exists"
     | "user/email/inexistent"
     | "user/password/required"
+    | "user/password/invalid"
     | "user/password/empty"
     | "user/password/weak"
-    | "user/password/wrong";
+    | "user/password/wrong"
+    | "user/birthday/empty"
+    | "user/birthday/invalid";
