@@ -2,16 +2,15 @@ import { firestore } from "firebase-admin";
 import * as bcrypt from "bcrypt";
 import * as dayjs from "dayjs";
 
-import { ApiRequest } from "../typings/ApiRequest";
 import { Scope } from "./Scope";
 import { Account } from "./Account";
 import { App } from "./App";
-import { Validator, ValidatorConstants } from "../utilities/Validator";
+import { IUser, Validator, ValidatorConstants } from "../utilities/Validator";
 import Utilities from "../utilities/Utilities";
 
 const db = firestore();
 
-interface IUser
+interface IDatabaseUser
 {
     name: {
         first: string,
@@ -40,7 +39,7 @@ export interface ISerializedUser
 
 export class User
 {
-    private constructor(public readonly id: string, public readonly data: IUser)
+    private constructor(public readonly id: string, public readonly data: IDatabaseUser)
     {}
 
     public json = (): ISerializedUser =>
@@ -114,7 +113,7 @@ export class User
         return new User(this.id, filteredUser);
     }
 
-    static create = async (data: ApiRequest.Users.Create): Promise<User> =>
+    static create = async (data: IUser): Promise<User> =>
     {
         const result = await Validator.of("create").user(data);
 
@@ -125,12 +124,12 @@ export class User
 
         data.password = bcrypt.hashSync(data.password, 15);
 
-        const user: IUser = {
+        const user: IDatabaseUser = {
             name: {
-                first: data.name.first.trim(),
-                last: data.name.last.trim(),
+                first: data.name!.first!.trim(),
+                last: data.name!.last!.trim(),
             },
-            email: data.email.trim(),
+            email: data.email!.trim(),
             password: data.password,
             birthday: data.birthday ? firestore.Timestamp.fromDate(new Date(data.birthday)) : undefined,
         };
@@ -146,12 +145,12 @@ export class User
 
         if (!user.exists) return null;
 
-        const data = user.data() as IUser;
+        const data = user.data() as IDatabaseUser;
 
         return new User(id, data);
     }
 
-    public update = async (data: ApiRequest.Users.Update): Promise<void> =>
+    public update = async (data: IUser): Promise<void> =>
     {
         const result = await Validator.of("update").user(data, this.json());
 
