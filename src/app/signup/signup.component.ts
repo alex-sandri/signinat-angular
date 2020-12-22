@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormOptions } from '../components/form/form.component';
+import { FormOptions, IDateFormInput, ITextFormInput } from '../components/form/form.component';
 import { ApiService } from '../services/api/api.service';
 
 @Component({
@@ -39,12 +39,12 @@ export class SignupComponent implements OnInit {
   {
     const response = await this.api.createUser({
       name: {
-        first: this.options.groups[0].inputs[0].value!,
-        last: this.options.groups[0].inputs[1].value!,
+        first: (this.options.groups[0].inputs[0] as ITextFormInput).value as string,
+        last: (this.options.groups[0].inputs[1] as ITextFormInput).value as string,
       },
-      email: this.options.groups[0].inputs[2].value!,
-      password: this.options.groups[0].inputs[3].value!,
-      birthday: this.options.groups[1].inputs[0].value!,
+      email: (this.options.groups[0].inputs[2] as ITextFormInput).value as string,
+      password: (this.options.groups[0].inputs[3] as ITextFormInput).value as string,
+      birthday: (this.options.groups[1].inputs[0] as IDateFormInput).value?.toISOString(),
     });
 
     if (!response.result.valid)

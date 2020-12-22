@@ -27,13 +27,22 @@ export class InputComponent implements OnInit {
     }
   }
 
-  // TODO
-  // Reset 'select' element
   public reset()
   {
     if (!this.input) return;
 
-    this.input.nativeElement.value = this.options.value ?? "";
+    switch (this.options.type)
+    {
+      case "date":
+        // TODO
+        break;
+      case "select":
+        // TODO
+        break;
+      default:
+        this.input.nativeElement.value = this.options.value ?? "";
+        break;
+    }
   }
 
   constructor()

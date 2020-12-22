@@ -147,26 +147,48 @@ export interface FormGroup
   open?: boolean,
 }
 
-export interface FormInput
+export interface ITextFormInput
 {
+  type: "text" | "email" | "password" | "url",
   label: string,
   name: string,
-  type: "text" | "email" | "password" | "date" | "url" | "select",
   required: boolean,
 
   autocomplete?: string,
   value?: string,
   error?: string,
+}
+
+export interface IDateFormInput
+{
+  type: "date",
+  label: string,
+  name: string,
+  required: boolean,
+
+  autocomplete?: string,
+  value?: Date,
+  error?: string,
+}
+
+export interface ISelectFormInput
+{
+  type: "select",
+  label: string,
+  name: string,
+  required: boolean,
+
+  error?: string,
 
   options?: {
-    multiple?: boolean, // Used with type `select`
+    multiple?: boolean,
   },
 
-  // Used with type `select`
   selectOptions?: {
     value: string,
   }[],
 
-  // Used with type `select`
   selectedValues?: string[],
 }
+
+export type FormInput = ITextFormInput | IDateFormInput | ISelectFormInput;

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormOptions } from '../components/form/form.component';
+import { FormOptions, ITextFormInput } from '../components/form/form.component';
 import { ApiService } from '../services/api/api.service';
 import { SettingsService } from '../services/settings/settings.service';
 
@@ -33,8 +33,8 @@ export class SigninComponent implements OnInit {
   {
     const response = await this.api.createUserToken({
       user: {
-        email: this.options.groups[0].inputs[0].value!,
-        password: this.options.groups[0].inputs[1]!.value!,
+        email: (this.options.groups[0].inputs[0] as ITextFormInput).value as string,
+        password: (this.options.groups[0].inputs[1] as ITextFormInput).value as string,
       },
     });
 

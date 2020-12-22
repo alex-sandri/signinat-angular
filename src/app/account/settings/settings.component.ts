@@ -2,7 +2,7 @@ import { Component, ComponentRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ISerializedApp } from 'api/src/models/App';
 import { ISerializedUser } from 'api/src/models/User';
-import { FormComponent, FormOptions } from 'src/app/components/form/form.component';
+import { FormComponent, FormOptions, IDateFormInput, ISelectFormInput, ITextFormInput } from 'src/app/components/form/form.component';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
@@ -46,7 +46,7 @@ export class SettingsComponent implements OnInit
       {
         name: "Additional information",
         inputs: [
-          { label: "Birthday", name: "birthday", type: "date", required: false, autocomplete: "bday" },
+          { label: "Birthday", name: "birthday", type: "date", required: false, autocomplete: "bday", value: new Date(/* TODO */) },
         ],
       },
     ],
@@ -82,9 +82,9 @@ export class SettingsComponent implements OnInit
   async createNewAppFormOnSubmit(end: () => void)
   {
     const response = await this.api.createApp({
-      name: this.createNewAppFormOptions.groups[0].inputs[0].value!,
-      url: this.createNewAppFormOptions.groups[0].inputs[1].value!,
-      scopes: this.createNewAppFormOptions.groups[0].inputs[2].selectedValues!,
+      name: (this.createNewAppFormOptions.groups[0].inputs[0] as ITextFormInput).value as string,
+      url: (this.createNewAppFormOptions.groups[0].inputs[1] as ITextFormInput).value as string,
+      scopes: (this.createNewAppFormOptions.groups[0].inputs[2] as ISelectFormInput).selectedValues as string[],
     });
 
     if (!response.result.valid)
@@ -104,11 +104,11 @@ export class SettingsComponent implements OnInit
   {
     const response = await this.api.updateUser({
       name: {
-        first: this.updateProfileFormOptions.groups[0].inputs[0].value,
-        last: this.updateProfileFormOptions.groups[0].inputs[1].value,
+        first: (this.updateProfileFormOptions.groups[0].inputs[0] as ITextFormInput).value,
+        last: (this.updateProfileFormOptions.groups[0].inputs[1] as ITextFormInput).value,
       },
-      email: this.updateProfileFormOptions.groups[0].inputs[2].value,
-      birthday: this.updateProfileFormOptions.groups[1].inputs[0].value,
+      email: (this.updateProfileFormOptions.groups[0].inputs[2] as ITextFormInput).value,
+      birthday: (this.updateProfileFormOptions.groups[1].inputs[0] as IDateFormInput).value?.toISOString(),
     });
 
     if (!response.result.valid)
@@ -135,7 +135,7 @@ export class SettingsComponent implements OnInit
 
     api
       .listScopes()
-      .then(scopes => this.createNewAppFormOptions.groups[0].inputs[2].selectOptions = scopes);
+      .then(scopes => (this.createNewAppFormOptions.groups[0].inputs[2] as ISelectFormInput).selectOptions = scopes);
   }
 
   ngOnInit(): void
