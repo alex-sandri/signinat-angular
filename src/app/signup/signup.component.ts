@@ -39,11 +39,11 @@ export class SignupComponent implements OnInit {
   {
     const response = await this.api.createUser({
       name: {
-        first: (this.options.groups[0].inputs[0] as ITextFormInput).value as string,
-        last: (this.options.groups[0].inputs[1] as ITextFormInput).value as string,
+        first: (this.options.groups[0].inputs[0] as ITextFormInput).value,
+        last: (this.options.groups[0].inputs[1] as ITextFormInput).value,
       },
-      email: (this.options.groups[0].inputs[2] as ITextFormInput).value as string,
-      password: (this.options.groups[0].inputs[3] as ITextFormInput).value as string,
+      email: (this.options.groups[0].inputs[2] as ITextFormInput).value,
+      password: (this.options.groups[0].inputs[3] as ITextFormInput).value,
       birthday: (this.options.groups[1].inputs[0] as IDateFormInput).value?.toISOString(),
     });
 

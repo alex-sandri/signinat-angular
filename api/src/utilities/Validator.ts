@@ -8,7 +8,7 @@ dayjs.extend(require("dayjs/plugin/customParseFormat"));
 
 type TValidatorType = "create" | "update";
 
-interface IUser
+export interface IUser
 {
     name?: {
         first?: string,

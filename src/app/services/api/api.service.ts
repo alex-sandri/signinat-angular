@@ -8,13 +8,15 @@ import { ISerializedAccount } from 'api/src/models/Account';
 import { ISerializedScope } from 'api/src/models/Scope';
 import { ISerializedAuthToken } from 'api/src/models/AuthToken';
 import { SettingsService } from '../settings/settings.service';
+import { IUser } from 'api/src/utilities/Validator';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
-
-  constructor(private http: HttpClient) { }
+export class ApiService
+{
+  constructor(private http: HttpClient)
+  {}
 
   private static readonly BASE_ENDPOINT = "http://localhost:3000/api";
 
@@ -26,7 +28,7 @@ export class ApiService {
     TOKENS: `${ApiService.BASE_ENDPOINT}/tokens`,
   };
 
-  public createUser = async (data: ApiRequest.Users.Create): Promise<ApiResponse> =>
+  public createUser = async (data: IUser): Promise<ApiResponse> =>
   {
     const response = await this.http.post(ApiService.ENDPOINTS.USERS, JSON.stringify(data), {
       headers: { "Content-Type": "application/json" },
@@ -35,7 +37,7 @@ export class ApiService {
     return response as ApiResponse;
   }
 
-  public updateUser = async (data: ApiRequest.Users.Update): Promise<ApiResponse> =>
+  public updateUser = async (data: IUser): Promise<ApiResponse> =>
   {
     const response = await this.http.put(
       `${ApiService.ENDPOINTS.USERS}/${SettingsService.get("session.userId")}`,
