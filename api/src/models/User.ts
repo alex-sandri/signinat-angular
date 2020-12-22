@@ -5,7 +5,9 @@ import { ApiRequest } from "../typings/ApiRequest";
 import { Scope } from "./Scope";
 import { Account } from "./Account";
 import { App } from "./App";
-import { Validator } from "../utilities/Validator";
+import { Validator, ValidatorConstants } from "../utilities/Validator";
+import dayjs = require("dayjs");
+import Utilities from "../utilities/Utilities";
 
 const db = firestore();
 
@@ -29,79 +31,87 @@ export interface ISerializedUser
     },
     email: string,
     password: string,
-    birthday?: string,
+    birthday?: {
+        day: number,
+        month: number,
+        year: number,
+    },
 }
 
 export class User
 {
-    private constructor(
-        public readonly id: string,
-        public readonly firstName: string,
-        public readonly lastName: string,
-        public readonly email: string,
-        public readonly password: string,
-        public readonly birthday?: string,
-    ) {}
+    private constructor(public readonly id: string, public readonly data: IUser)
+    {}
 
     public json = (): ISerializedUser =>
-    ({
-        id: this.id,
-        name: {
-            first: this.firstName,
-            last: this.lastName,
-        },
-        email: this.email,
-        password: this.password,
-        birthday: this.birthday,
-    });
+    {
+        const birthdayAsDate = this.data.birthday?.toDate();
+
+        return {
+            id: this.id,
+            name: {
+                first: this.data.name.first,
+                last: this.data.name.last,
+            },
+            email: this.data.email,
+            password: this.data.password,
+            birthday: birthdayAsDate && {
+                day: birthdayAsDate.getDay(),
+                month: birthdayAsDate.getMonth(),
+                year: birthdayAsDate.getFullYear(),
+            },
+        };
+    };
 
     public static from = (json: ISerializedUser): User =>
     {
-        return new User(
-            json.id,
-            json.name.first,
-            json.name.last,
-            json.email,
-            json.password,
-            json.birthday,
-        );
+        let birthday;
+
+        if (!Utilities.isNullOrUndefined(json.birthday))
+        {
+            birthday = new Date();
+
+            birthday.setDate(json.birthday.day);
+            birthday.setMonth(json.birthday.month);
+            birthday.setFullYear(json.birthday.year);
+        }
+
+        return new User(json.id, {
+            name: {
+                first: json.name.first,
+                last: json.name.last,
+            },
+            email: json.email,
+            password: json.password,
+            birthday: birthday && firestore.Timestamp.fromDate(birthday),
+        });
     }
 
     public filter = (scopes: Scope[]): User =>
     {
-        let firstName = this.firstName;
-        let lastName = this.lastName;
-        let email = this.email;
-        let birthday = this.birthday;
+        const filteredUser = this.data;
 
         if (!scopes.some(scope => scope.canAccess("user.profile.name.first")))
         {
-            firstName = "";
+            filteredUser.name.first = "";
         }
 
         if (!scopes.some(scope => scope.canAccess("user.profile.name.last")))
         {
-            lastName = "";
+            filteredUser.name.last = "";
         }
 
         if (!scopes.some(scope => scope.canAccess("user.profile.email")))
         {
-            email = "";
+            filteredUser.email = "";
         }
 
         if (!scopes.some(scope => scope.canAccess("user.profile.birthday")))
         {
-            birthday = undefined;
+            filteredUser.birthday = undefined;
         }
 
-        return new User(
-            this.id,
-            firstName,
-            lastName,
-            email,
-            "", // Remove password from filtered user
-            birthday,
-        );
+        return new User(this.id, filteredUser);
     }
 
     static create = async (data: ApiRequest.Users.Create): Promise<User> =>
@@ -115,7 +125,7 @@ export class User
 
         data.password = bcrypt.hashSync(data.password, 15);
 
-        const user = await db.collection("users").add(<IUser>{
+        const user: IUser = {
             name: {
                 first: data.name.first.trim(),
                 last: data.name.last.trim(),
@@ -123,16 +133,11 @@ export class User
             email: data.email.trim(),
             password: data.password,
             birthday: data.birthday ? firestore.Timestamp.fromDate(new Date(data.birthday)) : undefined,
-        });
+        };
 
-        return new User(
-            user.id,
-            data.name.first,
-            data.name.last,
-            data.email,
-            data.password,
-            data.birthday,
-        );
+        const { id } = await db.collection("users").add(user);
+
+        return new User(id, user);
     }
 
     static retrieve = async (id: string): Promise<User | null> =>
@@ -143,14 +148,7 @@ export class User
 
         const data = user.data() as IUser;
 
-        return new User(
-            id,
-            data.name.first,
-            data.name.last,
-            data.email,
-            data.password,
-            data.birthday?.toDate().toDateString(),
-        );
+        return new User(id, data);
     }
 
     public update = async (data: ApiRequest.Users.Update): Promise<void> =>
@@ -162,17 +160,34 @@ export class User
             throw result;
         }
 
-        const firstName: string = data.name?.first ?? this.firstName;
-        const lastName: string = data.name?.last ?? this.lastName;
-        const email: string = data.email ?? this.email;
-        const birthday: string | undefined = data.birthday ?? this.birthday;
+        const updatedUser = this.data;
 
-        await db.collection("users").doc(this.id).update({
-            "name.first": firstName,
-            "name.last": lastName,
-            email,
-            birthday,
-        });
+        if (!Utilities.isNullOrUndefined(data.name))
+        {
+            if (!Utilities.isNullOrUndefined(data.name.first))
+            {
+                updatedUser.name.first = data.name.first;
+            }
+
+            if (!Utilities.isNullOrUndefined(data.name.last))
+            {
+                updatedUser.name.last = data.name.last;
+            }
+        }
+
+        if (!Utilities.isNullOrUndefined(data.email))
+        {
+            updatedUser.email = data.email;
+        }
+
+        if (!Utilities.isNullOrUndefined(data.birthday))
+        {
+            updatedUser.birthday = firestore.Timestamp.fromDate(
+                dayjs(data.birthday, ValidatorConstants.BIRTHDAY_FORMAT).toDate()
+            );
+        }
+
+        await db.collection("users").doc(this.id).update(updatedUser);
     }
 
     public delete = async (): Promise<void> =>
