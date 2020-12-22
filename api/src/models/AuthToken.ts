@@ -85,7 +85,7 @@ export class AuthToken
 
         if (!user) throw new ApiError("user/email/inexistent");
 
-        if (!bcrypt.compareSync(password, user.password)) throw new ApiError("user/password/wrong");
+        if (!bcrypt.compareSync(password, user.data.password)) throw new ApiError("user/password/wrong");
 
         const uuid = uuidv4();
 
