@@ -29,7 +29,7 @@ export interface ISerializedUser
     },
     email: string,
     password: string,
-    birthday?: Date,
+    birthday?: string,
 }
 
 export class User
@@ -40,7 +40,7 @@ export class User
         public readonly lastName: string,
         public readonly email: string,
         public readonly password: string,
-        public readonly birthday?: Date,
+        public readonly birthday?: string,
     ) {}
 
     public json = (): ISerializedUser =>
@@ -131,7 +131,7 @@ export class User
             data.name.last,
             data.email,
             data.password,
-            data.birthday ? new Date(data.birthday) : undefined,
+            data.birthday,
         );
     }
 
@@ -149,7 +149,7 @@ export class User
             data.name.last,
             data.email,
             data.password,
-            data.birthday ? data.birthday.toDate() : undefined,
+            data.birthday?.toDate().toDateString(),
         );
     }
 
@@ -165,11 +165,7 @@ export class User
         const firstName: string = data.name?.first ?? this.firstName;
         const lastName: string = data.name?.last ?? this.lastName;
         const email: string = data.email ?? this.email;
-        const birthday: firestore.Timestamp | undefined = data.birthday
-            ? firestore.Timestamp.fromDate(new Date(data.birthday))
-            : (this.birthday
-                ? firestore.Timestamp.fromDate(this.birthday)
-                : undefined);
+        const birthday: string | undefined = data.birthday ?? this.birthday;
 
         await db.collection("users").doc(this.id).update({
             "name.first": firstName,
