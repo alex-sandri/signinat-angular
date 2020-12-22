@@ -1,12 +1,12 @@
 import { firestore } from "firebase-admin";
 import * as bcrypt from "bcrypt";
+import * as dayjs from "dayjs";
 
 import { ApiRequest } from "../typings/ApiRequest";
 import { Scope } from "./Scope";
 import { Account } from "./Account";
 import { App } from "./App";
 import { Validator, ValidatorConstants } from "../utilities/Validator";
-import dayjs = require("dayjs");
 import Utilities from "../utilities/Utilities";
 
 const db = firestore();
