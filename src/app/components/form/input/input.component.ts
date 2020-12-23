@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormInput } from '../form.component';
 
 @Component({
@@ -6,8 +6,8 @@ import { FormInput } from '../form.component';
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss']
 })
-export class InputComponent implements OnInit {
-
+export class InputComponent implements AfterViewInit
+{
   @Input("options")
   options!: FormInput;
 
@@ -34,7 +34,7 @@ export class InputComponent implements OnInit {
     switch (this.options.type)
     {
       case "date":
-        // TODO
+        this.input.nativeElement.valueAsDate = this.options.value ?? null;
         break;
       case "select":
         // TODO
@@ -48,6 +48,8 @@ export class InputComponent implements OnInit {
   constructor()
   {}
 
-  ngOnInit(): void
-  {}
+  ngAfterViewInit(): void
+  {
+    this.reset();
+  }
 }

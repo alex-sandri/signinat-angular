@@ -46,7 +46,7 @@ export class SettingsComponent implements OnInit
       {
         name: "Additional information",
         inputs: [
-          { label: "Birthday", name: "birthday", type: "date", required: false, autocomplete: "bday", value: new Date(/* TODO */) },
+          { label: "Birthday", name: "birthday", type: "date", required: false, autocomplete: "bday", value: this.getBirthdayAsDate() },
         ],
       },
     ],
@@ -79,15 +79,24 @@ export class SettingsComponent implements OnInit
     this.router.navigateByUrl(`account/settings/${section}`);
   }
 
-  getFormattedBirthday(): string
+  getBirthdayAsDate(): Date | undefined
   {
-    if (!this.user || !this.user.birthday) return "";
+    if (!this.user || !this.user.birthday) return;
 
     const date = new Date();
 
     date.setDate(this.user.birthday.day);
-    date.setDate(this.user.birthday.day);
-    date.setDate(this.user.birthday.day);
+    date.setMonth(this.user.birthday.month - 1);
+    date.setFullYear(this.user.birthday.year);
+
+    return date;
+  }
+
+  getFormattedBirthday(): string
+  {
+    const date = this.getBirthdayAsDate();
+
+    if (!date) return "";
 
     return date.toLocaleDateString("en-US", {
       day: "2-digit",
