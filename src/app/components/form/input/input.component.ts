@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { FormInput } from '../form.component';
+import { FormInput, ITextFormInput } from '../form.component';
 
 @Component({
   selector: 'app-input',
@@ -8,11 +8,24 @@ import { FormInput } from '../form.component';
 })
 export class InputComponent implements AfterViewInit
 {
+  private _options?: FormInput;
+
   @Input("options")
   options!: FormInput;
 
   @ViewChild("input")
   input?: ElementRef<HTMLInputElement>;
+
+  constructor()
+  {}
+
+  ngAfterViewInit(): void
+  {
+    // Clone options object to keep its default values to be used in reset()
+    this._options = Object.assign({}, this.options);
+
+    this.reset();
+  }
 
   set(event: Event)
   {
@@ -31,25 +44,17 @@ export class InputComponent implements AfterViewInit
   {
     if (!this.input) return;
 
-    switch (this.options.type)
+    switch (this._options?.type)
     {
       case "date":
-        this.input.nativeElement.valueAsDate = this.options.value ?? null;
+        this.input.nativeElement.valueAsDate = this._options?.value ?? null;
         break;
       case "select":
         // TODO
         break;
       default:
-        this.input.nativeElement.value = this.options.value ?? "";
+        this.input.nativeElement.value = (this._options as ITextFormInput | undefined)?.value ?? "";
         break;
     }
-  }
-
-  constructor()
-  {}
-
-  ngAfterViewInit(): void
-  {
-    this.reset();
   }
 }
