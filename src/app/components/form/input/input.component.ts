@@ -31,6 +31,9 @@ export class InputComponent implements AfterViewInit
   {
     switch (this.options.type)
     {
+      case "date":
+        this.options.value = (event.composedPath()[0] as HTMLInputElement).valueAsDate ?? undefined;
+        break;
       case "select":
         this.options.selectedValues = Array.from((event.target as HTMLSelectElement).selectedOptions).map(opt => opt.value);
         break;
