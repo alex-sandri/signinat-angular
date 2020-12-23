@@ -116,6 +116,8 @@ export class SettingsComponent implements OnInit
       this.updateProfileFormOptions.groups[0].inputs[0].error = response.errors.find(e => e.id.startsWith("user/name/first/"))?.message;
       this.updateProfileFormOptions.groups[0].inputs[1].error = response.errors.find(e => e.id.startsWith("user/name/last/"))?.message;
       this.updateProfileFormOptions.groups[0].inputs[2].error = response.errors.find(e => e.id.startsWith("user/email/"))?.message;
+
+      this.updateProfileFormOptions.groups[1].inputs[0].error = response.errors.find(e => e.id.startsWith("user/birthday/"))?.message;
     }
     else
     {

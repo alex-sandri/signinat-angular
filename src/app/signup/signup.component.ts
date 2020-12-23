@@ -53,6 +53,8 @@ export class SignupComponent implements OnInit {
       this.options.groups[0].inputs[1].error = response.errors.find(e => e.id.startsWith("user/name/last/"))?.message;
       this.options.groups[0].inputs[2].error = response.errors.find(e => e.id.startsWith("user/email/"))?.message;
       this.options.groups[0].inputs[3].error = response.errors.find(e => e.id.startsWith("user/password/"))?.message;
+
+      this.options.groups[1].inputs[0].error = response.errors.find(e => e.id.startsWith("user/birthday/"))?.message;
     }
 
     end();
