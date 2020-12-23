@@ -55,8 +55,8 @@ export class User
             email: this.data.email,
             password: this.data.password,
             birthday: birthdayAsDate && {
-                day: birthdayAsDate.getDay(),
-                month: birthdayAsDate.getMonth(),
+                day: birthdayAsDate.getDate(),
+                month: birthdayAsDate.getMonth() + 1,
                 year: birthdayAsDate.getFullYear(),
             },
         };
