@@ -28,7 +28,9 @@
             <div class="field">
                 <b>Birthday</b>
                 <br>
-                <small *ngIf="user.birthday; else notAvailable">{{user.birthday}}</small>
+                <small *ngIf="user.birthday; else notAvailable">
+                    {{user.birthday.day}} {{user.birthday.month}} {{user.birthday.year}}
+                </small>
             </div>
         </fieldset>
         <button (click)="updateProfileForm.showModal()">Edit</button>
