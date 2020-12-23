@@ -28,13 +28,12 @@ export class FormComponent
     return this.getGroup("default")!.inputs;
   }
 
-  public getGroup(name: string): FormGroup | null
+  public getGroup(name: string): FormGroup | undefined
   {
     return this
       .options
       .groups
-      .find(group => group.name === name)
-      ?? null;
+      .find(group => group.name === name);
   }
 
   public getNonDefaultGroups(): FormGroup[]
@@ -45,15 +44,14 @@ export class FormComponent
       .filter(group => group.name !== "default");
   }
 
-  public getInput(name: string): FormInput | null
+  public getInput(name: string): FormInput | undefined
   {
     return this
       .options
       .groups
       .map(group => group.inputs)
       .flat()
-      .find(input => input.name === name)
-      ?? null;
+      .find(input => input.name === name);
   }
 
   async onSubmit(e: Event)
