@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { InputComponent } from './input/input.component';
 
 @Component({
@@ -6,7 +6,7 @@ import { InputComponent } from './input/input.component';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })
-export class FormComponent implements OnInit
+export class FormComponent
 {
   @Input("options")
   options!: FormOptions;
@@ -19,6 +19,9 @@ export class FormComponent implements OnInit
 
   @ViewChildren(InputComponent)
   inputs!: QueryList<InputComponent>;
+
+  constructor()
+  {}
 
   getDefaultInputs(): FormInput[]
   {
@@ -107,18 +110,12 @@ export class FormComponent implements OnInit
     this.inputs.forEach(input => input.reset());
   }
 
-  async cancel()
+  public cancel()
   {
     this.hide();
 
     this.reset();
   }
-
-  constructor()
-  {}
-
-  ngOnInit(): void
-  {}
 }
 
 export interface FormOptions
