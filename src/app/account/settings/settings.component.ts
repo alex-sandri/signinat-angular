@@ -79,6 +79,23 @@ export class SettingsComponent implements OnInit
     this.router.navigateByUrl(`account/settings/${section}`);
   }
 
+  getFormattedBirthday(): string
+  {
+    if (!this.user || !this.user.birthday) return "";
+
+    const date = new Date();
+
+    date.setDate(this.user.birthday.day);
+    date.setDate(this.user.birthday.day);
+    date.setDate(this.user.birthday.day);
+
+    return date.toLocaleDateString("en-US", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  }
+
   async createNewAppFormOnSubmit(end: () => void)
   {
     const response = await this.api.createApp({
