@@ -24,6 +24,12 @@ main
 {
     grid-area: main;
     padding: 15px;
+
+    @media (prefers-color-scheme: dark)
+    {
+        color: var(--secondary-color);
+        background-color: #3c3c3c;
+    }
 }
 
 dialog

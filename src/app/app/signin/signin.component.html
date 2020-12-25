@@ -1,35 +1,36 @@
 <app-header></app-header>
 
-<spinner *ngIf="app === undefined"></spinner>
+<main>
+    <spinner *ngIf="app === undefined" [fill]="true"></spinner>
+    <div *ngIf="app !== undefined" id="content">
+        <h1>{{app.name}}</h1>
+        <small><a href="{{app.url}}" target="_blank">{{app.url}}</a></small>
+        <p *ngIf="requestsFullAccess" id="full-access-warning">
+            <mark>
+                <span>&#9888;</span>
+                <div>
+                    <b>This app wants to access everything about your account, this means no restrictions.</b>
+                    <label>
+                        I trust this app
+                        <input
+                            #trustApp
+        
+                            type="checkbox"
+        
+                            (input)="isSignInButtonDisabled = !trustApp.checked"
+                        >
+                    </label>
+                </div>
+            </mark>
+        </p>
+        <p>This app wants to access:</p>
+        <app-scope-list [scopes]="app.scopes"></app-scope-list>
+        <button
+            [attr.disabled]="isSignInButtonDisabled ? '' : null"
 
-<main *ngIf="app !== undefined">
-    <h1>{{app.name}}</h1>
-    <small><a href="{{app.url}}" target="_blank">{{app.url}}</a></small>
-    <p *ngIf="requestsFullAccess" id="full-access-warning">
-        <mark>
-            <span>&#9888;</span>
-            <div>
-                <b>This app wants to access everything about your account, this means no restrictions.</b>
-                <label>
-                    I trust this app
-                    <input
-                        #trustApp
-    
-                        type="checkbox"
-    
-                        (input)="isSignInButtonDisabled = !trustApp.checked"
-                    >
-                </label>
-            </div>
-        </mark>
-    </p>
-    <p>This app wants to access:</p>
-    <app-scope-list [scopes]="app.scopes"></app-scope-list>
-    <button
-        [attr.disabled]="isSignInButtonDisabled ? '' : null"
-
-        (click)="onSignIn()"
-    >
-        Sign In @ <b>{{app.name}}</b>
-    </button>
+            (click)="onSignIn()"
+        >
+            Sign In @ <b>{{app.name}}</b>
+        </button>
+    </div>
 </main>
