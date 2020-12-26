@@ -23,7 +23,7 @@ import { User } from "./models/User";
 import { Account } from "./models/Account";
 import { Scope } from "./models/Scope";
 import { AuthToken } from "./models/AuthToken";
-import { ValidatorResult } from "./utilities/Validator";
+import { IUser, ValidatorResult } from "./utilities/Validator";
 
 const app = express();
 
@@ -35,7 +35,7 @@ app.use(express.json());
 
 app.post("/api/users", async (req, res) =>
 {
-  const data: ApiRequest.Users.Create = req.body;
+  const data: IUser = req.body;
 
   const response: ApiResponse = {
     result: { valid: true },
@@ -79,7 +79,7 @@ app.put("/api/users/:id", async (req, res) =>
     return;
   }
 
-  const data: ApiRequest.Users.Update = req.body;
+  const data: IUser = req.body;
 
   const response: ApiResponse = {
     result: { valid: true },
@@ -210,31 +210,6 @@ app.post("/api/accounts", async (req, res) =>
   }
 
   await Account.create(token.user, app);
-
-  res.status(200).send({ status: 200 });
-});
-
-app.delete("/api/accounts/:id/unlink", async (req, res) =>
-{
-  const token = await AuthToken.retrieve(req.token);
-
-  if (!token)
-  {
-    res.status(401).send({ status: 401 });
-
-    return;
-  }
-
-  if (token.type !== "user")
-  {
-    res.status(403).send({ status: 403 });
-
-    return;
-  }
-
-  const account = await Account.retrieve(token.user, req.params.id);
-
-  await account?.unlink();
 
   res.status(200).send({ status: 200 });
 });

@@ -114,8 +114,6 @@ export class Account
         return accounts;
     }
 
-    public unlink = async (): Promise<void> => { await db.collection("accounts").doc(this.id).delete(); }
-
     public delete = async (): Promise<void> =>
     {
         const success = await Webhook.send(
@@ -128,7 +126,7 @@ export class Account
 
         if (success)
         {
-            await this.unlink();
+            await db.collection("accounts").doc(this.id).delete();
         }
     }
 
