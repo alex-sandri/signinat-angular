@@ -27,4 +27,10 @@ div
             transform: rotate(360deg);
         }
     }
+
+    @media (prefers-color-scheme: dark)
+    {
+        border-color: var(--primary-color-dark);
+        border-left-color: transparent;
+    }
 }
