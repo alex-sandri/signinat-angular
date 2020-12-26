@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ISerializedAccount } from 'api/src/models/Account';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -8,23 +8,21 @@ import { ApiService } from 'src/app/services/api/api.service';
   templateUrl: './manage.component.html',
   styleUrls: ['./manage.component.scss']
 })
-export class ManageComponent implements OnInit {
+export class ManageComponent
+{
+  account?: ISerializedAccount;
 
-  account!: ISerializedAccount;
+  async delete()
+  {
+    if (!this.account) return;
 
-  async unlink() {
-    await this.api.unlinkAccount(this.account.id);
-
-    this.router.navigateByUrl("/account");
-  }
-
-  async delete() {
     await this.api.deleteAccount(this.account.id);
 
     this.router.navigateByUrl("/account");
   }
 
-  constructor(private api: ApiService, private router: Router, route: ActivatedRoute) {
+  constructor(private api: ApiService, private router: Router, route: ActivatedRoute)
+  {
     api
       .retrieveAccount(route.snapshot.params["id"])
       .then(account => this.account = account)
@@ -33,8 +31,4 @@ export class ManageComponent implements OnInit {
         router.navigateByUrl("/account");
       });
   }
-
-  ngOnInit(): void {
-  }
-
 }

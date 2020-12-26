@@ -9,11 +9,6 @@
     <small><a href="{{account.app.url}}" target="_blank">{{account.app.url}}</a></small>
     <fieldset id="danger-zone">
         <legend>Danger zone</legend>
-        <button (click)="unlink()">Unlink</button>
-        <small>
-            This will unlink this account from your SignInAt account,
-            but you will still be able to access your <a href="{{account.app.url}}" target="_blank">{{account.app.name}}</a> account.
-        </small>
         <button (click)="delete()">Delete</button>
         <small>This will delete this account permanently.</small>
     </fieldset>
