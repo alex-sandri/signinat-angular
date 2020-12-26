@@ -95,15 +95,6 @@ export class ApiService
     return response as ISerializedAccount[];
   }
 
-  public unlinkAccount = async (id: string): Promise<void> =>
-  {
-    await this.http.delete(`${ApiService.ENDPOINTS.ACCOUNTS}/${id}/unlink`, {
-      headers: {
-        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
-      },
-    }).toPromise();
-  }
-
   public deleteAccount = async (id: string): Promise<void> =>
   {
     await this.http.delete(`${ApiService.ENDPOINTS.ACCOUNTS}/${id}`, {
