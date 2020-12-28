@@ -1,6 +1,7 @@
 import * as dayjs from "dayjs";
 
 import { ApiError, ISerializedApiError, TApiErrorType } from "../models/ApiError";
+import { ISerializedApp } from "../models/App";
 import { ISerializedUser, User } from "../models/User";
 import Utilities from "./Utilities";
 
@@ -17,6 +18,20 @@ export interface IUser
     email?: string,
     password?: string,
     birthday?: string,
+}
+
+export interface IApp
+{
+    name?: string,
+    url?: string,
+    owner?: string,
+    api?: {
+        key?: string,
+        webhook?: {
+            url?: string,
+            signature?: string,
+        },
+    },
 }
 
 interface ISerializedValidatorResult
@@ -120,6 +135,44 @@ export class Validator
                     if (Utilities.isEmpty(user.password)) result.add("user/password/empty");
                     else if (user.password.length < ValidatorConstants.PASSWORD_MIN_LENGTH) result.add("user/password/weak");
                 }
+                break;
+        }
+
+        return result;
+    }
+
+    /**
+     * Validates an app object
+     * 
+     * @param app The app object to validate
+     * @param old The old app (required only when type is `update`)
+     * 
+     * @returns `Promise<ValidatorResult>` Validation success
+     */
+    public async app(app?: IApp, old?: ISerializedApp): Promise<ValidatorResult>
+    {
+        /*
+        if (app.name.length === 0) throw new ApiError("app/name/empty");
+
+        if (app.url.length === 0) throw new ApiError("app/url/empty");
+        if ((await App.withUrl(data.url)) !== null) throw new ApiError("app/url/already-exists");
+        */
+
+        let result = new ValidatorResult();
+
+        if (Utilities.isNullOrUndefined(app))
+        {
+            result.add("app/required");
+
+            return result;
+        }
+
+        switch (this.type)
+        {
+            case "create":
+                // TODO
+            case "update":
+                // TODO
                 break;
         }
 

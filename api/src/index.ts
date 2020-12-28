@@ -23,7 +23,7 @@ import { User } from "./models/User";
 import { Account } from "./models/Account";
 import { Scope } from "./models/Scope";
 import { AuthToken } from "./models/AuthToken";
-import { IUser, ValidatorResult } from "./utilities/Validator";
+import { IApp, IUser, ValidatorResult } from "./utilities/Validator";
 
 const app = express();
 
@@ -304,7 +304,7 @@ app.post("/api/apps", async (req, res) =>
     return;
   }
 
-  const data: ApiRequest.Apps.Create = req.body;
+  const data: IApp = req.body;
 
   const response: ApiResponse = {
     result: { valid: true },
@@ -321,7 +321,10 @@ app.post("/api/apps", async (req, res) =>
   {
     response.result.valid = false;
 
-    response.errors.push((e as ApiError).json());
+    if (e instanceof ValidatorResult)
+    {
+      response.errors = e.json().errors;
+    }
   }
 
   res.send(response);
@@ -352,7 +355,7 @@ app.put("/api/apps/:id", async (req, res) =>
     return;
   }
 
-  const data: ApiRequest.Apps.Update = req.body;
+  const data: IApp = req.body;
 
   const response: ApiResponse = {
     result: { valid: true },
@@ -374,7 +377,10 @@ app.put("/api/apps/:id", async (req, res) =>
   {
     response.result.valid = false;
 
-    response.errors.push((e as ApiError).json());
+    if (e instanceof ValidatorResult)
+    {
+      response.errors = e.json().errors;
+    }
   }
 
   if (response.result.valid) res.send(response);

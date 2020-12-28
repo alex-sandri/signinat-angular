@@ -1,15 +1,14 @@
 import { firestore } from "firebase-admin";
 import { v4 as uuidv4 } from "uuid";
 
-import { ApiRequest } from "../typings/ApiRequest";
+import { IApp, Validator } from "../utilities/Validator";
 import { Account } from "./Account";
-import { ApiError } from "./ApiError";
 import { ISerializedScope, Scope } from "./Scope";
 import { ISerializedUser, User } from "./User";
 
 const db = firestore();
 
-interface IApp
+interface IDatabaseApp
 {
     name: string,
     url: string,
@@ -44,82 +43,56 @@ export class App
 {
     private constructor(
         public readonly id: string,
-        public readonly name: string,
-        public readonly url: string,
-        public readonly owner: User,
-        public readonly apiKey: string,
-        public readonly webhookUrl: string,
-        public readonly webhookSignature: string,
+        public readonly data: IDatabaseApp,
         public readonly scopes: Scope[],
-    ) {}
+    )
+    {}
 
-    public json = (): ISerializedApp =>
-    ({
-        id: this.id,
-        name: this.name,
-        url: this.url,
-        owner: this.owner.json(),
-        api: {
-            key: this.apiKey,
-            webhook: {
-                url: this.webhookUrl,
-                signature: this.webhookSignature,
-            },
-        },
-        scopes: this.scopes.map(scope => scope.json()),
-    });
-
-    public static from = (json: ISerializedApp): App =>
+    public async json(): Promise<ISerializedApp>
     {
-        return new App(
-            json.id,
-            json.name,
-            json.url,
-            User.from(json.owner),
-            json.api.key,
-            json.api.webhook.url,
-            json.api.webhook.signature,
-            Scope.from(json.scopes.map(scope => scope.value)),
-        );
-    }
-
-    static create = async (user: User, data: ApiRequest.Apps.Create): Promise<App> =>
-    {
-        App.validate(data);
-
-        if ((await App.withUrl(data.url)) !== null) throw new ApiError("app/url/already-exists");
-
-        // TODO
-        // Validate `data.url`
-
-        const apiKey = uuidv4();
-        const webhookSignature = uuidv4();
-
-        const app = await db.collection("apps").add(<IApp>{
-            name: data.name.trim(),
-            url: data.url.trim(),
-            owner: user.id,
+        return {
+            id: this.id,
+            name: this.data.name,
+            url: this.data.url,
+            owner: (await User.retrieve(this.data.owner))!.json(),
             api: {
-                key: apiKey,
+                key: this.data.api.key,
                 webhook: {
-                    url: "",
-                    signature: webhookSignature,
+                    url: this.data.api.webhook.url,
+                    signature: this.data.api.webhook.signature,
                 },
             },
-        });
+            scopes: this.scopes.map(scope => scope.json()),
+        };
+    };
 
-        await Scope.set(app.id, Scope.from(data.scopes));
+    static create = async (user: User, data: IApp, scopes: string[]): Promise<App> =>
+    {
+        const result = await Validator.of("create").app(data);
 
-        return new App(
-            app.id,
-            data.name,
-            data.url,
-            user,
-            apiKey,
-            "", // A newly created app does not have a webhook URL
-            webhookSignature,
-            Scope.from(data.scopes),
-        );
+        if (!result.valid)
+        {
+            throw result;
+        }
+
+        const app: IDatabaseApp = {
+            name: data.name!.trim(),
+            url: data.url!.trim(),
+            owner: user.id,
+            api: {
+                key: uuidv4(),
+                webhook: {
+                    url: data.api!.webhook!.url!,
+                    signature: uuidv4(),
+                },
+            },
+        };
+
+        const { id } = await db.collection("apps").add(app);
+
+        await Scope.set(id, Scope.from(scopes));
+
+        return new App(id, app, Scope.from(scopes));
     }
 
     static retrieve = async (id: string): Promise<App | null> =>
@@ -128,22 +101,11 @@ export class App
 
         if (!app.exists) return null;
 
-        const data = app.data() as IApp;
-
-        const owner = await User.retrieve(data.owner) as User;
+        const data = app.data() as IDatabaseApp;
 
         const scopes = await Scope.list(app.id);
 
-        return new App(
-            id,
-            data.name,
-            data.url,
-            owner,
-            data.api.key,
-            data.api.webhook.url,
-            data.api.webhook.signature,
-            scopes,
-        );
+        return new App(id, data, scopes);
     }
 
     static list = async (user: User): Promise<App[]> =>
@@ -154,30 +116,26 @@ export class App
 
         snapshot.docs.forEach(app =>
         {
-            const data = app.data() as IApp;
+            const data = app.data() as IDatabaseApp;
 
-            apps.push(new App(
-                app.id,
-                data.name,
-                data.url,
-                user,
-                data.api.key,
-                data.api.webhook.url,
-                data.api.webhook.signature,
-                [], // Scopes are not sent with a LIST operation
-            ));
+            // Scopes are not sent with a LIST operation
+            apps.push(new App(app.id, data, []));
         });
 
         return apps;
     }
 
-    public update = async (data: ApiRequest.Apps.Update): Promise<void> =>
+    public update = async (data: IApp): Promise<void> =>
     {
-        // TODO
-        // Validate `data.api.webhook`
+        const result = await Validator.of("update").app(data, await this.json());
+
+        if (!result.valid)
+        {
+            throw result;
+        }
 
         await db.collection("apps").doc(this.id).update({
-            "api.webhook.url": data.api.webhook,
+            "api.webhook.url": data.api?.webhook?.url,
         });
     }
 
@@ -214,16 +172,6 @@ export class App
 
         if (!app) return false;
 
-        return app.owner.id === user.id;
-    }
-
-    /**
-     * @throws `Error` if data is not valid
-     */
-    static validate = (data: ApiRequest.Apps.Create): void =>
-    {
-        if (data.name.length === 0) throw new ApiError("app/name/empty");
-
-        if (data.url.length === 0) throw new ApiError("app/url/empty");
+        return app.data.owner === user.id;
     }
 }
