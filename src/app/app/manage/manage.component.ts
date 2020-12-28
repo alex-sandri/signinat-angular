@@ -8,29 +8,35 @@ import { ApiService } from 'src/app/services/api/api.service';
   templateUrl: './manage.component.html',
   styleUrls: ['./manage.component.scss']
 })
-export class ManageComponent implements OnInit {
-
+export class ManageComponent
+{
   app!: ISerializedApp;
 
-  setWebhook(url: string) {
+  setWebhook(url: string)
+  {
     this.api.updateApp(this.app.id, {
       api: {
-        webhook: url,
+        webhook: {
+          url,
+        },
       },
     });
   }
 
-  copyApiKey() {
+  copyApiKey()
+  {
     navigator.clipboard.writeText(this.app.api.key);
   }
 
-  async delete() {
+  async delete()
+  {
     await this.api.deleteApp(this.app.id);
 
     this.router.navigateByUrl("/account/settings/developer");
   }
 
-  constructor(private api: ApiService, private router: Router, route: ActivatedRoute) {
+  constructor(private api: ApiService, private router: Router, route: ActivatedRoute)
+  {
     api
       .retrieveApp(route.snapshot.params["id"])
       .then(app => this.app = app)
@@ -39,8 +45,4 @@ export class ManageComponent implements OnInit {
         router.navigateByUrl("/account");
       });
   }
-
-  ngOnInit(): void {
-  }
-
 }
