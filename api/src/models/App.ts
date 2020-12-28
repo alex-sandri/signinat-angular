@@ -66,7 +66,7 @@ export class App
         };
     };
 
-    static create = async (user: User, data: IApp, scopes: string[]): Promise<App> =>
+    static create = async (user: User, data: IApp): Promise<App> =>
     {
         const result = await Validator.of("create").app(data);
 
@@ -90,9 +90,11 @@ export class App
 
         const { id } = await db.collection("apps").add(app);
 
-        await Scope.set(id, Scope.from(scopes));
+        const scopes = Scope.from(data.scopes!);
 
-        return new App(id, app, Scope.from(scopes));
+        await Scope.set(id, scopes);
+
+        return new App(id, app, scopes);
     }
 
     static retrieve = async (id: string): Promise<App | null> =>

@@ -108,9 +108,9 @@ export class SettingsComponent implements OnInit
   async createNewAppFormOnSubmit(end: () => void)
   {
     const response = await this.api.createApp({
-      name: (this.createNewAppFormOptions.groups[0].inputs[0] as ITextFormInput).value as string,
-      url: (this.createNewAppFormOptions.groups[0].inputs[1] as ITextFormInput).value as string,
-      scopes: (this.createNewAppFormOptions.groups[0].inputs[2] as ISelectFormInput).selectedValues as string[],
+      name: (this.createNewAppFormOptions.groups[0].inputs[0] as ITextFormInput).value,
+      url: (this.createNewAppFormOptions.groups[0].inputs[1] as ITextFormInput).value,
+      scopes: (this.createNewAppFormOptions.groups[0].inputs[2] as ISelectFormInput).selectedValues,
     });
 
     if (!response.result.valid)

@@ -25,6 +25,7 @@ export interface IApp
     name?: string,
     url?: string,
     owner?: string,
+    scopes?: string[],
     api?: {
         key?: string,
         webhook?: {
