@@ -8,7 +8,7 @@ import { ISerializedAccount } from 'api/src/models/Account';
 import { ISerializedScope } from 'api/src/models/Scope';
 import { ISerializedAuthToken } from 'api/src/models/AuthToken';
 import { SettingsService } from '../settings/settings.service';
-import { IUser } from 'api/src/utilities/Validator';
+import { IApp, IUser } from 'api/src/utilities/Validator';
 
 @Injectable({
   providedIn: 'root'
@@ -104,7 +104,7 @@ export class ApiService
     }).toPromise();
   }
 
-  public createApp = async (data: ApiRequest.Apps.Create): Promise<ApiResponse> =>
+  public createApp = async (data: IApp): Promise<ApiResponse> =>
   {
     const response = await this.http.post(ApiService.ENDPOINTS.APPS, JSON.stringify(data), {
       headers: {
@@ -138,7 +138,7 @@ export class ApiService
     return response as ISerializedApp[];
   }
 
-  public updateApp = async (id: string, data: ApiRequest.Apps.Update): Promise<ApiResponse> =>
+  public updateApp = async (id: string, data: IApp): Promise<ApiResponse> =>
   {
     const response = await this.http.put(`${ApiService.ENDPOINTS.APPS}/${id}`, JSON.stringify(data), {
       headers: {
