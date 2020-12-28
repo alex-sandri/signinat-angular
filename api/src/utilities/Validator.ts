@@ -173,6 +173,13 @@ export class Validator
             case "create":
                 // TODO
             case "update":
+                if (Utilities.isNullOrUndefined(old))
+                {
+                    result.add("user/required");
+
+                    return result;
+                }
+
                 // TODO
                 break;
         }
