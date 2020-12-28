@@ -175,7 +175,7 @@ export class Validator
             case "update":
                 if (Utilities.isNullOrUndefined(old))
                 {
-                    result.add("user/required");
+                    result.add("app/required");
 
                     return result;
                 }
