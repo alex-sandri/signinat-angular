@@ -1,6 +1,6 @@
 export interface ISerializedApiError
 {
-    id: TApiErrorType,
+    id: TApiError,
     message: string,
 }
 
@@ -8,7 +8,7 @@ export class ApiError
 {
     public readonly message: string;
 
-    constructor(public id: TApiErrorType)
+    constructor(public id: TApiError)
     {
         switch (id)
         {
@@ -46,6 +46,8 @@ export class ApiError
             case "user/password/wrong": this.message = "Wrong password"; break;
             case "user/birthday/empty": this.message = "The birthday cannot be empty"; break;
             case "user/birthday/invalid": this.message = "The birthday is invalid"; break;
+
+            default: this.message = "Unknown error"; break;
         }
     }
 
@@ -56,38 +58,27 @@ export class ApiError
     });
 }
 
+export type TApiErrorFieldPrefix =
+| "account"
+| "app"
+| "app/name"
+| "app/url"
+| "app/webhook/url"
+| "user"
+| "user/name"
+| "user/name/first"
+| "user/name/last"
+| "user/email"
+| "user/password"
+| "user/birthday";
+
 export type TApiErrorType =
-    // ACCOUNT
-      "account/already-exists"
+| "already-exists"
+| "empty"
+| "inexistent"
+| "invalid"
+| "required"
+| "weak"
+| "wrong";
 
-    // APP
-    | "app/inexistent"
-    | "app/name/empty"
-    | "app/url/empty"
-    | "app/url/invalid"
-    | "app/url/already-exists"
-    | "app/webhook/url/empty"
-    | "app/webhook/url/invalid"
-
-    // USER
-    | "user/required"
-    | "user/inexistent"
-    | "user/name/required"
-    | "user/name/first/required"
-    | "user/name/first/invalid"
-    | "user/name/first/empty"
-    | "user/name/last/required"
-    | "user/name/last/invalid"
-    | "user/name/last/empty"
-    | "user/email/required"
-    | "user/email/invalid"
-    | "user/email/empty"
-    | "user/email/already-exists"
-    | "user/email/inexistent"
-    | "user/password/required"
-    | "user/password/invalid"
-    | "user/password/empty"
-    | "user/password/weak"
-    | "user/password/wrong"
-    | "user/birthday/empty"
-    | "user/birthday/invalid";
+export type TApiError = `${TApiErrorFieldPrefix}/${TApiErrorType}`;

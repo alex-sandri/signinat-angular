@@ -1,6 +1,6 @@
 import * as dayjs from "dayjs";
 
-import { ApiError, ISerializedApiError, TApiErrorType } from "../models/ApiError";
+import { ApiError, ISerializedApiError, TApiError } from "../models/ApiError";
 import { ISerializedApp } from "../models/App";
 import { ISerializedUser, User } from "../models/User";
 import Utilities from "./Utilities";
@@ -190,14 +190,14 @@ export class Validator
 
 export class ValidatorResult
 {
-    public readonly errors: Set<TApiErrorType> = new Set();
+    public readonly errors: Set<TApiError> = new Set();
 
     public get valid()
     {
         return this.errors.size === 0;
     };
 
-    public add(error: TApiErrorType): void
+    public add(error: TApiError): void
     {
         this.errors.add(error);
     }
