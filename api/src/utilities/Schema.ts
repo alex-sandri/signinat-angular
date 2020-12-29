@@ -61,6 +61,9 @@ export default class Schema
 
                     result.addAll(Array.from(childSchema.validate(obj[field]).errors));
                     break;
+                case "array":
+                    // TODO
+                    break;
                 case "string":
                     const value = obj[field];
 
