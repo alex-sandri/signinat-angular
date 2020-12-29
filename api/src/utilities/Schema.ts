@@ -104,7 +104,7 @@ export class SchemaValidationResult
     public get valid()
     {
         return this.errors.size === 0;
-    };
+    }
 
     public add(error: TApiError): void
     {
