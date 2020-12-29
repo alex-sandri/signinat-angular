@@ -165,9 +165,21 @@ export class Validator
         switch (this.type)
         {
             case "create":
-                result = new Schema({ /* TODO */ }).validate(app);
+                result = new Schema("app", {
+                    name: { type: "string", required: true, length: { min: 1 } },
+                    url: { type: "string", required: true, length: { min: 1 } },
+                    owner: { type: "string", required: true, length: { min: 1 } },
+                    scopes: { type: "array", of: "string", required: true },
+                    api: {
+                        key: { type: "string", required: true, length: { min: 1 } },
+                        webhook: {
+                            url: { type: "string", required: true, length: { min: 1 } },
+                            signature: { type: "string", required: true, length: { min: 1 } },
+                        },
+                    },
+                }).validate(app);
             case "update":
-                result = new Schema({ /* TODO */ }).validate(old);
+                result = new Schema("app", { /* TODO */ }).validate(old);
                 break;
         }
 
