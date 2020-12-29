@@ -37,13 +37,15 @@ export class AuthToken
         public readonly app?: App | null,
     ) {}
 
-    public json = (): ISerializedAuthToken =>
-    ({
-        id: this.id,
-        user: this.user.json(),
-
-        app: this.app?.json(),
-    });
+    public async json(): Promise<ISerializedAuthToken>
+    {
+        return {
+            id: this.id,
+            user: this.user.json(),
+    
+            app: await this.app?.json(),
+        };
+    }
 
     public static async app(appId: string, userId: string): Promise<AuthToken>
     {

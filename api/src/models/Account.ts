@@ -28,12 +28,14 @@ export class Account
         public readonly user: User,
     ) {}
 
-    public json = (): ISerializedAccount =>
-    ({
-        id: this.id,
-        app: this.app.json(),
-        user: this.user.json(),
-    });
+    public async json(): Promise<ISerializedAccount>
+    {
+        return {
+            id: this.id,
+            app: await this.app.json(),
+            user: this.user.json(),
+        };
+    }
 
     static create = async (user: User, app: App): Promise<Account> =>
     {
@@ -45,7 +47,7 @@ export class Account
         });
 
         await Webhook.send(
-            app.json(),
+            await app.json(),
             "user.created",
             {
                 user: user.json(),
@@ -117,7 +119,7 @@ export class Account
     public delete = async (): Promise<void> =>
     {
         const success = await Webhook.send(
-            this.app.json(),
+            await this.app.json(),
             "user.deleted",
             {
                 id: this.user.id,
