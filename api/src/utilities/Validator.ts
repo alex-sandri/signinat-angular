@@ -3,7 +3,7 @@ import * as dayjs from "dayjs";
 import { ApiError, ISerializedApiError, TApiError } from "../models/ApiError";
 import { ISerializedApp } from "../models/App";
 import { ISerializedUser, User } from "../models/User";
-import Schema, { SchemaValidationResult } from "./Schema";
+import Schema, { SchemaPresets, SchemaValidationResult } from "./Schema";
 import Utilities from "./Utilities";
 
 dayjs.extend(require("dayjs/plugin/customParseFormat"));
@@ -159,15 +159,15 @@ export class Validator
         {
             case "create":
                 result = new Schema("app", {
-                    name: { type: "string", required: true, length: { min: 1 } },
-                    url: { type: "string", required: true, length: { min: 1 } },
-                    owner: { type: "string", required: true, length: { min: 1 } },
+                    name: SchemaPresets.NON_EMPTY_STRING,
+                    url: SchemaPresets.NON_EMPTY_STRING,
+                    owner: SchemaPresets.NON_EMPTY_STRING,
                     scopes: { type: "array", of: "string", required: true, size: { min: 1 } },
                     api: {
-                        key: { type: "string", required: true, length: { min: 1 } },
+                        key: SchemaPresets.NON_EMPTY_STRING,
                         webhook: {
-                            url: { type: "string", required: true, length: { min: 1 } },
-                            signature: { type: "string", required: true, length: { min: 1 } },
+                            url: SchemaPresets.NON_EMPTY_STRING,
+                            signature: SchemaPresets.NON_EMPTY_STRING,
                         },
                     },
                 }).validate(app);

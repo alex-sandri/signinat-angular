@@ -124,3 +124,8 @@ export class SchemaValidationResult
         };
     }
 }
+
+export class SchemaPresets
+{
+    public static readonly NON_EMPTY_STRING: SchemaFieldDefinition = { type: "string", required: true, length: { min: 1 } };
+}
