@@ -153,13 +153,6 @@ export class Validator
      */
     public async app(app?: IApp, old?: ISerializedApp): Promise<SchemaValidationResult>
     {
-        /*
-        if (app.name.length === 0) throw new ApiError("app/name/empty");
-
-        if (app.url.length === 0) throw new ApiError("app/url/empty");
-        if ((await App.withUrl(data.url)) !== null) throw new ApiError("app/url/already-exists");
-        */
-
         let result: SchemaValidationResult;
 
         switch (this.type)
