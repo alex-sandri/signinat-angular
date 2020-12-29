@@ -20,6 +20,16 @@ type SchemaFieldDefinition =
 }
 |
 {
+    type: "array";
+    required?: boolean;
+    of: "string";
+    size?: {
+        min?: number;
+        max?: number;
+    };
+}
+|
+{
     type: "string";
     required?: boolean;
     length?: {

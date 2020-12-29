@@ -169,7 +169,7 @@ export class Validator
                     name: { type: "string", required: true, length: { min: 1 } },
                     url: { type: "string", required: true, length: { min: 1 } },
                     owner: { type: "string", required: true, length: { min: 1 } },
-                    scopes: { type: "array", of: "string", required: true },
+                    scopes: { type: "array", of: "string", required: true, size: { min: 1 } },
                     api: {
                         key: { type: "string", required: true, length: { min: 1 } },
                         webhook: {
