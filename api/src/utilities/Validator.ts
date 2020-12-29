@@ -3,6 +3,7 @@ import * as dayjs from "dayjs";
 import { ApiError, ISerializedApiError, TApiError } from "../models/ApiError";
 import { ISerializedApp } from "../models/App";
 import { ISerializedUser, User } from "../models/User";
+import Schema, { SchemaValidationResult } from "./Schema";
 import Utilities from "./Utilities";
 
 dayjs.extend(require("dayjs/plugin/customParseFormat"));
@@ -150,7 +151,7 @@ export class Validator
      * 
      * @returns `Promise<ValidatorResult>` Validation success
      */
-    public async app(app?: IApp, old?: ISerializedApp): Promise<ValidatorResult>
+    public async app(app?: IApp, old?: ISerializedApp): Promise<SchemaValidationResult>
     {
         /*
         if (app.name.length === 0) throw new ApiError("app/name/empty");
@@ -159,28 +160,14 @@ export class Validator
         if ((await App.withUrl(data.url)) !== null) throw new ApiError("app/url/already-exists");
         */
 
-        let result = new ValidatorResult();
-
-        if (Utilities.isNullOrUndefined(app))
-        {
-            result.add("app/required");
-
-            return result;
-        }
+        let result: SchemaValidationResult;
 
         switch (this.type)
         {
             case "create":
-                // TODO
+                result = new Schema({ /* TODO */ }).validate(app);
             case "update":
-                if (Utilities.isNullOrUndefined(old))
-                {
-                    result.add("app/required");
-
-                    return result;
-                }
-
-                // TODO
+                result = new Schema({ /* TODO */ }).validate(old);
                 break;
         }
 

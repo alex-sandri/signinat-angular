@@ -1,20 +1,22 @@
 import { ApiError, ISerializedApiError, TApiError, TApiErrorFieldPrefix } from "../models/ApiError";
 
-interface SchemaDefinition
-{
-    [key: string]: SchemaDefinition | SchemaFieldDefinition;
-}
-
 interface ISerializedSchemaValidationResult
 {
     valid: boolean,
     errors: ISerializedApiError[],
 }
 
-type SchemaFieldDefinition =
+type SchemaDefinition =
+{
+    type: "object";
+    id: TApiErrorFieldPrefix;
+    required?: boolean;
+    child?: SchemaDefinition;
+}
+|
 {
     type: "string";
-    id: TApiErrorFieldPrefix,
+    id: TApiErrorFieldPrefix;
     required?: boolean;
     length?: {
         min?: number;
@@ -24,20 +26,29 @@ type SchemaFieldDefinition =
 
 export default class Schema
 {
-    public constructor(definition: SchemaDefinition)
+    public constructor(private schema: SchemaDefinition)
     {}
 
-    public validate(): SchemaValidationResult
+    public validate(obj: any): SchemaValidationResult
     {
         let result = new SchemaValidationResult();
 
-        // TODO
+        for (const [ key, value ] of Object.entries(this.schema))
+        {
+            switch (value.type)
+            {
+                case "object":
+                    break;
+                case "string":
+                    break;
+            }
+        }
 
         return result;
     }
 }
 
-class SchemaValidationResult
+export class SchemaValidationResult
 {
     public readonly errors: Set<TApiError> = new Set();
 
