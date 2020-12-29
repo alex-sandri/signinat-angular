@@ -8,8 +8,8 @@ interface SchemaDefinition
 
 interface ISerializedSchemaValidationResult
 {
-    valid: boolean,
-    errors: ISerializedApiError[],
+    valid: boolean;
+    errors: ISerializedApiError[];
 }
 
 type SchemaFieldDefinition =

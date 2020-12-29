@@ -1,7 +1,7 @@
 import * as dayjs from "dayjs";
 
 import { ApiError, ISerializedApiError, TApiError } from "../models/ApiError";
-import { ISerializedApp } from "../models/App";
+import { App, ISerializedApp } from "../models/App";
 import { ISerializedUser, User } from "../models/User";
 import Schema, { SchemaPresets, SchemaValidationResult } from "./Schema";
 import Utilities from "./Utilities";
@@ -171,6 +171,12 @@ export class Validator
                         },
                     },
                 }).validate(app);
+
+                if (result.valid)
+                {
+                    if ((await App.withUrl(app!.url!)) !== null)
+                        result.add("app/url/already-exists");
+                }
             case "update":
                 result = new Schema("app", { /* TODO */ }).validate(old);
                 break;
