@@ -67,6 +67,11 @@ export default class Schema
                 continue;
             }
 
+            if (!definition.required && Utilities.isNullOrUndefined(value))
+            {
+                continue;
+            }
+
             switch (definition.type)
             {
                 case "object":
