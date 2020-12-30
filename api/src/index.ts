@@ -18,7 +18,7 @@ admin.firestore().settings({
 import { ApiRequest } from "./typings/ApiRequest";
 import { ApiResponse } from "./typings/ApiResponse";
 import { ApiError } from "./models/ApiError";
-import { App } from "./models/App";
+import { App, ISerializedApp } from "./models/App";
 import { User } from "./models/User";
 import { Account } from "./models/Account";
 import { Scope } from "./models/Scope";
@@ -260,7 +260,14 @@ app.get("/api/apps", async (req, res) =>
 
   const apps = await App.list(token.user);
 
-  res.send(apps.map(app => app.json()));
+  const response: ISerializedApp[] = [];
+
+  for (const app of apps)
+  {
+    response.push(await app.json());
+  }
+
+  res.send(response);
 });
 
 app.get("/api/apps/:id", async (req, res) =>
@@ -284,7 +291,7 @@ app.get("/api/apps/:id", async (req, res) =>
   const app = await App.retrieve(req.params.id);
 
   if (!app) res.status(404).send({ status: 404 });
-  else res.send(app.json());
+  else res.send(await app.json());
 });
 
 app.post("/api/apps", async (req, res) =>
