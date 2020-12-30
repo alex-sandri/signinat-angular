@@ -25,6 +25,7 @@ import { Scope } from "./models/Scope";
 import { AuthToken } from "./models/AuthToken";
 import { IApp, IUser } from "./utilities/Validator";
 import { SchemaValidationResult } from "./utilities/Schema";
+import Response, { IResponseData } from "./utilities/Response";
 
 const app = express();
 
@@ -36,30 +37,25 @@ app.use(express.json());
 
 app.post("/api/users", async (req, res) =>
 {
-  const data: IUser = req.body;
+  const response = Response.from(res);
 
-  const response: ApiResponse = {
-    result: { valid: true },
-    errors: [],
-  };
+  const data: IResponseData = {};
 
   try
   {
-    const user = await User.create(data);
+    const user = await User.create(req.body);
 
-    response.result.data = user.json();
+    data.resource = user.json();
   }
   catch (e)
   {
-    response.result.valid = false;
-
     if (e instanceof SchemaValidationResult)
     {
-      response.errors = e.json().errors;
+      data.errors = e.json().errors;
     }
   }
 
-  res.send(response);
+  response.send(data);
 });
 
 app.put("/api/users/:id", async (req, res) =>

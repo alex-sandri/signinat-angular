@@ -47,7 +47,7 @@ export class SignupComponent implements OnInit {
       birthday: (this.options.groups[1].inputs[0] as IDateFormInput).value?.toISOString(),
     });
 
-    if (!response.result.valid)
+    if (response.errors)
     {
       this.options.groups[0].inputs[0].error = response.errors.find(e => e.id.startsWith("user/name/first/"))?.message;
       this.options.groups[0].inputs[1].error = response.errors.find(e => e.id.startsWith("user/name/last/"))?.message;

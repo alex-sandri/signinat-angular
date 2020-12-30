@@ -9,6 +9,7 @@ import { ISerializedScope } from 'api/src/models/Scope';
 import { ISerializedAuthToken } from 'api/src/models/AuthToken';
 import { SettingsService } from '../settings/settings.service';
 import { IApp, IUser } from 'api/src/utilities/Validator';
+import { IResponseData } from 'api/src/utilities/Response';
 
 @Injectable({
   providedIn: 'root'
@@ -28,13 +29,13 @@ export class ApiService
     TOKENS: `${ApiService.BASE_ENDPOINT}/tokens`,
   };
 
-  public createUser = async (data: IUser): Promise<ApiResponse> =>
+  public createUser = async (data: IUser): Promise<IResponseData> =>
   {
     const response = await this.http.post(ApiService.ENDPOINTS.USERS, JSON.stringify(data), {
       headers: { "Content-Type": "application/json" },
     }).toPromise();
 
-    return response as ApiResponse;
+    return response as IResponseData;
   }
 
   public updateUser = async (data: IUser): Promise<ApiResponse> =>
