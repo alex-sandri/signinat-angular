@@ -16,7 +16,7 @@ interface IDatabaseApp
     api: {
         key: string,
         webhook: {
-            url: string,
+            url?: string,
             signature: string,
         },
     },
@@ -32,7 +32,7 @@ export interface ISerializedApp
     api: {
         key: string,
         webhook: {
-            url: string,
+            url?: string,
             signature: string,
         },
     },
@@ -82,7 +82,7 @@ export class App
             api: {
                 key: uuidv4(),
                 webhook: {
-                    url: data.api!.webhook!.url!,
+                    url: data.api?.webhook?.url,
                     signature: uuidv4(),
                 },
             },

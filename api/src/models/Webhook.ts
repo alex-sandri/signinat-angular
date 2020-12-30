@@ -3,6 +3,7 @@ import axios from "axios";
 
 import { ISerializedApp } from "./App";
 import { ISerializedUser } from "./User";
+import Utilities from "../utilities/Utilities";
 
 const db = firestore();
 
@@ -42,6 +43,11 @@ export class Webhook
         data: TWebhookData,
     ): Promise<boolean> =>
     {
+        if (Utilities.isNullOrUndefined(app.api.webhook.url))
+        {
+            return false;
+        }
+
         const snapshot = await db.collection("webhooks").add(<IWebhook>{
             app: app.id,
             type,
