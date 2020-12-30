@@ -54,6 +54,17 @@ export default class Schema
     {
         let result = new SchemaValidationResult();
 
+        // If `obj` contains properties that are not in `this.schema`, `obj` is considered invalid
+        for (const [ key ] of Object.entries(obj))
+        {
+            if (!this.schema[key])
+            {
+                result.add(`${this.namespace}/invalid` as TApiError);
+
+                return result;
+            }
+        }
+
         for (const [ field, definition ] of Object.entries(this.schema))
         {
             const fieldNamespace = `${this.namespace}/${field}`;
