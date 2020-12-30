@@ -224,8 +224,11 @@ export class SchemaValidationResult
 export class SchemaPresets
 {
     public static readonly NON_EMPTY_STRING: SchemaFieldDefinition = { type: "string", required: true, length: { min: 1 } };
+    public static readonly OPTIONAL_NON_EMPTY_STRING: SchemaFieldDefinition = { ...SchemaPresets.NON_EMPTY_STRING, required: false };
 
     public static readonly DATE: SchemaFieldDefinition = { type: "string", required: true, format: "date" };
+    public static readonly OPTIONAL_DATE: SchemaFieldDefinition = { ...SchemaPresets.DATE, required: false };
 
     public static readonly URL: SchemaFieldDefinition = { type: "string", required: true, format: "url" };
+    public static readonly OPTIONAL_URL: SchemaFieldDefinition = { ...SchemaPresets.URL, required: false };
 }

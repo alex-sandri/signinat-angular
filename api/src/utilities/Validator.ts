@@ -1,13 +1,8 @@
-import * as dayjs from "dayjs";
-
-import { ApiError, ISerializedApiError, TApiError } from "../models/ApiError";
 import { App, ISerializedApp } from "../models/App";
 import { Scope } from "../models/Scope";
 import { ISerializedUser, User } from "../models/User";
 import Schema, { SchemaPresets, SchemaValidationResult } from "./Schema";
 import Utilities from "./Utilities";
-
-dayjs.extend(require("dayjs/plugin/customParseFormat"));
 
 type TValidatorType = "create" | "update";
 
@@ -37,12 +32,6 @@ export interface IApp
     },
 }
 
-interface ISerializedValidatorResult
-{
-    valid: boolean,
-    errors: ISerializedApiError[],
-}
-
 export class Validator
 {
     private constructor(private type: TValidatorType)
@@ -61,84 +50,76 @@ export class Validator
      * 
      * @returns `Promise<ValidatorResult>` Validation success
      */
-    public async user(user?: IUser, old?: ISerializedUser): Promise<ValidatorResult>
+    public async user(user?: IUser, old?: ISerializedUser): Promise<SchemaValidationResult>
     {
-        let result = new ValidatorResult();
-
-        if (Utilities.isNullOrUndefined(user))
-        {
-            result.add("user/required");
-
-            return result;
-        }
-
-        if (!Utilities.isNullOrUndefined(user.birthday))
-        {
-            if (Utilities.isEmpty(user.birthday)) result.add("user/birthday/empty");
-            else if (!Utilities.isString(user.birthday)) result.add("user/birthday/invalid");
-            else if (!dayjs(user.birthday, ValidatorConstants.BIRTHDAY_FORMAT)) result.add("user/birthday/invalid");
-        }
+        let result: SchemaValidationResult;
 
         switch (this.type)
         {
             case "create":
-                if (!user.name) result.add("user/name/required");
-                else
-                {
-                    if (!user.name.first) result.add("user/name/first/required");
-                    else if (!Utilities.isString(user.name.first)) result.add("user/name/first/invalid");
-                    else if (Utilities.isEmpty(user.name.first)) result.add("user/name/first/empty");
+            {
+                result = new Schema("user", {
+                    name: {
+                        type: "object",
+                        required: true,
+                        child: {
+                            first: SchemaPresets.NON_EMPTY_STRING,
+                            last: SchemaPresets.NON_EMPTY_STRING,
+                        },
+                    },
+                    email: SchemaPresets.NON_EMPTY_STRING, // TODO: Add EMAIL preset
+                    password: {
+                        type: "string",
+                        required: true,
+                        length: { min: ValidatorConstants.PASSWORD_MIN_LENGTH },
+                    },
+                    birthday: SchemaPresets.OPTIONAL_DATE,
+                }).validate(user);
 
-                    if (!user.name.last) result.add("user/name/last/required");
-                    else if (!Utilities.isString(user.name.last)) result.add("user/name/last/invalid");
-                    else if (Utilities.isEmpty(user.name.last)) result.add("user/name/last/empty");
+                if (result.valid)
+                {
+                    if (await User.exists(user!.email!))
+                    {
+                        result.add("user/email/already-exists");
+                    }
                 }
 
-                if (!user.email) result.add("user/email/required");
-                else if (!Utilities.isString(user.email)) result.add("user/email/invalid");
-                else if (Utilities.isEmpty(user.email)) result.add("user/email/empty");
-                else if (await User.exists(user.email)) result.add("user/email/already-exists");
-
-                if (!user.password) result.add("user/password/required");
-                else if (!Utilities.isString(user.password)) result.add("user/password/invalid");
-                else if (Utilities.isEmpty(user.password)) result.add("user/password/empty");
-                else if (user.password.length < ValidatorConstants.PASSWORD_MIN_LENGTH) result.add("user/password/weak");
                 break;
+            }
             case "update":
-                // TODO: Add else case for invalid types
+            {
+                result = new Schema("user", {
+                    name: {
+                        type: "object",
+                        required: false,
+                        child: {
+                            first: SchemaPresets.OPTIONAL_NON_EMPTY_STRING,
+                            last: SchemaPresets.OPTIONAL_NON_EMPTY_STRING,
+                        },
+                    },
+                    email: SchemaPresets.OPTIONAL_NON_EMPTY_STRING, // TODO: Add OPTIONAL_EMAIL preset
+                    password: {
+                        type: "string",
+                        required: false,
+                        length: { min: ValidatorConstants.PASSWORD_MIN_LENGTH },
+                    },
+                    birthday: SchemaPresets.OPTIONAL_DATE,
+                }).validate(user);
 
                 if (Utilities.isNullOrUndefined(old))
                 {
                     result.add("user/required");
-
-                    return result;
                 }
-
-                if (!Utilities.isNullOrUndefined(user.name))
+                else if (result.valid)
                 {
-                    if (Utilities.isString(user.name.first))
+                    if (user!.email !== old.email && await User.exists(user!.email!))
                     {
-                        if (Utilities.isEmpty(user.name.first)) result.add("user/name/first/empty");
-                    }
-
-                    if (Utilities.isString(user.name.last))
-                    {
-                        if (Utilities.isEmpty(user.name.last)) result.add("user/name/last/empty");
+                        result.add("user/email/already-exists");
                     }
                 }
 
-                if (Utilities.isString(user.email))
-                {
-                    if (Utilities.isEmpty(user.email)) result.add("user/email/empty");
-                    else if (user.email !== old.email && await User.exists(user.email)) result.add("user/email/already-exists");
-                }
-
-                if (Utilities.isString(user.password))
-                {
-                    if (Utilities.isEmpty(user.password)) result.add("user/password/empty");
-                    else if (user.password.length < ValidatorConstants.PASSWORD_MIN_LENGTH) result.add("user/password/weak");
-                }
                 break;
+            }
         }
 
         return result;
@@ -202,29 +183,6 @@ export class Validator
         }
 
         return result;
-    }
-}
-
-export class ValidatorResult
-{
-    public readonly errors: Set<TApiError> = new Set();
-
-    public get valid()
-    {
-        return this.errors.size === 0;
-    };
-
-    public add(error: TApiError): void
-    {
-        this.errors.add(error);
-    }
-
-    public json(): ISerializedValidatorResult
-    {
-        return {
-            valid: this.valid,
-            errors: Array.from(this.errors).map(error => new ApiError(error).json()),
-        };
     }
 }
 
