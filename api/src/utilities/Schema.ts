@@ -22,7 +22,7 @@ type SchemaFieldDefinition =
 {
     type: "array";
     required?: boolean;
-    of: "string";
+    of: SchemaFieldDefinition;
     size?: {
         min?: number;
         max?: number;
@@ -36,6 +36,10 @@ type SchemaFieldDefinition =
         min?: number;
         max?: number;
     };
+    /**
+     * Restricts the value to only those contained here
+     */
+    enum?: string[];
 }
 
 export default class Schema
@@ -57,14 +61,35 @@ export default class Schema
             switch (definition.type)
             {
                 case "object":
+                {
                     const childSchema = new Schema(fieldNamespace, definition.child);
 
                     result.addAll(Array.from(childSchema.validate(obj[field]).errors));
+
                     break;
+                }
                 case "array":
-                    // TODO
+                {
+                    const array = obj[field];
+
+                    if (!Array.isArray(array))
+                    {
+                        result.add(`${fieldNamespace}/invalid` as TApiError);
+                    }
+                    else
+                    {
+                        const childrenSchema = new Schema(fieldNamespace, { element: definition.of });
+
+                        array.forEach(element =>
+                        {
+                            result.addAll(Array.from(childrenSchema.validate({ element }).errors));
+                        });
+                    }
+
                     break;
+                }
                 case "string":
+                {
                     const value = obj[field];
 
                     if (definition.required && Utilities.isNullOrUndefined(value))
@@ -88,8 +113,18 @@ export default class Schema
                                 result.add(`${fieldNamespace}/long` as TApiError);
                             }
                         }
+
+                        if (!Utilities.isNullOrUndefined(definition.enum))
+                        {
+                            if (!definition.enum.includes(value))
+                            {
+                                result.add(`${fieldNamespace}/invalid` as TApiError);
+                            }
+                        }
                     }
+
                     break;
+                }
             }
         }
 

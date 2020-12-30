@@ -2,6 +2,7 @@ import * as dayjs from "dayjs";
 
 import { ApiError, ISerializedApiError, TApiError } from "../models/ApiError";
 import { App, ISerializedApp } from "../models/App";
+import { Scope } from "../models/Scope";
 import { ISerializedUser, User } from "../models/User";
 import Schema, { SchemaPresets, SchemaValidationResult } from "./Schema";
 import Utilities from "./Utilities";
@@ -162,7 +163,16 @@ export class Validator
                     name: SchemaPresets.NON_EMPTY_STRING,
                     url: SchemaPresets.NON_EMPTY_STRING,
                     owner: SchemaPresets.NON_EMPTY_STRING,
-                    scopes: { type: "array", of: "string", required: true, size: { min: 1 } },
+                    scopes: {
+                        type: "array",
+                        of: {
+                            type: "string",
+                            required: true,
+                            enum: Scope.all().map(s => s.value),
+                        },
+                        required: true,
+                        size: { min: 1 },
+                    },
                     api: {
                         key: SchemaPresets.NON_EMPTY_STRING,
                         webhook: {
