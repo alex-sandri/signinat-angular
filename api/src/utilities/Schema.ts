@@ -1,5 +1,5 @@
 import validator from "validator";
-import { ApiError, ISerializedApiError, TApiError } from "../models/ApiError";
+import { ApiError, ISerializedApiError } from "../models/ApiError";
 import Utilities from "./Utilities";
 
 interface SchemaDefinition
@@ -66,7 +66,7 @@ export default class Schema
         {
             if (!this.schema[key])
             {
-                result.add(`${this.namespace}/invalid` as TApiError);
+                result.add(`${this.namespace}/invalid`);
 
                 return result;
             }
@@ -80,7 +80,7 @@ export default class Schema
 
             if (definition.required && Utilities.isNullOrUndefined(value))
             {
-                result.add(`${fieldNamespace}/required` as TApiError);
+                result.add(`${fieldNamespace}/required`);
 
                 continue;
             }
@@ -104,7 +104,7 @@ export default class Schema
                 {
                     if (!Array.isArray(value))
                     {
-                        result.add(`${fieldNamespace}/invalid` as TApiError);
+                        result.add(`${fieldNamespace}/invalid`);
                     }
                     else
                     {
@@ -121,16 +121,16 @@ export default class Schema
                             {
                                 if (value.length === 0)
                                 {
-                                    result.add(`${fieldNamespace}/empty` as TApiError);
+                                    result.add(`${fieldNamespace}/empty`);
                                 }
                                 else
                                 {
-                                    result.add(`${fieldNamespace}/short` as TApiError);
+                                    result.add(`${fieldNamespace}/short`);
                                 }
                             }
                             else if (!Utilities.isNullOrUndefined(definition.size.max) && value.length > definition.size.max)
                             {
-                                result.add(`${fieldNamespace}/long` as TApiError);
+                                result.add(`${fieldNamespace}/long`);
                             }
                         }
                     }
@@ -141,7 +141,7 @@ export default class Schema
                 {
                     if (typeof value !== "string")
                     {
-                        result.add(`${fieldNamespace}/invalid` as TApiError);
+                        result.add(`${fieldNamespace}/invalid`);
                     }
                     else
                     {
@@ -151,16 +151,16 @@ export default class Schema
                             {
                                 if (value.length === 0)
                                 {
-                                    result.add(`${fieldNamespace}/empty` as TApiError);
+                                    result.add(`${fieldNamespace}/empty`);
                                 }
                                 else
                                 {
-                                    result.add(`${fieldNamespace}/short` as TApiError);
+                                    result.add(`${fieldNamespace}/short`);
                                 }
                             }
                             else if (!Utilities.isNullOrUndefined(definition.length.max) && value.length > definition.length.max)
                             {
-                                result.add(`${fieldNamespace}/long` as TApiError);
+                                result.add(`${fieldNamespace}/long`);
                             }
                         }
 
@@ -168,7 +168,7 @@ export default class Schema
                         {
                             if (!definition.enum.includes(value))
                             {
-                                result.add(`${fieldNamespace}/invalid` as TApiError);
+                                result.add(`${fieldNamespace}/invalid`);
                             }
                         }
 
@@ -180,7 +180,7 @@ export default class Schema
                                 {
                                     if (!validator.isDate(value, { format: "YYYY/MM/DD" }))
                                     {
-                                        result.add(`${fieldNamespace}/invalid` as TApiError);
+                                        result.add(`${fieldNamespace}/invalid`);
                                     }
 
                                     break;
@@ -189,7 +189,7 @@ export default class Schema
                                 {
                                     if (!validator.isEmail(value))
                                     {
-                                        result.add(`${fieldNamespace}/invalid` as TApiError);
+                                        result.add(`${fieldNamespace}/invalid`);
                                     }
 
                                     break;
@@ -198,7 +198,7 @@ export default class Schema
                                 {
                                     if (!validator.isURL(value, { protocols: [ "https" ], require_protocol: true, allow_underscores: true }))
                                     {
-                                        result.add(`${fieldNamespace}/invalid` as TApiError);
+                                        result.add(`${fieldNamespace}/invalid`);
                                     }
 
                                     break;
@@ -218,19 +218,19 @@ export default class Schema
 
 export class SchemaValidationResult
 {
-    public readonly errors: Set<TApiError> = new Set();
+    public readonly errors: Set<string> = new Set();
 
     public get valid()
     {
         return this.errors.size === 0;
     }
 
-    public add(error: TApiError): void
+    public add(error: string): void
     {
         this.errors.add(error);
     }
 
-    public addAll(errors: TApiError[]): void
+    public addAll(errors: string[]): void
     {
         errors.forEach(error => this.add(error));
     }

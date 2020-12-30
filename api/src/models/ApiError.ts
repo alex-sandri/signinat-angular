@@ -1,6 +1,6 @@
 export interface ISerializedApiError
 {
-    id: TApiError,
+    id: string,
     message: string,
 }
 
@@ -8,7 +8,7 @@ export class ApiError
 {
     public readonly message: string;
 
-    constructor(public id: TApiError)
+    constructor(public id: string)
     {
         switch (id)
         {
@@ -57,28 +57,3 @@ export class ApiError
         message: this.message,
     });
 }
-
-export type TApiErrorFieldPrefix =
-| "account"
-| "app"
-| "app/name"
-| "app/url"
-| "app/webhook/url"
-| "user"
-| "user/name"
-| "user/name/first"
-| "user/name/last"
-| "user/email"
-| "user/password"
-| "user/birthday";
-
-export type TApiErrorType =
-| "already-exists"
-| "empty"
-| "inexistent"
-| "invalid"
-| "required"
-| "weak"
-| "wrong";
-
-export type TApiError = `${TApiErrorFieldPrefix}/${TApiErrorType}`;
