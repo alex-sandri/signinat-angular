@@ -24,6 +24,7 @@ import { Account } from "./models/Account";
 import { Scope } from "./models/Scope";
 import { AuthToken } from "./models/AuthToken";
 import { IApp, IUser, ValidatorResult } from "./utilities/Validator";
+import { SchemaValidationResult } from "./utilities/Schema";
 
 const app = express();
 
@@ -321,7 +322,7 @@ app.post("/api/apps", async (req, res) =>
   {
     response.result.valid = false;
 
-    if (e instanceof ValidatorResult)
+    if (e instanceof SchemaValidationResult)
     {
       response.errors = e.json().errors;
     }
@@ -377,7 +378,7 @@ app.put("/api/apps/:id", async (req, res) =>
   {
     response.result.valid = false;
 
-    if (e instanceof ValidatorResult)
+    if (e instanceof SchemaValidationResult)
     {
       response.errors = e.json().errors;
     }
