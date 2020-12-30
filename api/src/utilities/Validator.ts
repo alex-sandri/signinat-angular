@@ -67,7 +67,7 @@ export class Validator
                             last: SchemaPresets.NON_EMPTY_STRING,
                         },
                     },
-                    email: SchemaPresets.NON_EMPTY_STRING, // TODO: Add EMAIL preset
+                    email: SchemaPresets.EMAIL,
                     password: {
                         type: "string",
                         required: true,
@@ -97,7 +97,7 @@ export class Validator
                             last: SchemaPresets.OPTIONAL_NON_EMPTY_STRING,
                         },
                     },
-                    email: SchemaPresets.OPTIONAL_NON_EMPTY_STRING, // TODO: Add OPTIONAL_EMAIL preset
+                    email: SchemaPresets.OPTIONAL_EMAIL,
                     password: {
                         type: "string",
                         required: false,
