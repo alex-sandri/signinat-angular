@@ -58,6 +58,13 @@ export default class Schema
         {
             const fieldNamespace = `${this.namespace}/${field}`;
 
+            const value = obj[field];
+
+            if (definition.required && Utilities.isNullOrUndefined(value))
+            {
+                result.add(`${fieldNamespace}/required` as TApiError);
+            }
+
             switch (definition.type)
             {
                 case "object":
@@ -70,9 +77,7 @@ export default class Schema
                 }
                 case "array":
                 {
-                    const array = obj[field];
-
-                    if (!Array.isArray(array))
+                    if (!Array.isArray(value))
                     {
                         result.add(`${fieldNamespace}/invalid` as TApiError);
                     }
@@ -80,7 +85,7 @@ export default class Schema
                     {
                         const childrenSchema = new Schema(fieldNamespace, { element: definition.of });
 
-                        array.forEach(element =>
+                        value.forEach(element =>
                         {
                             result.addAll(Array.from(childrenSchema.validate({ element }).errors));
                         });
@@ -90,13 +95,7 @@ export default class Schema
                 }
                 case "string":
                 {
-                    const value = obj[field];
-
-                    if (definition.required && Utilities.isNullOrUndefined(value))
-                    {
-                        result.add(`${fieldNamespace}/required` as TApiError);
-                    }
-                    else if (typeof value !== "string")
+                    if (typeof value !== "string")
                     {
                         result.add(`${fieldNamespace}/invalid` as TApiError);
                     }
