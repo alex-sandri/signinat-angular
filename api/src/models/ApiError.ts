@@ -42,7 +42,7 @@ export class ApiError
             case "user/password/required": this.message = "The password is required"; break;
             case "user/password/invalid": this.message = "The password is invalid"; break;
             case "user/password/empty": this.message = "The password cannot be empty"; break;
-            case "user/password/weak": this.message = "Please enter a stronger password"; break;
+            case "user/password/short": this.message = "Please enter a stronger password"; break;
             case "user/password/wrong": this.message = "Wrong password"; break;
             case "user/birthday/empty": this.message = "The birthday cannot be empty"; break;
             case "user/birthday/invalid": this.message = "The birthday is invalid"; break;
