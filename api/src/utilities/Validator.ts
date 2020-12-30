@@ -162,7 +162,7 @@ export class Validator
             {
                 result = new Schema("app", {
                     name: SchemaPresets.NON_EMPTY_STRING,
-                    url: SchemaPresets.NON_EMPTY_STRING,
+                    url: SchemaPresets.URL,
                     scopes: {
                         type: "array",
                         of: {
@@ -181,7 +181,7 @@ export class Validator
                                 type: "object",
                                 required: false,
                                 child: {
-                                    url: SchemaPresets.NON_EMPTY_STRING,
+                                    url: SchemaPresets.URL,
                                 },
                             },
                         },
