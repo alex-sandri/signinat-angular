@@ -1,11 +1,10 @@
 import { firestore } from "firebase-admin";
 import * as bcrypt from "bcrypt";
-import * as dayjs from "dayjs";
 
 import { Scope } from "./Scope";
 import { Account } from "./Account";
 import { App } from "./App";
-import { IUser, Validator, ValidatorConstants } from "../utilities/Validator";
+import { IUser, Validator } from "../utilities/Validator";
 import Utilities from "../utilities/Utilities";
 
 const db = firestore();
@@ -18,7 +17,7 @@ interface IDatabaseUser
     },
     email: string,
     password: string,
-    birthday?: firestore.Timestamp
+    birthday?: string,
 }
 
 export interface ISerializedUser
@@ -44,7 +43,12 @@ export class User
 
     public json = (): ISerializedUser =>
     {
-        const birthdayAsDate = this.data.birthday?.toDate();
+        let birthdayAsDate: Date | undefined;
+
+        if (!Utilities.isNullOrUndefined(this.data.birthday))
+        {
+            birthdayAsDate = new Date(this.data.birthday);
+        }
 
         return {
             id: this.id,
@@ -61,30 +65,6 @@ export class User
             },
         };
     };
-
-    public static from = (json: ISerializedUser): User =>
-    {
-        let birthday;
-
-        if (!Utilities.isNullOrUndefined(json.birthday))
-        {
-            birthday = new Date();
-
-            birthday.setDate(json.birthday.day);
-            birthday.setMonth(json.birthday.month);
-            birthday.setFullYear(json.birthday.year);
-        }
-
-        return new User(json.id, {
-            name: {
-                first: json.name.first,
-                last: json.name.last,
-            },
-            email: json.email,
-            password: json.password,
-            birthday: birthday && firestore.Timestamp.fromDate(birthday),
-        });
-    }
 
     public filter = (scopes: Scope[]): User =>
     {
@@ -131,7 +111,7 @@ export class User
             },
             email: data.email!.trim(),
             password: data.password,
-            birthday: data.birthday ? firestore.Timestamp.fromDate(new Date(data.birthday)) : undefined,
+            birthday: data.birthday,
         };
 
         const { id } = await db.collection("users").add(user);
@@ -159,34 +139,17 @@ export class User
             throw result;
         }
 
-        const updatedUser = this.data;
+        const user: IUser = {
+            name: {
+                first: data.name?.first ?? this.data.name.first,
+                last: data.name?.last ?? this.data.name.last,
+            },
+            email: data.email ?? this.data.email,
+            password: Utilities.hash(data.password) ?? this.data.password,
+            birthday: data.birthday ?? this.data.birthday,
+        };
 
-        if (!Utilities.isNullOrUndefined(data.name))
-        {
-            if (!Utilities.isNullOrUndefined(data.name.first))
-            {
-                updatedUser.name.first = data.name.first;
-            }
-
-            if (!Utilities.isNullOrUndefined(data.name.last))
-            {
-                updatedUser.name.last = data.name.last;
-            }
-        }
-
-        if (!Utilities.isNullOrUndefined(data.email))
-        {
-            updatedUser.email = data.email;
-        }
-
-        if (!Utilities.isNullOrUndefined(data.birthday))
-        {
-            updatedUser.birthday = firestore.Timestamp.fromDate(
-                dayjs(data.birthday, ValidatorConstants.BIRTHDAY_FORMAT).toDate()
-            );
-        }
-
-        await db.collection("users").doc(this.id).update(updatedUser);
+        await db.collection("users").doc(this.id).update(user);
     }
 
     public delete = async (): Promise<void> =>
