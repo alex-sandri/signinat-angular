@@ -93,7 +93,7 @@ app.put("/api/users/:id", async (req, res) =>
 
     if (user)
     {
-      user.update(data);
+      await user.update(data);
 
       response.result.data = user.json();
     }
@@ -369,7 +369,7 @@ app.put("/api/apps/:id", async (req, res) =>
 
     if (app)
     {
-      app.update(data);
+      await app.update(data);
 
       response.result.data = app.json();
     }
