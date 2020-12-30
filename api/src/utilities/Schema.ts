@@ -119,7 +119,14 @@ export default class Schema
                         {
                             if (!Utilities.isNullOrUndefined(definition.size.min) && value.length < definition.size.min)
                             {
-                                result.add(`${fieldNamespace}/short` as TApiError);
+                                if (value.length === 0)
+                                {
+                                    result.add(`${fieldNamespace}/empty` as TApiError);
+                                }
+                                else
+                                {
+                                    result.add(`${fieldNamespace}/short` as TApiError);
+                                }
                             }
                             else if (!Utilities.isNullOrUndefined(definition.size.max) && value.length > definition.size.max)
                             {
@@ -142,7 +149,14 @@ export default class Schema
                         {
                             if (!Utilities.isNullOrUndefined(definition.length.min) && value.length < definition.length.min)
                             {
-                                result.add(`${fieldNamespace}/short` as TApiError);
+                                if (value.length === 0)
+                                {
+                                    result.add(`${fieldNamespace}/empty` as TApiError);
+                                }
+                                else
+                                {
+                                    result.add(`${fieldNamespace}/short` as TApiError);
+                                }
                             }
                             else if (!Utilities.isNullOrUndefined(definition.length.max) && value.length > definition.length.max)
                             {
