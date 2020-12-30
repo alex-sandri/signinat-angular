@@ -454,7 +454,7 @@ app.post("/api/tokens/users", async (req, res) =>
   {
     const userToken = await AuthToken.user(data.user!.email, data.user!.password);
 
-    response.result.data = userToken.json();
+    response.result.data = await userToken.json();
   }
   catch (e)
   {
@@ -488,7 +488,7 @@ app.post("/api/tokens/apps", async (req, res) =>
 
   const appToken = await AuthToken.app(data.app as string, token.user.id);
 
-  res.send(appToken.json());
+  res.send(await appToken.json());
 });
 
 app.delete("/api/tokens/:id", async (req, res) =>
