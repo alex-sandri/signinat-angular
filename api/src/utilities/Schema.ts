@@ -46,7 +46,7 @@ type SchemaFieldDefinition =
      * - `date`
      * - `url`
      */
-    format?: "date" | "url";
+    format?: "date" | "email" | "url";
 }
 
 export default class Schema
@@ -185,6 +185,15 @@ export default class Schema
 
                                     break;
                                 }
+                                case "email":
+                                {
+                                    if (!validator.isEmail(value))
+                                    {
+                                        result.add(`${fieldNamespace}/invalid` as TApiError);
+                                    }
+
+                                    break;
+                                }
                                 case "url":
                                 {
                                     if (!validator.isURL(value, { protocols: [ "https" ], require_protocol: true, allow_underscores: true }))
@@ -245,4 +254,7 @@ export class SchemaPresets
 
     public static readonly URL: SchemaFieldDefinition = { type: "string", required: true, format: "url" };
     public static readonly OPTIONAL_URL: SchemaFieldDefinition = { ...SchemaPresets.URL, required: false };
+
+    public static readonly EMAIL: SchemaFieldDefinition = { type: "string", required: true, format: "email" };
+    public static readonly OPTIONAL_EMAIL: SchemaFieldDefinition = { ...SchemaPresets.EMAIL, required: false };
 }
