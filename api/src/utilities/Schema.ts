@@ -63,6 +63,8 @@ export default class Schema
             if (definition.required && Utilities.isNullOrUndefined(value))
             {
                 result.add(`${fieldNamespace}/required` as TApiError);
+
+                continue;
             }
 
             switch (definition.type)
