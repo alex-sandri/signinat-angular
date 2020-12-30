@@ -175,10 +175,16 @@ export class Validator
                         size: { min: 1 },
                     },
                     api: {
-                        key: SchemaPresets.NON_EMPTY_STRING,
-                        webhook: {
-                            url: SchemaPresets.NON_EMPTY_STRING,
-                            signature: SchemaPresets.NON_EMPTY_STRING,
+                        type: "object",
+                        required: false,
+                        child: {
+                            webhook: {
+                                type: "object",
+                                required: false,
+                                child: {
+                                    url: SchemaPresets.NON_EMPTY_STRING,
+                                },
+                            },
                         },
                     },
                 }).validate(app);

@@ -3,7 +3,7 @@ import Utilities from "./Utilities";
 
 interface SchemaDefinition
 {
-    [key: string]: SchemaDefinition | SchemaFieldDefinition;
+    [key: string]: SchemaFieldDefinition;
 }
 
 interface ISerializedSchemaValidationResult
