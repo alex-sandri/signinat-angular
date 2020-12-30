@@ -112,9 +112,12 @@ export class Validator
                 }
                 else if (result.valid)
                 {
-                    if (user!.email !== old.email && await User.exists(user!.email!))
+                    if (!Utilities.isNullOrUndefined(user!.email))
                     {
-                        result.add("user/email/already-exists");
+                        if (user!.email !== old.email && await User.exists(user!.email))
+                        {
+                            result.add("user/email/already-exists");
+                        }
                     }
                 }
 
