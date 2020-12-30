@@ -4,14 +4,4 @@ export default class Utilities
     {
         return a === null || a === undefined;
     }
-
-    public static isString(a?: any): a is string
-    {
-        return typeof a === "string";
-    }
-
-    public static isEmpty(a: string): boolean
-    {
-        return a.length === 0;
-    }
 }
