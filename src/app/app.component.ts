@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ISerializedUser } from 'api/src/models/User';
 import { AuthService } from './services/auth/auth.service';
 
 @Component({
@@ -10,8 +9,6 @@ import { AuthService } from './services/auth/auth.service';
 export class AppComponent
 {
   title = "signinat-angular";
-
-  user?: ISerializedUser;
 
   canLoad = false;
 
@@ -27,8 +24,6 @@ export class AppComponent
     auth.signIn().then(user =>
     {
       if (!user) return;
-
-      this.user = user;
 
       this.canLoad = true;
     });
