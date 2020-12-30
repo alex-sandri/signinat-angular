@@ -16,13 +16,13 @@ interface ISerializedSchemaValidationResult
 type SchemaFieldDefinition =
 {
     type: "object";
-    required?: boolean;
+    required: boolean;
     child: SchemaDefinition;
 }
 |
 {
     type: "array";
-    required?: boolean;
+    required: boolean;
     of: SchemaFieldDefinition;
     size?: {
         min?: number;
@@ -32,7 +32,7 @@ type SchemaFieldDefinition =
 |
 {
     type: "string";
-    required?: boolean;
+    required: boolean;
     length?: {
         min?: number;
         max?: number;
