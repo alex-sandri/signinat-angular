@@ -107,6 +107,18 @@ export default class Schema
                         {
                             result.addAll(Array.from(childrenSchema.validate({ element }).errors));
                         });
+
+                        if (!Utilities.isNullOrUndefined(definition.size))
+                        {
+                            if (!Utilities.isNullOrUndefined(definition.size.min) && value.length < definition.size.min)
+                            {
+                                result.add(`${fieldNamespace}/short` as TApiError);
+                            }
+                            else if (!Utilities.isNullOrUndefined(definition.size.max) && value.length > definition.size.max)
+                            {
+                                result.add(`${fieldNamespace}/long` as TApiError);
+                            }
+                        }
                     }
 
                     break;
