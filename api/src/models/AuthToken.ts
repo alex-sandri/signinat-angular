@@ -1,7 +1,7 @@
 import { firestore } from "firebase-admin";
-import * as bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import { ApiRequest } from "../typings/ApiRequest";
+import Utilities from "../utilities/Utilities";
 import { ApiError } from "./ApiError";
 
 import { App, ISerializedApp } from "./App";
@@ -87,7 +87,7 @@ export class AuthToken
 
         if (!user) throw new ApiError("user/email/inexistent");
 
-        if (!bcrypt.compareSync(password, user.data.password)) throw new ApiError("user/password/wrong");
+        if (!Utilities.verifyHash(password, user.data.password)) throw new ApiError("user/password/wrong");
 
         const uuid = uuidv4();
 

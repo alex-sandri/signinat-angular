@@ -1,5 +1,4 @@
 import { firestore } from "firebase-admin";
-import * as bcrypt from "bcrypt";
 
 import { Scope } from "./Scope";
 import { Account } from "./Account";
@@ -102,15 +101,13 @@ export class User
             throw result;
         }
 
-        data.password = bcrypt.hashSync(data.password, 15);
-
         const user: IDatabaseUser = {
             name: {
                 first: data.name!.first!.trim(),
                 last: data.name!.last!.trim(),
             },
             email: data.email!.trim(),
-            password: data.password,
+            password: Utilities.hash(data.password!),
             birthday: data.birthday,
         };
 
@@ -139,13 +136,20 @@ export class User
             throw result;
         }
 
+        let password: string | undefined;
+
+        if (!Utilities.isNullOrUndefined(data.password))
+        {
+            password = Utilities.hash(data.password);
+        }
+
         const user: IUser = {
             name: {
                 first: data.name?.first ?? this.data.name.first,
                 last: data.name?.last ?? this.data.name.last,
             },
             email: data.email ?? this.data.email,
-            password: Utilities.hash(data.password) ?? this.data.password,
+            password: password ?? this.data.password,
             birthday: data.birthday ?? this.data.birthday,
         };
 

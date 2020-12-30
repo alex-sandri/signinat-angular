@@ -192,5 +192,4 @@ export class Validator
 export class ValidatorConstants
 {
     public static readonly PASSWORD_MIN_LENGTH = 8;
-    public static readonly BIRTHDAY_FORMAT = "YYYY-MM-DD";
 }
