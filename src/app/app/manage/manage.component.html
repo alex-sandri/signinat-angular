@@ -21,7 +21,9 @@
     </fieldset>
     <fieldset id="scopes">
         <legend>Scopes</legend>
-        <p *ngFor="let scope of app.scopes">{{scope.value}}</p>
+        <ul>
+            <li *ngFor="let scope of app.scopes">{{scope.value}}</li>
+        </ul>
     </fieldset>
     <fieldset id="api-key">
         <legend>API Key</legend>
