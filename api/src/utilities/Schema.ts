@@ -1,3 +1,4 @@
+import validator from "validator";
 import { ApiError, ISerializedApiError, TApiError } from "../models/ApiError";
 import Utilities from "./Utilities";
 
@@ -40,6 +41,12 @@ type SchemaFieldDefinition =
      * Restricts the value to only those contained here
      */
     enum?: string[];
+    /**
+     * Available formats:
+     * - `date`
+     * - `url`
+     */
+    format?: "date" | "url";
 }
 
 export default class Schema
@@ -148,6 +155,31 @@ export default class Schema
                             if (!definition.enum.includes(value))
                             {
                                 result.add(`${fieldNamespace}/invalid` as TApiError);
+                            }
+                        }
+
+                        if (!Utilities.isNullOrUndefined(definition.format))
+                        {
+                            switch (definition.format)
+                            {
+                                case "date":
+                                {
+                                    if (!validator.isDate(value, { format: "YYYY/MM/DD" }))
+                                    {
+                                        result.add(`${fieldNamespace}/invalid` as TApiError);
+                                    }
+
+                                    break;
+                                }
+                                case "url":
+                                {
+                                    if (!validator.isURL(value, { protocols: [ "https" ], require_protocol: true, allow_underscores: true }))
+                                    {
+                                        result.add(`${fieldNamespace}/invalid` as TApiError);
+                                    }
+
+                                    break;
+                                }
                             }
                         }
                     }
