@@ -438,7 +438,7 @@ app.get("/api/tokens/:id", async (req, res) =>
     return;
   }
 
-  res.send(token.json());
+  res.send(await token.json());
 });
 
 app.post("/api/tokens/users", async (req, res) =>
