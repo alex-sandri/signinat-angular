@@ -159,6 +159,7 @@ export class Validator
         switch (this.type)
         {
             case "create":
+            {
                 result = new Schema("app", {
                     name: SchemaPresets.NON_EMPTY_STRING,
                     url: SchemaPresets.NON_EMPTY_STRING,
@@ -187,6 +188,9 @@ export class Validator
                     if ((await App.withUrl(app!.url!)) !== null)
                         result.add("app/url/already-exists");
                 }
+
+                break;
+            }
             case "update":
                 result = new Schema("app", { /* TODO */ }).validate(old);
                 break;
