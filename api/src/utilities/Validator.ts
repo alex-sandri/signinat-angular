@@ -1,4 +1,5 @@
 import { App, ISerializedApp } from "../models/App";
+import { TAuthTokenType } from "../models/AuthToken";
 import { Scope } from "../models/Scope";
 import { ISerializedUser, User } from "../models/User";
 import Schema, { SchemaPresets, SchemaValidationResult } from "./Schema";
@@ -58,7 +59,7 @@ export class Validator
      * @param user The user object to validate
      * @param old The old user (required only when type is `update`)
      * 
-     * @returns `Promise<ValidatorResult>` Validation success
+     * @returns `Promise<SchemaValidationResult>` Validation success
      */
     public async user(user?: IUser, old?: ISerializedUser): Promise<SchemaValidationResult>
     {
@@ -144,7 +145,7 @@ export class Validator
      * @param app The app object to validate
      * @param old The old app (required only when type is `update`)
      * 
-     * @returns `Promise<ValidatorResult>` Validation success
+     * @returns `Promise<SchemaValidationResult>` Validation success
      */
     public async app(app?: IApp, old?: ISerializedApp): Promise<SchemaValidationResult>
     {
@@ -212,6 +213,50 @@ export class Validator
                 {
                     result.add("app/required");
                 }
+
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Validates a token object
+     * 
+     * @param token The token object to validate
+     * @param type The token type
+     * 
+     * @returns `Promise<SchemaValidationResult>` Validation success
+     */
+    public async token(token?: IToken, type?: TAuthTokenType): Promise<SchemaValidationResult>
+    {
+        let result: SchemaValidationResult;
+
+        if (Utilities.isNullOrUndefined(type))
+        {
+            result = new SchemaValidationResult();
+
+            result.add("token/type/required");
+
+            return result;
+        }
+
+        switch (type)
+        {
+            case "app":
+            {
+                result = new Schema("token", {
+                    // TODO
+                }).validate(token);
+
+                break;
+            }
+            case "user":
+            {
+                result = new Schema("token", {
+                    // TODO
+                }).validate(token);
 
                 break;
             }
