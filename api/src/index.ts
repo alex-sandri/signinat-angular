@@ -374,7 +374,7 @@ app.post("/api/tokens/users", async (req, res) =>
 
   try
   {
-    const userToken = await AuthToken.user(req.body.user.email, req.body.user.password);
+    const userToken = await AuthToken.user(req.body.email, req.body.password);
 
     data.resource = await userToken.json();
   }
