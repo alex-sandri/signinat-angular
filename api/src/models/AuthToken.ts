@@ -49,7 +49,7 @@ export class AuthToken
 
     public static async app(appId: string, userId: string): Promise<AuthToken>
     {
-        const result = await Validator.of("create").token({}, "app");
+        const result = await Validator.of("create").token({ app: appId, user: userId }, "app");
 
         if (!result.valid)
         {
@@ -81,7 +81,7 @@ export class AuthToken
 
     public static async user(email: string, password: string): Promise<AuthToken>
     {
-        const result = await Validator.of("create").token({}, "user");
+        const result = await Validator.of("create").token({ email, password }, "user");
 
         if (!result.valid)
         {

@@ -33,15 +33,19 @@ export interface IApp
     },
 }
 
-export interface IToken
+export interface IAppToken
 {
     app?: string,
-
-    user?: {
-        email: string,
-        password: string,
-    },
+    user?: string,
 }
+
+export interface IUserToken
+{
+    email?: string,
+    password?: string,
+}
+
+export type IToken = IAppToken | IUserToken;
 
 export class Validator
 {
@@ -247,7 +251,8 @@ export class Validator
             case "app":
             {
                 result = new Schema("token", {
-                    // TODO
+                    app: SchemaPresets.NON_EMPTY_STRING,
+                    user: SchemaPresets.NON_EMPTY_STRING,
                 }).validate(token);
 
                 break;
@@ -255,7 +260,8 @@ export class Validator
             case "user":
             {
                 result = new Schema("token", {
-                    // TODO
+                    email: SchemaPresets.EMAIL,
+                    password: SchemaPresets.NON_EMPTY_STRING,
                 }).validate(token);
 
                 break;
