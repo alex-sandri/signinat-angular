@@ -64,9 +64,12 @@ export default class Response
 
     public send(data?: IResponseData): void
     {
-        if (data?.errors?.length ?? 0 > 0)
+        if (data?.errors)
         {
-            this.res.status(400);
+            if (![ "401", "403" ].includes(data.errors[0].id))
+            {
+                this.res.status(400);
+            }
         }
 
         this.res.send(data);
