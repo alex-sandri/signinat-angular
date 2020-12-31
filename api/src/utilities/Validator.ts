@@ -264,6 +264,20 @@ export class Validator
                     password: SchemaPresets.NON_EMPTY_STRING,
                 }).validate(token);
 
+                if (result.valid)
+                {
+                    const user = await User.withEmail((token as IUserToken).email!);
+
+                    if (!user)
+                    {
+                        result.add("user/email/inexistent");
+                    }
+                    else if (!Utilities.verifyHash((token as IUserToken).password!, user.data.password))
+                    {
+                        result.add("user/password/wrong");
+                    }
+                }
+
                 break;
             }
         }

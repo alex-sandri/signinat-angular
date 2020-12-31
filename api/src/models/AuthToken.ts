@@ -88,11 +88,7 @@ export class AuthToken
             throw result;
         }
 
-        const user = await User.withEmail(email);
-
-        if (!user) throw new ApiError("user/email/inexistent");
-
-        if (!Utilities.verifyHash(password, user.data.password)) throw new ApiError("user/password/wrong");
+        const user = await User.withEmail(email) as User;
 
         const uuid = uuidv4();
 
