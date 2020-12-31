@@ -113,7 +113,7 @@ export class SettingsComponent implements OnInit
       scopes: (this.createNewAppFormOptions.groups[0].inputs[2] as ISelectFormInput).selectedValues,
     });
 
-    if (!response.result.valid)
+    if (response.errors)
     {
       this.createNewAppFormOptions.groups[0].inputs[0].error = response.errors.find(e => e.id.startsWith("app/name/"))?.message;
       this.createNewAppFormOptions.groups[0].inputs[1].error = response.errors.find(e => e.id.startsWith("app/url/"))?.message;
@@ -137,7 +137,7 @@ export class SettingsComponent implements OnInit
       birthday: (this.updateProfileFormOptions.groups[1].inputs[0] as IDateFormInput).value?.toISOString(),
     });
 
-    if (!response.result.valid)
+    if (response.errors)
     {
       this.updateProfileFormOptions.groups[0].inputs[0].error = response.errors.find(e => e.id.startsWith("user/name/first/"))?.message;
       this.updateProfileFormOptions.groups[0].inputs[1].error = response.errors.find(e => e.id.startsWith("user/name/last/"))?.message;

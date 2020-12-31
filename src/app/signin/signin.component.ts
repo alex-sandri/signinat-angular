@@ -38,15 +38,15 @@ export class SigninComponent implements OnInit {
       },
     });
 
-    if (!response.result.valid)
+    if (response.errors)
     {
       this.options.groups[0].inputs[0].error = response.errors.find(e => e.id.startsWith("user/email/"))?.message;
       this.options.groups[0].inputs[1].error = response.errors.find(e => e.id.startsWith("user/password/"))?.message;
     }
     else
     {
-      SettingsService.set("session.token", response.result.data!.id);
-      SettingsService.set("session.userId", response.result.data!.user.id);
+      SettingsService.set("session.token", response.resource.id);
+      SettingsService.set("session.userId", response.resource.user.id);
 
       if (this.route.snapshot.queryParams["ref"])
       {
