@@ -293,7 +293,7 @@ app.put("/api/apps/:id", async (req, res) =>
   {
     await app.update(req.body);
 
-    data.resource = app.json();
+    data.resource = await app.json();
   }
   catch (e)
   {
