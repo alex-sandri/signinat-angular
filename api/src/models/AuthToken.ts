@@ -10,7 +10,7 @@ import { ISerializedUser, User } from "./User";
 
 const db = firestore();
 
-type TAuthTokenType = "user" | "app";
+export type TAuthTokenType = "user" | "app";
 
 interface IAuthToken
 {

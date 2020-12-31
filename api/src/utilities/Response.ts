@@ -1,4 +1,5 @@
 import { Response as ExpressResponse } from "express";
+import { AuthToken, TAuthTokenType } from "../models/AuthToken";
 
 export interface IResponseData
 {
@@ -17,6 +18,34 @@ export default class Response
     public static from(res: ExpressResponse): Response
     {
         return new Response(res);
+    }
+
+    public async checkAuth(token?: string, types?: TAuthTokenType[]): Promise<AuthToken | null>
+    {
+        const authToken = await AuthToken.retrieve(token);
+
+        if (!authToken)
+        {
+            this.unauthorized();
+
+            return null;
+        }
+
+        if (!types?.includes(authToken.type))
+        {
+            this.forbidden();
+
+            return null;
+        }
+
+        return authToken;
+    }
+
+    public ok(): void
+    {
+        this.res.status(200);
+
+        this.send();
     }
 
     public unauthorized(): void

@@ -22,8 +22,7 @@ import { App, ISerializedApp } from "./models/App";
 import { User } from "./models/User";
 import { Account } from "./models/Account";
 import { Scope } from "./models/Scope";
-import { AuthToken } from "./models/AuthToken";
-import { IApp, IUser } from "./utilities/Validator";
+import { IApp } from "./utilities/Validator";
 import { SchemaValidationResult } from "./utilities/Schema";
 import Response, { IResponseData } from "./utilities/Response";
 
@@ -60,93 +59,72 @@ app.post("/api/users", async (req, res) =>
 
 app.put("/api/users/:id", async (req, res) =>
 {
-  const token = await AuthToken.retrieve(req.token);
+  const response = Response.from(res);
+
+  const token = await response.checkAuth(req.token, [ "user" ]);
 
   if (!token)
   {
-    res.status(401).send({ status: 401 });
-
     return;
   }
 
-  if (token.type !== "user")
+  if (token.user.id !== req.params.id)
   {
-    res.status(403).send({ status: 403 });
+    response.forbidden();
 
     return;
   }
 
-  const data: IUser = req.body;
-
-  const response: ApiResponse = {
-    result: { valid: true },
-    errors: [],
-  };
+  const data: IResponseData = {};
 
   try
   {
-    const user = await User.retrieve(req.params.id);
+    await token.user.update(req.body);
 
-    if (user)
-    {
-      await user.update(data);
-
-      response.result.data = user.json();
-    }
+    data.resource = token.user.json();
   }
   catch (e)
   {
-    response.result.valid = false;
-
     if (e instanceof SchemaValidationResult)
     {
-      response.errors = e.json().errors;
+      data.errors = e.json().errors;
     }
   }
 
-  res
-    .status(response.result.valid ? 200 : 400)
-    .send(response);
+  response.send(data);
 });
 
 app.delete("/api/users/:id", async (req, res) =>
 {
-  const token = await AuthToken.retrieve(req.token);
+  const response = Response.from(res);
+
+  const token = await response.checkAuth(req.token, [ "user" ]);
 
   if (!token)
   {
-    res.status(401).send({ status: 401 });
-
     return;
   }
 
-  if (token.type !== "user" || token.user.id !== req.params.id)
+  if (token.user.id !== req.params.id)
   {
-    res.status(403).send({ status: 403 });
+    response.forbidden();
 
     return;
   }
 
   await token.user.delete();
 
-  res.status(200).send({ status: 200 });
+  response.ok();
 });
 
 app.get("/api/accounts", async (req, res) =>
 {
-  const token = await AuthToken.retrieve(req.token);
+  const response = Response.from(res);
+
+  const token = await response.checkAuth(req.token, [ "user" ]);
 
   if (!token)
   {
-    res.status(401).send({ status: 401 });
-
-    return;
-  }
-
-  if (token.type !== "user")
-  {
-    res.status(403).send({ status: 403 });
-
     return;
   }
 
@@ -157,19 +135,12 @@ app.get("/api/accounts", async (req, res) =>
 
 app.get("/api/accounts/:id", async (req, res) =>
 {
-  const token = await AuthToken.retrieve(req.token);
+  const response = Response.from(res);
+
+  const token = await response.checkAuth(req.token, [ "user" ]);
 
   if (!token)
   {
-    res.status(401).send({ status: 401 });
-
-    return;
-  }
-
-  if (token.type !== "user")
-  {
-    res.status(403).send({ status: 403 });
-
     return;
   }
 
@@ -181,19 +152,12 @@ app.get("/api/accounts/:id", async (req, res) =>
 
 app.post("/api/accounts", async (req, res) =>
 {
-  const token = await AuthToken.retrieve(req.token);
+  const response = Response.from(res);
+
+  const token = await response.checkAuth(req.token, [ "user" ]);
 
   if (!token)
   {
-    res.status(401).send({ status: 401 });
-
-    return;
-  }
-
-  if (token.type !== "user")
-  {
-    res.status(403).send({ status: 403 });
-
     return;
   }
 
@@ -213,19 +177,12 @@ app.post("/api/accounts", async (req, res) =>
 
 app.delete("/api/accounts/:id", async (req, res) =>
 {
-  const token = await AuthToken.retrieve(req.token);
+  const response = Response.from(res);
+
+  const token = await response.checkAuth(req.token, [ "user" ]);
 
   if (!token)
   {
-    res.status(401).send({ status: 401 });
-
-    return;
-  }
-
-  if (token.type !== "user")
-  {
-    res.status(403).send({ status: 403 });
-
     return;
   }
 
@@ -238,19 +195,12 @@ app.delete("/api/accounts/:id", async (req, res) =>
 
 app.get("/api/apps", async (req, res) =>
 {
-  const token = await AuthToken.retrieve(req.token);
+  const response = Response.from(res);
+
+  const token = await response.checkAuth(req.token, [ "user" ]);
 
   if (!token)
   {
-    res.status(401).send({ status: 401 });
-
-    return;
-  }
-
-  if (token.type !== "user")
-  {
-    res.status(403).send({ status: 403 });
-
     return;
   }
 
@@ -268,19 +218,12 @@ app.get("/api/apps", async (req, res) =>
 
 app.get("/api/apps/:id", async (req, res) =>
 {
-  const token = await AuthToken.retrieve(req.token);
+  const response = Response.from(res);
+
+  const token = await response.checkAuth(req.token, [ "user" ]);
 
   if (!token)
   {
-    res.status(401).send({ status: 401 });
-
-    return;
-  }
-
-  if (token.type !== "user")
-  {
-    res.status(403).send({ status: 403 });
-
     return;
   }
 
@@ -292,19 +235,12 @@ app.get("/api/apps/:id", async (req, res) =>
 
 app.post("/api/apps", async (req, res) =>
 {
-  const token = await AuthToken.retrieve(req.token);
+  const response = Response.from(res);
+
+  const token = await response.checkAuth(req.token, [ "user" ]);
 
   if (!token)
   {
-    res.status(401).send({ status: 401 });
-
-    return;
-  }
-
-  if (token.type !== "user")
-  {
-    res.status(403).send({ status: 403 });
-
     return;
   }
 
@@ -336,19 +272,12 @@ app.post("/api/apps", async (req, res) =>
 
 app.put("/api/apps/:id", async (req, res) =>
 {
-  const token = await AuthToken.retrieve(req.token);
+  const response = Response.from(res);
+
+  const token = await response.checkAuth(req.token, [ "user" ]);
 
   if (!token)
   {
-    res.status(401).send({ status: 401 });
-
-    return;
-  }
-
-  if (token.type !== "user")
-  {
-    res.status(403).send({ status: 403 });
-
     return;
   }
 
@@ -418,12 +347,12 @@ app.delete("/api/apps/:id", async (req, res) =>
 
 app.get("/api/scopes", async (req, res) =>
 {
-  const token = await AuthToken.retrieve(req.token);
+  const response = Response.from(res);
+
+  const token = await response.checkAuth(req.token);
 
   if (!token)
   {
-    res.status(401).send({ status: 401 });
-
     return;
   }
 
@@ -432,12 +361,12 @@ app.get("/api/scopes", async (req, res) =>
 
 app.get("/api/tokens/:id", async (req, res) =>
 {
-  const token = await AuthToken.retrieve(req.params.id);
+  const response = Response.from(res);
+
+  const token = await response.checkAuth(req.token);
 
   if (!token)
   {
-    res.status(401).send({ status: 401 });
-
     return;
   }
 
@@ -471,19 +400,12 @@ app.post("/api/tokens/users", async (req, res) =>
 
 app.post("/api/tokens/apps", async (req, res) =>
 {
-  const token = await AuthToken.retrieve(req.token);
+  const response = Response.from(res);
+
+  const token = await response.checkAuth(req.token, [ "user" ]);
 
   if (!token)
   {
-    res.status(401).send({ status: 401 });
-
-    return;
-  }
-
-  if (token.type !== "user")
-  {
-    res.status(403).send({ status: 403 });
-
     return;
   }
 
@@ -496,12 +418,12 @@ app.post("/api/tokens/apps", async (req, res) =>
 
 app.delete("/api/tokens/:id", async (req, res) =>
 {
-  const token = await AuthToken.retrieve(req.params.id);
+  const response = Response.from(res);
+
+  const token = await response.checkAuth(req.token);
 
   if (!token)
   {
-    res.status(401).send({ status: 401 });
-
     return;
   }
 
