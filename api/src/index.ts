@@ -345,7 +345,7 @@ app.get("/api/tokens/:id", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token);
+  const token = await response.checkAuth(req.params.id);
 
   if (!token)
   {
