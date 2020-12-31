@@ -32,6 +32,16 @@ export interface IApp
     },
 }
 
+export interface IToken
+{
+    app?: string,
+
+    user?: {
+        email: string,
+        password: string,
+    },
+}
+
 export class Validator
 {
     private constructor(private type: TValidatorType)
