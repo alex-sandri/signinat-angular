@@ -27,11 +27,77 @@ export class ApiService
     TOKENS: `${ApiService.BASE_ENDPOINT}/tokens`,
   };
 
+  private async send(url: string, method: "DELETE" | "GET" | "POST" | "PUT", data?: any): Promise<any>
+  {
+    return new Promise(resolve =>
+    {
+      switch (method)
+      {
+        case "DELETE":
+        {
+          this.http
+            .delete(url, {
+              headers: {
+                "Authorization": `Bearer ${SettingsService.get("session.token")}`,
+              },
+            })
+            .toPromise()
+            .then(resolve)
+            .catch(e => resolve(e.error));
+
+          break;
+        }
+        case "GET":
+        {
+          this.http
+            .get(url, {
+              headers: {
+                "Authorization": `Bearer ${SettingsService.get("session.token")}`,
+              },
+            })
+            .toPromise()
+            .then(resolve)
+            .catch(e => resolve(e.error));
+
+          break;
+        }
+        case "POST":
+        {
+          this.http
+            .post(url, JSON.stringify(data), {
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${SettingsService.get("session.token")}`,
+              },
+            })
+            .toPromise()
+            .then(resolve)
+            .catch(e => resolve(e.error));
+
+          break;
+        }
+        case "PUT":
+        {
+          this.http
+            .put(url, JSON.stringify(data), {
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${SettingsService.get("session.token")}`,
+              },
+            })
+            .toPromise()
+            .then(resolve)
+            .catch(e => resolve(e.error));
+
+          break;
+        }
+      }
+    });
+  }
+
   public createUser = async (data: IUser): Promise<IResponseData> =>
   {
-    const response = await this.http.post(ApiService.ENDPOINTS.USERS, JSON.stringify(data), {
-      headers: { "Content-Type": "application/json" },
-    }).toPromise();
+    const response = await this.send(ApiService.ENDPOINTS.USERS, "POST", data);
 
     return response as IResponseData;
   }
