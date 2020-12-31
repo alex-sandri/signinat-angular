@@ -45,7 +45,7 @@ export class AuthToken
         };
     }
 
-    public static async app(token: IAppToken): Promise<AuthToken>
+    public static async app(token: IAppToken, user: User): Promise<AuthToken>
     {
         const result = await Validator.of("create").token(token, "app");
 
@@ -53,8 +53,6 @@ export class AuthToken
         {
             throw result;
         }
-
-        const user = await User.retrieve(token.user!) as User;
 
         const app = await App.retrieve(token.app!) as App;
 

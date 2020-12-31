@@ -374,7 +374,7 @@ app.post("/api/tokens/users", async (req, res) =>
 
   try
   {
-    const userToken = await AuthToken.user(req.body.email, req.body.password);
+    const userToken = await AuthToken.user(req.body);
 
     data.resource = await userToken.json();
   }
@@ -404,7 +404,7 @@ app.post("/api/tokens/apps", async (req, res) =>
 
   try
   {
-    const appToken = await AuthToken.app(req.body.app, token.user.id);
+    const appToken = await AuthToken.app(req.body, token.user);
 
     data.resource = await appToken.json();
   }
