@@ -289,7 +289,7 @@ export class Validator
 
                     if (!user)
                     {
-                        result.add("user/email/inexistent");
+                        result.add("user/inexistent");
                     }
                     else if (!Utilities.verifyHash((token as IUserToken).password!, user.data.password))
                     {
