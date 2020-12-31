@@ -31,7 +31,7 @@ export default class Response
             return null;
         }
 
-        if (!types?.includes(authToken.type))
+        if (types && !types.includes(authToken.type))
         {
             this.forbidden();
 
