@@ -255,6 +255,25 @@ export class Validator
                     user: SchemaPresets.NON_EMPTY_STRING,
                 }).validate(token);
 
+                if (result.valid)
+                {
+                    const user = await User.retrieve((token as IAppToken).user!);
+
+                    if (!user)
+                    {
+                        result.add("user/inexistent");
+                    }
+                    else
+                    {
+                        const app = await App.retrieve((token as IAppToken).app!);
+
+                        if (!app)
+                        {
+                            result.add("app/inexistent");
+                        }
+                    }
+                }
+
                 break;
             }
             case "user":

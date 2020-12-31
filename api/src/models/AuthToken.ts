@@ -56,13 +56,9 @@ export class AuthToken
             throw result;
         }
 
-        const user = await User.retrieve(userId);
+        const user = await User.retrieve(userId) as User;
 
-        if (!user) throw new ApiError("user/inexistent");
-
-        const app = await App.retrieve(appId);
-
-        if (!app) throw new ApiError("app/inexistent");
+        const app = await App.retrieve(appId) as App;
 
         const uuid = uuidv4();
 
