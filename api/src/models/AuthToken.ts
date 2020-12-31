@@ -1,6 +1,5 @@
 import { firestore } from "firebase-admin";
 import { v4 as uuidv4 } from "uuid";
-import { ApiRequest } from "../typings/ApiRequest";
 import Utilities from "../utilities/Utilities";
 import { ApiError } from "./ApiError";
 
@@ -49,7 +48,7 @@ export class AuthToken
 
     public static async app(appId: string, userId: string): Promise<AuthToken>
     {
-        AuthToken.validate({ app: appId }, "app");
+        // TODO: Validate app token
 
         const user = await User.retrieve(userId);
 
@@ -76,12 +75,7 @@ export class AuthToken
 
     public static async user(email: string, password: string): Promise<AuthToken>
     {
-        AuthToken.validate({
-            user: {
-                email: email.trim(),
-                password,
-            },
-        }, "user");
+        // TODO: Validate user token
 
         const user = await User.withEmail(email);
 
@@ -149,18 +143,5 @@ export class AuthToken
     public delete = async (): Promise<void> =>
     {
         await db.collection("tokens").doc(this.id).delete();
-    }
-
-    private static validate = (data: ApiRequest.Tokens.Create, type: TAuthTokenType): void =>
-    {
-        switch (type)
-        {
-            case "app":
-                // TODO
-                break;
-            case "user":
-                // TODO
-                break;
-        }
     }
 }
