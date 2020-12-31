@@ -251,7 +251,6 @@ export class Validator
             {
                 result = new Schema("token", {
                     app: SchemaPresets.NON_EMPTY_STRING,
-                    user: SchemaPresets.NON_EMPTY_STRING,
                 }).validate(token);
 
                 if (result.valid)
