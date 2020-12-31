@@ -1,6 +1,7 @@
 import { firestore } from "firebase-admin";
 import { v4 as uuidv4 } from "uuid";
 import Utilities from "../utilities/Utilities";
+import { Validator } from "../utilities/Validator";
 import { ApiError } from "./ApiError";
 
 import { App, ISerializedApp } from "./App";
@@ -48,7 +49,12 @@ export class AuthToken
 
     public static async app(appId: string, userId: string): Promise<AuthToken>
     {
-        // TODO: Validate app token
+        const result = await Validator.of("create").token({}, "app");
+
+        if (!result.valid)
+        {
+            throw result;
+        }
 
         const user = await User.retrieve(userId);
 
@@ -75,7 +81,12 @@ export class AuthToken
 
     public static async user(email: string, password: string): Promise<AuthToken>
     {
-        // TODO: Validate user token
+        const result = await Validator.of("create").token({}, "user");
+
+        if (!result.valid)
+        {
+            throw result;
+        }
 
         const user = await User.withEmail(email);
 
