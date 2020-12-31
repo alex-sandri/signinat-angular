@@ -136,9 +136,9 @@ export class App
             throw result;
         }
 
-        await db.collection("apps").doc(this.id).update({
-            "api.webhook.url": data.api?.webhook?.url,
-        });
+        this.data.api.webhook.url = data.api?.webhook?.url;
+
+        await db.collection("apps").doc(this.id).update(this.data);
     }
 
     public delete = async (): Promise<void> =>
