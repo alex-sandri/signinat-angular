@@ -191,8 +191,30 @@ export class Validator
                 break;
             }
             case "update":
-                result = new Schema("app", { /* TODO */ }).validate(old);
+            {
+                result = new Schema("app", {
+                    api: {
+                        type: "object",
+                        required: false,
+                        child: {
+                            webhook: {
+                                type: "object",
+                                required: false,
+                                child: {
+                                    url: SchemaPresets.OPTIONAL_URL,
+                                },
+                            },
+                        },
+                    },
+                }).validate(app);
+
+                if (Utilities.isNullOrUndefined(old))
+                {
+                    result.add("app/required");
+                }
+
                 break;
+            }
         }
 
         return result;
