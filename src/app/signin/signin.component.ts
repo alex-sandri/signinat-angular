@@ -32,10 +32,8 @@ export class SigninComponent implements OnInit {
   async onSubmit(end: () => void): Promise<void>
   {
     const response = await this.api.createUserToken({
-      user: {
-        email: (this.options.groups[0].inputs[0] as ITextFormInput).value as string,
-        password: (this.options.groups[0].inputs[1] as ITextFormInput).value as string,
-      },
+      email: (this.options.groups[0].inputs[0] as ITextFormInput).value,
+      password: (this.options.groups[0].inputs[1] as ITextFormInput).value,
     });
 
     if (response.errors)
