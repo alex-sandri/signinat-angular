@@ -36,7 +36,6 @@ export interface IApp
 export interface IAppToken
 {
     app?: string,
-    user?: string,
 }
 
 export interface IUserToken
@@ -257,20 +256,11 @@ export class Validator
 
                 if (result.valid)
                 {
-                    const user = await User.retrieve((token as IAppToken).user!);
+                    const app = await App.retrieve((token as IAppToken).app!);
 
-                    if (!user)
+                    if (!app)
                     {
-                        result.add("user/inexistent");
-                    }
-                    else
-                    {
-                        const app = await App.retrieve((token as IAppToken).app!);
-
-                        if (!app)
-                        {
-                            result.add("app/inexistent");
-                        }
+                        result.add("app/inexistent");
                     }
                 }
 
