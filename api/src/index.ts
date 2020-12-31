@@ -15,16 +15,13 @@ admin.firestore().settings({
   ignoreUndefinedProperties: true,
 });
 
-import { ApiRequest } from "./typings/ApiRequest";
-import { ApiResponse } from "./typings/ApiResponse";
-import { ApiError } from "./models/ApiError";
 import { App, ISerializedApp } from "./models/App";
 import { User } from "./models/User";
 import { Account } from "./models/Account";
 import { Scope } from "./models/Scope";
-import { IApp } from "./utilities/Validator";
 import { SchemaValidationResult } from "./utilities/Schema";
 import Response, { IResponseData } from "./utilities/Response";
+import { AuthToken } from "./models/AuthToken";
 
 const app = express();
 
@@ -206,14 +203,14 @@ app.get("/api/apps", async (req, res) =>
 
   const apps = await App.list(token.user);
 
-  const response: ISerializedApp[] = [];
+  const data: ISerializedApp[] = [];
 
   for (const app of apps)
   {
-    response.push(await app.json());
+    data.push(await app.json());
   }
 
-  res.send(response);
+  res.send(data);
 });
 
 app.get("/api/apps/:id", async (req, res) =>
@@ -244,30 +241,23 @@ app.post("/api/apps", async (req, res) =>
     return;
   }
 
-  const data: IApp = req.body;
-
-  const response: ApiResponse = {
-    result: { valid: true },
-    errors: [],
-  };
+  const data: IResponseData = {};
 
   try
   {
-    const app = await App.create(token.user, data);
+    const app = await App.create(token.user, req.body);
 
-    response.result.data = app.json();
+    data.resource = app.json();
   }
   catch (e)
   {
-    response.result.valid = false;
-
     if (e instanceof SchemaValidationResult)
     {
-      response.errors = e.json().errors;
+      data.errors = e.json().errors;
     }
   }
 
-  res.send(response);
+  response.send(data);
 });
 
 app.put("/api/apps/:id", async (req, res) =>
@@ -283,17 +273,12 @@ app.put("/api/apps/:id", async (req, res) =>
 
   if (!(await App.isOwnedBy(req.params.id, token.user)))
   {
-    res.sendStatus(403);
+    response.forbidden();
 
     return;
   }
 
-  const data: IApp = req.body;
-
-  const response: ApiResponse = {
-    result: { valid: true },
-    errors: [],
-  };
+  const data: IResponseData = {};
 
   try
   {
@@ -301,39 +286,36 @@ app.put("/api/apps/:id", async (req, res) =>
 
     if (app)
     {
-      await app.update(data);
+      await app.update(req.body);
 
-      response.result.data = app.json();
+      data.resource = app.json();
     }
   }
   catch (e)
   {
-    response.result.valid = false;
-
     if (e instanceof SchemaValidationResult)
     {
-      response.errors = e.json().errors;
+      data.errors = e.json().errors;
     }
   }
 
-  if (response.result.valid) res.send(response);
-  else res.status(400).send(response);
+  response.send(data);
 });
 
 app.delete("/api/apps/:id", async (req, res) =>
 {
-  const token = await AuthToken.retrieve(req.token);
+  const response = Response.from(res);
+
+  const token = await response.checkAuth(req.token);
 
   if (!token)
   {
-    res.status(401).send({ status: 401 });
-
     return;
   }
 
   if (!(await App.isOwnedBy(req.params.id, token.user)))
   {
-    res.sendStatus(403);
+    response.forbidden();
 
     return;
   }
@@ -342,7 +324,7 @@ app.delete("/api/apps/:id", async (req, res) =>
 
   await app?.delete();
 
-  res.status(200).send({ status: 200 });
+  response.ok();
 });
 
 app.get("/api/scopes", async (req, res) =>
@@ -375,27 +357,25 @@ app.get("/api/tokens/:id", async (req, res) =>
 
 app.post("/api/tokens/users", async (req, res) =>
 {
-  const data: ApiRequest.Tokens.Create = req.body;
+  const response = Response.from(res);
 
-  const response: ApiResponse = {
-    result: { valid: true },
-    errors: [],
-  };
+  const data: IResponseData = {};
 
   try
   {
-    const userToken = await AuthToken.user(data.user!.email, data.user!.password);
+    const userToken = await AuthToken.user(req.body.user.email, req.body.user.password);
 
-    response.result.data = await userToken.json();
+    data.resource = await userToken.json();
   }
   catch (e)
   {
-    response.result.valid = false;
-
-    response.errors.push((e as ApiError).json());
+    if (e instanceof SchemaValidationResult)
+    {
+      data.errors = e.json().errors;
+    }
   }
 
-  res.send(response);
+  response.send(data);
 });
 
 app.post("/api/tokens/apps", async (req, res) =>
@@ -409,11 +389,23 @@ app.post("/api/tokens/apps", async (req, res) =>
     return;
   }
 
-  const data: ApiRequest.Tokens.Create = req.body;
+  const data: IResponseData = {};
 
-  const appToken = await AuthToken.app(data.app as string, token.user.id);
+  try
+  {
+    const appToken = await AuthToken.app(req.body.app, token.user.id);
 
-  res.send(await appToken.json());
+    data.resource = await appToken.json();
+  }
+  catch (e)
+  {
+    if (e instanceof SchemaValidationResult)
+    {
+      data.errors = e.json().errors;
+    }
+  }
+
+  response.send(data);
 });
 
 app.delete("/api/tokens/:id", async (req, res) =>
