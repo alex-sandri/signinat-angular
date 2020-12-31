@@ -21,10 +21,8 @@ export class AppComponent
       return;
     }
 
-    auth.signIn().then(user =>
+    auth.signIn().then(() =>
     {
-      if (!user) return;
-
       this.canLoad = true;
     });
   }
