@@ -1,8 +1,6 @@
 import { firestore } from "firebase-admin";
 import { v4 as uuidv4 } from "uuid";
-import Utilities from "../utilities/Utilities";
-import { Validator } from "../utilities/Validator";
-import { ApiError } from "./ApiError";
+import { IAppToken, IUserToken, Validator } from "../utilities/Validator";
 
 import { App, ISerializedApp } from "./App";
 import { Scope } from "./Scope";
@@ -47,24 +45,24 @@ export class AuthToken
         };
     }
 
-    public static async app(appId: string, userId: string): Promise<AuthToken>
+    public static async app(token: IAppToken): Promise<AuthToken>
     {
-        const result = await Validator.of("create").token({ app: appId, user: userId }, "app");
+        const result = await Validator.of("create").token(token, "app");
 
         if (!result.valid)
         {
             throw result;
         }
 
-        const user = await User.retrieve(userId) as User;
+        const user = await User.retrieve(token.user!) as User;
 
-        const app = await App.retrieve(appId) as App;
+        const app = await App.retrieve(token.app!) as App;
 
         const uuid = uuidv4();
 
         await db.collection("tokens").doc(uuid).set(<IAuthToken>{
-            app: appId,
-            user: userId,
+            app: app.id,
+            user: user.id,
         });
 
         return new AuthToken(
@@ -75,16 +73,16 @@ export class AuthToken
         );
     }
 
-    public static async user(email: string, password: string): Promise<AuthToken>
+    public static async user(token: IUserToken): Promise<AuthToken>
     {
-        const result = await Validator.of("create").token({ email, password }, "user");
+        const result = await Validator.of("create").token(token, "user");
 
         if (!result.valid)
         {
             throw result;
         }
 
-        const user = await User.withEmail(email) as User;
+        const user = await User.withEmail(token.email!) as User;
 
         const uuid = uuidv4();
 
