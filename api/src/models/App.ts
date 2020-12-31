@@ -168,12 +168,8 @@ export class App
 
     static exists = async (id: string): Promise<boolean> => (await App.retrieve(id)) !== null;
 
-    static isOwnedBy = async (id: string, user: User): Promise<boolean> =>
+    public async isOwnedBy(user: User): Promise<boolean>
     {
-        const app = await App.retrieve(id);
-
-        if (!app) return false;
-
-        return app.data.owner === user.id;
+        return this.data.owner === user.id;
     }
 }

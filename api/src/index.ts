@@ -271,7 +271,16 @@ app.put("/api/apps/:id", async (req, res) =>
     return;
   }
 
-  if (!(await App.isOwnedBy(req.params.id, token.user)))
+  const app = await App.retrieve(req.params.id);
+
+  if (!app)
+  {
+    response.notFound();
+
+    return;
+  }
+
+  if (!app.isOwnedBy(token.user))
   {
     response.forbidden();
 
@@ -282,14 +291,9 @@ app.put("/api/apps/:id", async (req, res) =>
 
   try
   {
-    const app = await App.retrieve(req.params.id);
+    await app.update(req.body);
 
-    if (app)
-    {
-      await app.update(req.body);
-
-      data.resource = app.json();
-    }
+    data.resource = app.json();
   }
   catch (e)
   {
@@ -313,16 +317,23 @@ app.delete("/api/apps/:id", async (req, res) =>
     return;
   }
 
-  if (!(await App.isOwnedBy(req.params.id, token.user)))
+  const app = await App.retrieve(req.params.id);
+
+  if (!app)
+  {
+    response.notFound();
+
+    return;
+  }
+
+  if (!app.isOwnedBy(token.user))
   {
     response.forbidden();
 
     return;
   }
 
-  const app = await App.retrieve(req.params.id);
-
-  await app?.delete();
+  await app.delete();
 
   response.ok();
 });

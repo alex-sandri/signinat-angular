@@ -62,6 +62,13 @@ export default class Response
         this.send({ errors: [ { id: "403", message: "Forbidden" } ] });
     }
 
+    public notFound(): void
+    {
+        this.res.status(404);
+
+        this.send({ errors: [ { id: "404", message: "Not Found" } ] });
+    }
+
     public send(data?: IResponseData): void
     {
         if (data?.errors)
