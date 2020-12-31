@@ -1,5 +1,6 @@
 import validator from "validator";
 import { ApiError, ISerializedApiError } from "../models/ApiError";
+import Constants from "./Constants";
 import Utilities from "./Utilities";
 
 interface SchemaDefinition
@@ -178,7 +179,7 @@ export default class Schema
                             {
                                 case "date":
                                 {
-                                    if (!validator.isDate(value, { format: "YYYY/MM/DD" }))
+                                    if (!validator.isDate(value, { format: Constants.DATE_FORMAT }))
                                     {
                                         result.add(`${fieldNamespace}/invalid`);
                                     }

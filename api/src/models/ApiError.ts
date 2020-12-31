@@ -1,3 +1,5 @@
+import Constants from "../utilities/Constants";
+
 export interface ISerializedApiError
 {
     id: string,
@@ -45,7 +47,7 @@ export class ApiError
             case "user/password/short": this.message = "Please enter a stronger password"; break;
             case "user/password/wrong": this.message = "Wrong password"; break;
             case "user/birthday/empty": this.message = "The birthday cannot be empty"; break;
-            case "user/birthday/invalid": this.message = "The birthday is invalid"; break;
+            case "user/birthday/invalid": this.message = `The birthday is invalid (Required format: ${Constants.DATE_FORMAT})`; break;
 
             default: this.message = "Unknown error"; break;
         }

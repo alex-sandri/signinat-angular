@@ -2,6 +2,7 @@ import { App, ISerializedApp } from "../models/App";
 import { TAuthTokenType } from "../models/AuthToken";
 import { Scope } from "../models/Scope";
 import { ISerializedUser, User } from "../models/User";
+import Constants from "./Constants";
 import Schema, { SchemaPresets, SchemaValidationResult } from "./Schema";
 import Utilities from "./Utilities";
 
@@ -85,7 +86,7 @@ export class Validator
                     password: {
                         type: "string",
                         required: true,
-                        length: { min: ValidatorConstants.PASSWORD_MIN_LENGTH },
+                        length: { min: Constants.PASSWORD_MIN_LENGTH },
                     },
                     birthday: SchemaPresets.OPTIONAL_DATE,
                 }).validate(user);
@@ -115,7 +116,7 @@ export class Validator
                     password: {
                         type: "string",
                         required: false,
-                        length: { min: ValidatorConstants.PASSWORD_MIN_LENGTH },
+                        length: { min: Constants.PASSWORD_MIN_LENGTH },
                     },
                     birthday: SchemaPresets.OPTIONAL_DATE,
                 }).validate(user);
@@ -292,9 +293,4 @@ export class Validator
 
         return result;
     }
-}
-
-export class ValidatorConstants
-{
-    public static readonly PASSWORD_MIN_LENGTH = 8;
 }
