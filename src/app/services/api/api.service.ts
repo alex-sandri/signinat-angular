@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { ApiRequest } from 'api/src/typings/ApiRequest';
-import { ApiResponse } from 'api/src/typings/ApiResponse';
 import { ISerializedApp } from 'api/src/models/App';
 import { ISerializedAccount } from 'api/src/models/Account';
 import { ISerializedScope } from 'api/src/models/Scope';
 import { ISerializedAuthToken } from 'api/src/models/AuthToken';
 import { SettingsService } from '../settings/settings.service';
-import { IApp, IUser } from 'api/src/utilities/Validator';
+import { IApp, IToken, IUser } from 'api/src/utilities/Validator';
 import { IResponseData } from 'api/src/utilities/Response';
 
 @Injectable({
@@ -38,7 +36,7 @@ export class ApiService
     return response as IResponseData;
   }
 
-  public updateUser = async (data: IUser): Promise<ApiResponse> =>
+  public updateUser = async (data: IUser): Promise<IResponseData> =>
   {
     const response = await this.http.put(
       `${ApiService.ENDPOINTS.USERS}/${SettingsService.get("session.userId")}`,
@@ -51,7 +49,7 @@ export class ApiService
       },
     ).toPromise();
 
-    return response as ApiResponse;
+    return response as IResponseData;
   }
 
   public deleteUser = async (): Promise<void> =>
@@ -105,7 +103,7 @@ export class ApiService
     }).toPromise();
   }
 
-  public createApp = async (data: IApp): Promise<ApiResponse> =>
+  public createApp = async (data: IApp): Promise<IResponseData> =>
   {
     const response = await this.http.post(ApiService.ENDPOINTS.APPS, JSON.stringify(data), {
       headers: {
@@ -114,7 +112,7 @@ export class ApiService
       },
     }).toPromise();
 
-    return response as ApiResponse;
+    return response as IResponseData;
   }
 
   public retrieveApp = async (id: string): Promise<ISerializedApp> =>
@@ -139,7 +137,7 @@ export class ApiService
     return response as ISerializedApp[];
   }
 
-  public updateApp = async (id: string, data: IApp): Promise<ApiResponse> =>
+  public updateApp = async (id: string, data: IApp): Promise<IResponseData> =>
   {
     const response = await this.http.put(`${ApiService.ENDPOINTS.APPS}/${id}`, JSON.stringify(data), {
       headers: {
@@ -148,7 +146,7 @@ export class ApiService
       },
     }).toPromise();
 
-    return response as ApiResponse;
+    return response as IResponseData;
   }
 
   public deleteApp = async (id: string): Promise<void> =>
@@ -171,7 +169,7 @@ export class ApiService
     return response as ISerializedScope[];
   }
 
-  public createUserToken = async (data: ApiRequest.Tokens.Create): Promise<ApiResponse> =>
+  public createUserToken = async (data: IToken): Promise<IResponseData> =>
   {
     const response = await this.http.post(`${ApiService.ENDPOINTS.TOKENS}/users`, JSON.stringify(data), {
       headers: {
@@ -179,10 +177,10 @@ export class ApiService
       },
     }).toPromise();
 
-    return response as ApiResponse;
+    return response as IResponseData;
   }
 
-  public createAppToken = async (data: ApiRequest.Tokens.Create): Promise<ISerializedAuthToken> =>
+  public createAppToken = async (data: IToken): Promise<ISerializedAuthToken> =>
   {
     const response = await this.http.post(`${ApiService.ENDPOINTS.TOKENS}/apps`, JSON.stringify(data), {
       headers: {
