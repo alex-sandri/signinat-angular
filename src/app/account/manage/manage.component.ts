@@ -25,7 +25,7 @@ export class ManageComponent
   {
     api
       .retrieveAccount(route.snapshot.params["id"])
-      .then(account => this.account = account)
+      .then(account => this.account = account.resource)
       .catch(() =>
       {
         router.navigateByUrl("/account");

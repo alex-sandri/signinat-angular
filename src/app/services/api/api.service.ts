@@ -115,7 +115,7 @@ export class ApiService
     await this.send("POST", ApiService.ENDPOINTS.ACCOUNTS, { id });
   }
 
-  public retrieveAccount(id: string): Promise<ISerializedAccount>
+  public retrieveAccount(id: string): Promise<IResponseData>
   {
     return this.send("GET", `${ApiService.ENDPOINTS.ACCOUNTS}/${id}`);
   }

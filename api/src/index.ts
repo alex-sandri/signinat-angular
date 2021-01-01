@@ -17,7 +17,7 @@ admin.firestore().settings({
 
 import { App, ISerializedApp } from "./models/App";
 import { User } from "./models/User";
-import { Account } from "./models/Account";
+import { Account, ISerializedAccount } from "./models/Account";
 import { Scope } from "./models/Scope";
 import { SchemaValidationResult } from "./utilities/Schema";
 import Response, { IResponseData } from "./utilities/Response";
@@ -127,7 +127,14 @@ app.get("/api/accounts", async (req, res) =>
 
   const accounts = await Account.list(token.user);
 
-  res.send(accounts.map(account => account.json()));
+  const data: ISerializedAccount[] = [];
+
+  for (const account of accounts)
+  {
+    data.push(await account.json());
+  }
+
+  res.send(data);
 });
 
 app.get("/api/accounts/:id", async (req, res) =>
@@ -143,8 +150,8 @@ app.get("/api/accounts/:id", async (req, res) =>
 
   const account = await Account.retrieve(token.user, req.params.id);
 
-  if (!account) res.status(404).send({ status: 404 });
-  else res.send(account.json());
+  if (!account) response.notFound();
+  else response.send({ resource: await account.json() });
 });
 
 app.post("/api/accounts", async (req, res) =>
