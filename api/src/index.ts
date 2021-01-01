@@ -165,18 +165,23 @@ app.post("/api/accounts", async (req, res) =>
     return;
   }
 
-  const app = await App.retrieve(req.body.app);
+  const data: IResponseData = {};
 
-  if (!app)
+  try
   {
-    response.notFound();
+    const account = await Account.create(req.body, token.user);
 
-    return;
+    data.resource = await account.json();
+  }
+  catch (e)
+  {
+    if (e instanceof SchemaValidationResult)
+    {
+      data.errors = e.json().errors;
+    }
   }
 
-  const account = await Account.create(token.user, app);
-
-  response.send({ resource: await account.json() })
+  response.send(data);
 });
 
 app.delete("/api/accounts/:id", async (req, res) =>

@@ -1,3 +1,4 @@
+import { Account } from "../models/Account";
 import { App, ISerializedApp } from "../models/App";
 import { TAuthTokenType } from "../models/AuthToken";
 import { Scope } from "../models/Scope";
@@ -46,6 +47,11 @@ export interface IUserToken
 }
 
 export type IToken = IAppToken | IUserToken;
+
+export interface IAccount
+{
+    app?: string;
+}
 
 export class Validator
 {
@@ -288,6 +294,39 @@ export class Validator
                 }
 
                 break;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Validates an account object
+     * 
+     * @param account The account object to validate
+     * @param user The owner of the account
+     * 
+     * @returns `Promise<SchemaValidationResult>` Validation success
+     */
+    public async account(account: IAccount, user: User): Promise<SchemaValidationResult>
+    {
+        let result: SchemaValidationResult;
+
+        result = new Schema("account", {
+            app: SchemaPresets.NON_EMPTY_STRING,
+        }).validate(account);
+
+        if (result.valid)
+        {
+            const app = await App.retrieve(account.app!);
+
+            if (!app)
+            {
+                result.add("app/inexistent");
+            }
+            else if (await Account.exists(user, app.id))
+            {
+                result.add("account/already-exists");
             }
         }
 

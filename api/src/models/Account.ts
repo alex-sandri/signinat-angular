@@ -1,6 +1,6 @@
 import { firestore } from "firebase-admin";
+import { Validator } from "../utilities/Validator";
 
-import { ApiError } from "./ApiError";
 import { App, ISerializedApp } from "./App";
 import { ISerializedUser, User } from "./User";
 import { Webhook } from "./Webhook";
@@ -37,12 +37,19 @@ export class Account
         };
     }
 
-    static create = async (user: User, app: App): Promise<Account> =>
+    static create = async (data: IAccount, user: User): Promise<Account> =>
     {
-        if ((await Account.withAppId(user, app.id)) !== null) throw new ApiError("account/already-exists");
+        const result = await Validator.of("create").account(data, user);
 
-        const account = await db.collection("accounts").add(<IAccount>{
-            app: app.id,
+        if (!result.valid)
+        {
+            throw result;
+        }
+
+        const app = await App.retrieve(data.app) as App;
+
+        const { id } = await db.collection("accounts").add(<IAccount>{
+            app: data.app,
             user: user.id,
         });
 
@@ -55,7 +62,7 @@ export class Account
         );
 
         return new Account(
-            account.id,
+            id,
             app,
             user,
         );
@@ -129,7 +136,7 @@ export class Account
         await db.collection("accounts").doc(this.id).delete();
     }
 
-    static withAppId = async (user: User, app: string): Promise<Account | null> =>
+    static exists = async (user: User, app: string): Promise<Account | null> =>
     {
         const result = await db
             .collection("accounts")
@@ -144,6 +151,4 @@ export class Account
 
         return Account.retrieve(user, account.id);
     }
-
-    static exists = async (user: User, id: string): Promise<boolean> => (await Account.retrieve(user, id)) !== null;
 }
