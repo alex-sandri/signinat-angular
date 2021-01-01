@@ -192,7 +192,14 @@ app.delete("/api/accounts/:id", async (req, res) =>
 
   const account = await Account.retrieve(token.user, req.params.id);
 
-  await account?.delete();
+  if (!account)
+  {
+    response.notFound();
+
+    return;
+  }
+
+  await account.delete();
 
   response.send();
 });
