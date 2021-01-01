@@ -112,7 +112,7 @@ export class ApiService
 
   public createAccount(id: string): Promise<IResponseData>
   {
-    return this.send("POST", ApiService.ENDPOINTS.ACCOUNTS, { id });
+    return this.send("POST", ApiService.ENDPOINTS.ACCOUNTS, { app: id });
   }
 
   public retrieveAccount(id: string): Promise<IResponseData>

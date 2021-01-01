@@ -165,7 +165,7 @@ app.post("/api/accounts", async (req, res) =>
     return;
   }
 
-  const app = await App.retrieve(req.body.id);
+  const app = await App.retrieve(req.body.app);
 
   if (!app)
   {
