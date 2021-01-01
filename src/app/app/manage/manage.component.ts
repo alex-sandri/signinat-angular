@@ -12,17 +12,6 @@ export class ManageComponent
 {
   app!: ISerializedApp;
 
-  setWebhook(url: string)
-  {
-    this.api.updateApp(this.app.id, {
-      api: {
-        webhook: {
-          url,
-        },
-      },
-    });
-  }
-
   copyApiKey()
   {
     navigator.clipboard.writeText(this.app.api.key);

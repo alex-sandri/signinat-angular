@@ -15,10 +15,6 @@ interface IDatabaseApp
     owner: string,
     api: {
         key: string,
-        webhook: {
-            url?: string,
-            signature: string,
-        },
     },
     scopes: string[],
 }
@@ -32,10 +28,6 @@ export interface ISerializedApp
     // TODO: Send API key only if the signed in user is the owner
     api: {
         key: string,
-        webhook: {
-            url?: string,
-            signature: string,
-        },
     },
     scopes: ISerializedScope[],
 }
@@ -57,10 +49,6 @@ export class App
             owner: (await User.retrieve(this.data.owner))!.json(),
             api: {
                 key: this.data.api.key,
-                webhook: {
-                    url: this.data.api.webhook.url,
-                    signature: this.data.api.webhook.signature,
-                },
             },
             scopes: Scope.from(this.data.scopes).map(scope => scope.json()),
         };
@@ -81,10 +69,6 @@ export class App
             owner: user.id,
             api: {
                 key: uuidv4(),
-                webhook: {
-                    url: data.api?.webhook?.url,
-                    signature: uuidv4(),
-                },
             },
             scopes: Scope.filterUnnecessary(data.scopes!),
         };
@@ -130,7 +114,8 @@ export class App
             throw result;
         }
 
-        this.data.api.webhook.url = data.api?.webhook?.url;
+        // TODO
+        // Update app
 
         await db.collection("apps").doc(this.id).update(this.data);
     }

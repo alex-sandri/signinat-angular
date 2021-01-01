@@ -28,10 +28,6 @@ export interface IApp
     scopes?: string[],
     api?: {
         key?: string,
-        webhook?: {
-            url?: string,
-            signature?: string,
-        },
     },
 }
 
@@ -178,19 +174,6 @@ export class Validator
                         required: true,
                         size: { min: 1 },
                     },
-                    api: {
-                        type: "object",
-                        required: false,
-                        child: {
-                            webhook: {
-                                type: "object",
-                                required: false,
-                                child: {
-                                    url: SchemaPresets.URL,
-                                },
-                            },
-                        },
-                    },
                 }).validate(app);
 
                 if (result.valid)
@@ -204,19 +187,8 @@ export class Validator
             case "update":
             {
                 result = new Schema("app", {
-                    api: {
-                        type: "object",
-                        required: false,
-                        child: {
-                            webhook: {
-                                type: "object",
-                                required: false,
-                                child: {
-                                    url: SchemaPresets.OPTIONAL_URL,
-                                },
-                            },
-                        },
-                    },
+                    // TODO
+                    // Allow app updates
                 }).validate(app);
 
                 if (Utilities.isNullOrUndefined(old))
