@@ -20,6 +20,7 @@ interface IDatabaseApp
             signature: string,
         },
     },
+    scopes: string[],
 }
 
 export interface ISerializedApp
@@ -44,7 +45,6 @@ export class App
     private constructor(
         public readonly id: string,
         public readonly data: IDatabaseApp,
-        public readonly scopes: Scope[],
     )
     {}
 
@@ -62,7 +62,7 @@ export class App
                     signature: this.data.api.webhook.signature,
                 },
             },
-            scopes: this.scopes.map(scope => scope.json()),
+            scopes: Scope.from(this.data.scopes).map(scope => scope.json()),
         };
     };
 
@@ -86,15 +86,12 @@ export class App
                     signature: uuidv4(),
                 },
             },
+            scopes: data.scopes!,
         };
 
         const { id } = await db.collection("apps").add(app);
 
-        const scopes = Scope.from(data.scopes!);
-
-        await Scope.set(id, scopes);
-
-        return new App(id, app, scopes);
+        return new App(id, app);
     }
 
     static retrieve = async (id: string): Promise<App | null> =>
@@ -105,9 +102,7 @@ export class App
 
         const data = app.data() as IDatabaseApp;
 
-        const scopes = await Scope.list(app.id);
-
-        return new App(id, data, scopes);
+        return new App(id, data);
     }
 
     static list = async (user: User): Promise<App[]> =>
@@ -120,8 +115,7 @@ export class App
         {
             const data = app.data() as IDatabaseApp;
 
-            // Scopes are not sent with a LIST operation
-            apps.push(new App(app.id, data, []));
+            apps.push(new App(app.id, data));
         });
 
         return apps;

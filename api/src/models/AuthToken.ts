@@ -121,7 +121,7 @@ export class AuthToken
 
             if (!app) return null;
 
-            scopes = app.scopes;
+            scopes = Scope.from(app.data.scopes);
         }
         else
         {
