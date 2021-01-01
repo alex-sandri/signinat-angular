@@ -43,30 +43,34 @@ export default class Response
 
     public ok(): void
     {
-        this.res.status(200);
-
-        this.res.send({ status: { code: 200, message: "OK" } });
+        this
+            .res
+            .status(200)
+            .send({ status: { code: 200, message: "OK" } });
     }
 
     public unauthorized(): void
     {
-        this.res.status(401);
-
-        this.res.send({ status: { code: 401, message: "Unauthorized" } });
+        this
+            .res
+            .status(401)
+            .send({ status: { code: 401, message: "Unauthorized" } });
     }
 
     public forbidden(): void
     {
-        this.res.status(403);
-
-        this.res.send({ status: { code: 403, message: "Forbidden" } });
+        this
+            .res
+            .status(403)
+            .send({ status: { code: 403, message: "Forbidden" } });
     }
 
     public notFound(): void
     {
-        this.res.status(404);
-
-        this.res.send({ status: { code: 404, message: "Not Found" } });
+        this
+            .res
+            .status(404)
+            .send({ status: { code: 404, message: "Not Found" } });
     }
 
     public send(data?: IResponseData): void
