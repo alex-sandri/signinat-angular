@@ -169,7 +169,7 @@ app.post("/api/accounts", async (req, res) =>
 
   if (!app)
   {
-    res.status(403).send({ status: 403 });
+    response.forbidden();
 
     return;
   }
@@ -446,7 +446,7 @@ app.delete("/api/tokens/:id", async (req, res) =>
 
   await token.delete();
 
-  res.status(200).send({ status: 200 });
+  response.ok();
 });
 
 app.listen(3000);
