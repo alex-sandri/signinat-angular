@@ -375,14 +375,30 @@ app.get("/api/tokens/:id", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.params.id);
+  const token = await response.checkAuth(req.token);
 
   if (!token)
   {
     return;
   }
 
-  response.send({ resource: await token.json() });
+  const tokenToRetrieve = await AuthToken.retrieve(req.params.id);
+
+  if (!tokenToRetrieve)
+  {
+    response.notFound();
+
+    return;
+  }
+
+  if (tokenToRetrieve.user.id !== token.user.id)
+  {
+    response.forbidden();
+
+    return;
+  }
+
+  response.send({ resource: await tokenToRetrieve.json() });
 });
 
 app.post("/api/tokens/users", async (req, res) =>
@@ -449,7 +465,23 @@ app.delete("/api/tokens/:id", async (req, res) =>
     return;
   }
 
-  await token.delete();
+  const tokenToDelete = await AuthToken.retrieve(req.params.id);
+
+  if (!tokenToDelete)
+  {
+    response.notFound();
+
+    return;
+  }
+
+  if (tokenToDelete.user.id !== token.user.id)
+  {
+    response.forbidden();
+
+    return;
+  }
+
+  await tokenToDelete.delete();
 
   response.ok();
 });
