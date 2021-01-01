@@ -1,7 +1,3 @@
-import { firestore } from "firebase-admin";
-
-const db = firestore();
-
 const SCOPES = [
     { value: "user", description: "Everything" },
     { value: "user.profile", description: "Your entire profile" },
@@ -11,11 +7,6 @@ const SCOPES = [
     { value: "user.profile.email", description: "Your email" },
     { value: "user.profile.birthday", description: "Your birthday" },
 ];
-
-interface IScope
-{
-    value: string,
-}
 
 export interface ISerializedScope
 {
@@ -54,11 +45,6 @@ export class Scope
             .map(scope => scope.json()),
     });
 
-    private static validate = (scope: string): boolean =>
-    {
-        return Scope.all().findIndex(s => s.value === scope) > -1;
-    }
-
     public static all = (): Scope[] =>
     {
         return SCOPES.map(scope => new Scope(scope.value));
@@ -69,11 +55,9 @@ export class Scope
         return scopes.map(scope => new Scope(scope));
     }
 
-    static set = async (app: string, scopes: Scope[]): Promise<void> =>
+    static filterUnnecessary(list: string[]): string[]
     {
-        if (!scopes.every(scope => Scope.validate(scope.value))) throw new Error("scope/invalid");
-
-        await Scope.delete(app);
+        const scopes = Scope.from(list);
 
         /*
             Remove more specific scopes
@@ -81,43 +65,12 @@ export class Scope
             Example:
             'user.profile' is removed if 'user' is a selected scope
         */
-        scopes = scopes.filter(scope =>
-        {
-            return scopes.findIndex(temp => scope.value.startsWith(`${temp.value}.`)) === -1;
-        });
-
-        for (const scope of scopes)
-        {
-            await db.collection(`apps/${app}/scopes`).add(<IScope>{
-                value: scope.value,
-            });
-        }
-    }
-
-    static list = async (app: string): Promise<Scope[]> =>
-    {
-        const snapshot = await db.collection(`apps/${app}/scopes`).get();
-
-        const scopes: Scope[] = [];
-
-        for (const scope of snapshot.docs)
-        {
-            const data = scope.data() as IScope;
-
-            scopes.push(new Scope(data.value));
-        }
-
-        return scopes;
-    }
-
-    static delete = async (app: string): Promise<void> =>
-    {
-        const snapshot = await db.collection(`apps/${app}/scopes`).get();
-
-        for (const scope of snapshot.docs)
-        {
-            await scope.ref.delete();
-        }
+        return scopes
+            .filter(scope =>
+            {
+                return scopes.findIndex(temp => scope.value.startsWith(`${temp.value}.`)) === -1;
+            })
+            .map(scopes => scopes.value);
     }
 
     public canAccess = (scope: string): boolean =>

@@ -86,7 +86,7 @@ export class App
                     signature: uuidv4(),
                 },
             },
-            scopes: data.scopes!,
+            scopes: Scope.filterUnnecessary(data.scopes!),
         };
 
         const { id } = await db.collection("apps").add(app);
@@ -138,8 +138,6 @@ export class App
     public delete = async (): Promise<void> =>
     {
         await db.collection("apps").doc(this.id).delete();
-
-        await Scope.delete(this.id);
 
         const accounts = await Account.forApp(this);
 
