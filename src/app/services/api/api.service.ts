@@ -27,7 +27,7 @@ export class ApiService
     TOKENS: `${ApiService.BASE_ENDPOINT}/tokens`,
   };
 
-  private async send(url: string, method: "DELETE" | "GET" | "POST" | "PUT", data?: any): Promise<any>
+  private async send(method: "DELETE" | "GET" | "POST" | "PUT", url: string, data?: any): Promise<any>
   {
     return new Promise(resolve =>
     {
@@ -95,186 +95,88 @@ export class ApiService
     });
   }
 
-  public createUser = async (data: IUser): Promise<IResponseData> =>
+  public createUser(data: IUser): Promise<IResponseData>
   {
-    const response = await this.send(ApiService.ENDPOINTS.USERS, "POST", data);
-
-    return response as IResponseData;
+    return this.send("POST", ApiService.ENDPOINTS.USERS, data);
   }
 
-  public updateUser = async (data: IUser): Promise<IResponseData> =>
+  public updateUser(data: IUser): Promise<IResponseData>
   {
-    const response = await this.http.put(
-      `${ApiService.ENDPOINTS.USERS}/${SettingsService.get("session.userId")}`,
-      JSON.stringify(data),
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${SettingsService.get("session.token")}`,
-        },
-      },
-    ).toPromise();
-
-    return response as IResponseData;
+    return this.send("PUT", `${ApiService.ENDPOINTS.USERS}/${SettingsService.get("session.userId")}`, data);
   }
 
-  public deleteUser = async (): Promise<void> =>
+  public async deleteUser(): Promise<void>
   {
-    await this.http.delete(`${ApiService.ENDPOINTS.USERS}/${SettingsService.get("session.userId")}`, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
-      },
-    }).toPromise();
+    await this.send("DELETE", `${ApiService.ENDPOINTS.USERS}/${SettingsService.get("session.userId")}`);
   }
 
-  public createAccount = async (id: string): Promise<void> =>
+  public async createAccount(id: string): Promise<void>
   {
-    await this.http.post(ApiService.ENDPOINTS.ACCOUNTS, JSON.stringify({ id }), {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
-      },
-    }).toPromise();
+    await this.send("POST", ApiService.ENDPOINTS.ACCOUNTS, { id });
   }
 
-  public retrieveAccount = async (id: string): Promise<ISerializedAccount> =>
+  public retrieveAccount(id: string): Promise<ISerializedAccount>
   {
-    const response = await this.http.get(`${ApiService.ENDPOINTS.ACCOUNTS}/${id}`, {
-      headers: {
-        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
-      },
-    }).toPromise();
-
-    return response as ISerializedAccount;
+    return this.send("GET", `${ApiService.ENDPOINTS.ACCOUNTS}/${id}`);
   }
 
-  public listAccounts = async (): Promise<ISerializedAccount[]> =>
+  public listAccounts(): Promise<ISerializedAccount[]>
   {
-    const response = await this.http.get(ApiService.ENDPOINTS.ACCOUNTS, {
-      headers: {
-        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
-      },
-    }).toPromise();
-
-    return response as ISerializedAccount[];
+    return this.send("GET", ApiService.ENDPOINTS.ACCOUNTS);
   }
 
-  public deleteAccount = async (id: string): Promise<void> =>
+  public async deleteAccount(id: string): Promise<void>
   {
-    await this.http.delete(`${ApiService.ENDPOINTS.ACCOUNTS}/${id}`, {
-      headers: {
-        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
-      },
-    }).toPromise();
+    await this.send("DELETE", `${ApiService.ENDPOINTS.ACCOUNTS}/${id}`);
   }
 
-  public createApp = async (data: IApp): Promise<IResponseData> =>
+  public createApp(data: IApp): Promise<IResponseData>
   {
-    const response = await this.http.post(ApiService.ENDPOINTS.APPS, JSON.stringify(data), {
-      headers: {
-        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
-        "Content-Type": "application/json",
-      },
-    }).toPromise();
-
-    return response as IResponseData;
+    return this.send("POST", ApiService.ENDPOINTS.APPS, data);
   }
 
-  public retrieveApp = async (id: string): Promise<ISerializedApp> =>
+  public retrieveApp(id: string): Promise<ISerializedApp>
   {
-    const response = await this.http.get(`${ApiService.ENDPOINTS.APPS}/${id}`, {
-      headers: {
-        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
-      },
-    }).toPromise();
-
-    return response as ISerializedApp;
+    return this.send("GET", `${ApiService.ENDPOINTS.APPS}/${id}`);
   }
 
-  public listApps = async (): Promise<ISerializedApp[]> =>
+  public listApps(): Promise<ISerializedApp[]>
   {
-    const response = await this.http.get(ApiService.ENDPOINTS.APPS, {
-      headers: {
-        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
-      },
-    }).toPromise();
-
-    return response as ISerializedApp[];
+    return this.send("GET", ApiService.ENDPOINTS.APPS);
   }
 
-  public updateApp = async (id: string, data: IApp): Promise<IResponseData> =>
+  public updateApp(id: string, data: IApp): Promise<IResponseData>
   {
-    const response = await this.http.put(`${ApiService.ENDPOINTS.APPS}/${id}`, JSON.stringify(data), {
-      headers: {
-        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
-        "Content-Type": "application/json",
-      },
-    }).toPromise();
-
-    return response as IResponseData;
+    return this.send("PUT", `${ApiService.ENDPOINTS.APPS}/${id}`, data);
   }
 
-  public deleteApp = async (id: string): Promise<void> =>
+  public async deleteApp(id: string): Promise<void>
   {
-    await this.http.delete(`${ApiService.ENDPOINTS.APPS}/${id}`, {
-      headers: {
-        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
-      },
-    }).toPromise();
+    await this.send("DELETE", `${ApiService.ENDPOINTS.APPS}/${id}`);
   }
 
-  public listScopes = async (): Promise<ISerializedScope[]> =>
+  public listScopes(): Promise<ISerializedScope[]>
   {
-    const response = await this.http.get(`${ApiService.ENDPOINTS.SCOPES}`, {
-      headers: {
-        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
-      },
-    }).toPromise();
-
-    return response as ISerializedScope[];
+    return this.send("GET", ApiService.ENDPOINTS.SCOPES)
   }
 
-  public createUserToken = async (data: IToken): Promise<IResponseData> =>
+  public createUserToken(data: IToken): Promise<IResponseData>
   {
-    const response = await this.http.post(`${ApiService.ENDPOINTS.TOKENS}/users`, JSON.stringify(data), {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).toPromise();
-
-    return response as IResponseData;
+    return this.send("POST", `${ApiService.ENDPOINTS.TOKENS}/users`, data);
   }
 
-  public createAppToken = async (data: IToken): Promise<ISerializedAuthToken> =>
+  public createAppToken(data: IToken): Promise<ISerializedAuthToken>
   {
-    const response = await this.http.post(`${ApiService.ENDPOINTS.TOKENS}/apps`, JSON.stringify(data), {
-      headers: {
-        "Authorization": `Bearer ${SettingsService.get("session.token")}`,
-        "Content-Type": "application/json",
-      },
-    }).toPromise();
-
-    return response as ISerializedAuthToken;
+    return this.send("POST", `${ApiService.ENDPOINTS.TOKENS}/apps`, data);
   }
 
-  public retrieveToken = async (id: string): Promise<ISerializedAuthToken> =>
+  public retrieveToken(id: string): Promise<ISerializedAuthToken>
   {
-    const response = await this.http.get(`${ApiService.ENDPOINTS.TOKENS}/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).toPromise();
-
-    return response as ISerializedAuthToken;
+    return this.send("GET", `${ApiService.ENDPOINTS.TOKENS}/${id}`);
   }
 
-  public deleteToken = async (id: string): Promise<void> =>
+  public async deleteToken(id: string): Promise<void>
   {
-    await this.http.delete(`${ApiService.ENDPOINTS.TOKENS}/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).toPromise();
+    await this.send("DELETE", `${ApiService.ENDPOINTS.TOKENS}/${id}`);
   }
 }
