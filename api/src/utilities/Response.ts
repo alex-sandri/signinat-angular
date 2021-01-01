@@ -73,7 +73,7 @@ export default class Response
     {
         if (data?.errors)
         {
-            if (![ "401", "403" ].includes(data.errors[0].id))
+            if (![ "401", "403", "404" ].includes(data.errors[0].id))
             {
                 this.res.status(400);
             }
