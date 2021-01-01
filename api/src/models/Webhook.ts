@@ -8,12 +8,12 @@ import Utilities from "../utilities/Utilities";
 const db = firestore();
 
 type TWebhookType =
-    "user.created"
-    | "user.deleted";
+| "user.created"
+| "user.deleted";
 
 type TWebhookData =
-    IWebhookUserCreated
-    | IWebhookUserDeleted;
+| IWebhookUserCreated
+| IWebhookUserDeleted;
 
 interface IWebhook
 {
@@ -37,37 +37,50 @@ export class Webhook
     /**
      * @returns `boolean` Request success
     */
-    public static send = async (
+    public static async send(
         app: ISerializedApp,
         type: TWebhookType,
         data: TWebhookData,
-    ): Promise<boolean> =>
+    ): Promise<boolean>
     {
-        if (Utilities.isNullOrUndefined(app.api.webhook.url))
+        const url = app.api.webhook.url;
+
+        if (Utilities.isNullOrUndefined(url))
         {
             return false;
         }
 
-        const snapshot = await db.collection("webhooks").add(<IWebhook>{
-            app: app.id,
-            type,
-            data,
-        });
-
-        const response = await axios.post(
-            app.api.webhook.url,
-            {
-                id: snapshot.id,
+        return new Promise(resolve =>
+        {
+            const webhook: IWebhook = {
+                app: app.id,
                 type,
                 data,
-            },
-            {
-                headers: {
-                    "Authorization": `Bearer ${app.api.webhook.signature}`,
-                },
-            },
-        );
+            };
 
-        return response.status === 200;
+            db
+                .collection("webhooks")
+                .add(webhook)
+                .then(snapshot =>
+                {
+                    axios
+                        .post(
+                            url,
+                            {
+                                id: snapshot.id,
+                                type,
+                                data,
+                            },
+                            {
+                                headers: {
+                                    "Authorization": `Bearer ${app.api.webhook.signature}`,
+                                },
+                            },
+                        )
+                        .then(response => resolve(response.status === 200))
+                        .catch(() => resolve(false));
+                })
+                .catch(() => resolve(false));
+        });
     }
 }

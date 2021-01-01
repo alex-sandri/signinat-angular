@@ -118,7 +118,7 @@ export class Account
 
     public delete = async (): Promise<void> =>
     {
-        const success = await Webhook.send(
+        await Webhook.send(
             await this.app.json(),
             "user.deleted",
             {
@@ -126,10 +126,7 @@ export class Account
             },
         );
 
-        if (success)
-        {
-            await db.collection("accounts").doc(this.id).delete();
-        }
+        await db.collection("accounts").doc(this.id).delete();
     }
 
     static withAppId = async (user: User, app: string): Promise<Account | null> =>
