@@ -22,7 +22,7 @@ export class AuthService
 
     await this.api
       .retrieveToken(this.token)
-      .then(token => this._user = token.user)
+      .then(token => this._user = token.resource.user)
       .catch(this.signOut);
 
     return this.user ?? null;

@@ -39,7 +39,7 @@ export class ManageComponent
   {
     api
       .retrieveApp(route.snapshot.params["id"])
-      .then(app => this.app = app)
+      .then(app => this.app = app.resource)
       .catch(() =>
       {
         router.navigateByUrl("/account");

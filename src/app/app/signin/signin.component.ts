@@ -27,7 +27,7 @@ export class SigninComponent implements OnInit {
 
     let url = new URL(app.url);
 
-    url.searchParams.append("SignInAtSession", token.id);
+    url.searchParams.append("SignInAtSession", token.resource.id);
 
     location.href = url.toString();
   }
@@ -45,14 +45,14 @@ export class SigninComponent implements OnInit {
         {
           if (account)
           {
-            this.redirect(app);
+            this.redirect(app.resource);
 
             return;
           }
 
-          this.app = app;
+          this.app = app.resource;
 
-          this.requestsFullAccess = app.scopes[0].value === "user";
+          this.requestsFullAccess = this.app.scopes[0].value === "user";
 
           this.isSignInButtonDisabled = this.requestsFullAccess;
         })
