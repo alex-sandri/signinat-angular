@@ -3,7 +3,6 @@ import { Validator } from "../utilities/Validator";
 
 import { App, ISerializedApp } from "./App";
 import { ISerializedUser, User } from "./User";
-import { Webhook } from "./Webhook";
 
 const db = firestore();
 
@@ -52,14 +51,6 @@ export class Account
             app: data.app,
             user: user.id,
         });
-
-        await Webhook.send(
-            await app.json(),
-            "user.created",
-            {
-                user: user.json(),
-            },
-        );
 
         return new Account(
             id,
@@ -125,14 +116,6 @@ export class Account
 
     public delete = async (): Promise<void> =>
     {
-        await Webhook.send(
-            await this.app.json(),
-            "user.deleted",
-            {
-                id: this.user.id,
-            },
-        );
-
         await db.collection("accounts").doc(this.id).delete();
     }
 
