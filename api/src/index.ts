@@ -169,7 +169,7 @@ app.post("/api/accounts", async (req, res) =>
 
   if (!app)
   {
-    response.forbidden();
+    response.notFound();
 
     return;
   }
