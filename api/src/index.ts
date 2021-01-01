@@ -174,9 +174,9 @@ app.post("/api/accounts", async (req, res) =>
     return;
   }
 
-  await Account.create(token.user, app);
+  const account = await Account.create(token.user, app);
 
-  res.status(200).send({ status: 200 });
+  response.send({ resource: await account.json() })
 });
 
 app.delete("/api/accounts/:id", async (req, res) =>
@@ -194,7 +194,7 @@ app.delete("/api/accounts/:id", async (req, res) =>
 
   await account?.delete();
 
-  res.status(200).send({ status: 200 });
+  response.send();
 });
 
 app.get("/api/apps", async (req, res) =>
@@ -233,8 +233,8 @@ app.get("/api/apps/:id", async (req, res) =>
 
   const app = await App.retrieve(req.params.id);
 
-  if (!app) res.status(404).send({ status: 404 });
-  else res.send(await app.json());
+  if (!app) response.notFound();
+  else response.send({ resource: await app.json() });
 });
 
 app.post("/api/apps", async (req, res) =>
@@ -370,7 +370,7 @@ app.get("/api/tokens/:id", async (req, res) =>
     return;
   }
 
-  res.send(await token.json());
+  response.send({ resource: await token.json() });
 });
 
 app.post("/api/tokens/users", async (req, res) =>

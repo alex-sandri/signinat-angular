@@ -110,9 +110,9 @@ export class ApiService
     await this.send("DELETE", `${ApiService.ENDPOINTS.USERS}/${SettingsService.get("session.userId")}`);
   }
 
-  public async createAccount(id: string): Promise<void>
+  public createAccount(id: string): Promise<IResponseData>
   {
-    await this.send("POST", ApiService.ENDPOINTS.ACCOUNTS, { id });
+    return this.send("POST", ApiService.ENDPOINTS.ACCOUNTS, { id });
   }
 
   public retrieveAccount(id: string): Promise<IResponseData>
@@ -135,7 +135,7 @@ export class ApiService
     return this.send("POST", ApiService.ENDPOINTS.APPS, data);
   }
 
-  public retrieveApp(id: string): Promise<ISerializedApp>
+  public retrieveApp(id: string): Promise<IResponseData>
   {
     return this.send("GET", `${ApiService.ENDPOINTS.APPS}/${id}`);
   }
@@ -165,12 +165,12 @@ export class ApiService
     return this.send("POST", `${ApiService.ENDPOINTS.TOKENS}/users`, data);
   }
 
-  public createAppToken(data: IToken): Promise<ISerializedAuthToken>
+  public createAppToken(data: IToken): Promise<IResponseData>
   {
     return this.send("POST", `${ApiService.ENDPOINTS.TOKENS}/apps`, data);
   }
 
-  public retrieveToken(id: string): Promise<ISerializedAuthToken>
+  public retrieveToken(id: string): Promise<IResponseData>
   {
     return this.send("GET", `${ApiService.ENDPOINTS.TOKENS}/${id}`);
   }
