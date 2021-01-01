@@ -3,11 +3,11 @@ import { AuthToken, TAuthTokenType } from "../models/AuthToken";
 
 export interface IResponseData
 {
-    resource?: any,
+    resource?: any;
     errors?: {
-        id: string,
-        message: string,
-    }[],
+        id: string;
+        message: string;
+    }[];
 }
 
 export default class Response
@@ -45,38 +45,42 @@ export default class Response
     {
         this.res.status(200);
 
-        this.send();
+        this.res.send({ status: { code: 200, message: "OK" } });
     }
 
     public unauthorized(): void
     {
         this.res.status(401);
 
-        this.send({ errors: [ { id: "401", message: "Unauthorized" } ] });
+        this.res.send({ status: { code: 401, message: "Unauthorized" } });
     }
 
     public forbidden(): void
     {
         this.res.status(403);
 
-        this.send({ errors: [ { id: "403", message: "Forbidden" } ] });
+        this.res.send({ status: { code: 403, message: "Forbidden" } });
     }
 
     public notFound(): void
     {
         this.res.status(404);
 
-        this.send({ errors: [ { id: "404", message: "Not Found" } ] });
+        this.res.send({ status: { code: 404, message: "Not Found" } });
     }
 
     public send(data?: IResponseData): void
     {
-        if (data?.errors)
+        if (!data)
         {
-            if (![ "401", "403", "404" ].includes(data.errors[0].id))
-            {
-                this.res.status(400);
-            }
+            this.ok();
+
+            return;
+        }
+
+        if (data.errors)
+        {
+            this.res.status(400);
         }
 
         this.res.send(data);
