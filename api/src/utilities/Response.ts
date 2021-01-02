@@ -1,8 +1,22 @@
 import { Response as ExpressResponse } from "express";
 import { AuthToken, TAuthTokenType } from "../models/AuthToken";
 
+type IResponseStatusOk = { code: 200, message: "OK" };
+type IResponseStatusBadRequest = { code: 400, message: "Bad Request" };
+type IResponseStatusUnauthorized = { code: 401, message: "Unauthorized" };
+type IResponseStatusForbidden = { code: 403, message: "Forbidden" };
+type IResponseStatusNotFound = { code: 404, message: "Not Found" };
+
+type IResponseStatus =
+| IResponseStatusOk
+| IResponseStatusBadRequest
+| IResponseStatusUnauthorized
+| IResponseStatusForbidden
+| IResponseStatusNotFound;
+
 export interface IResponseData
 {
+    status?: IResponseStatus;
     resource?: any;
     errors?: {
         id: string;
@@ -43,34 +57,22 @@ export default class Response
 
     public ok(): void
     {
-        this
-            .res
-            .status(200)
-            .send({ status: { code: 200, message: "OK" } });
+        this.send({ status: { code: 200, message: "OK" } });
     }
 
     public unauthorized(): void
     {
-        this
-            .res
-            .status(401)
-            .send({ status: { code: 401, message: "Unauthorized" } });
+        this.send({ status: { code: 401, message: "Unauthorized" } });
     }
 
     public forbidden(): void
     {
-        this
-            .res
-            .status(403)
-            .send({ status: { code: 403, message: "Forbidden" } });
+        this.send({ status: { code: 403, message: "Forbidden" } });
     }
 
     public notFound(): void
     {
-        this
-            .res
-            .status(404)
-            .send({ status: { code: 404, message: "Not Found" } });
+        this.send({ status: { code: 404, message: "Not Found" } });
     }
 
     public send(data?: IResponseData): void
@@ -80,6 +82,11 @@ export default class Response
             this.ok();
 
             return;
+        }
+
+        if (data.status)
+        {
+            this.res.status(data.status.code);
         }
 
         if (data.errors)
