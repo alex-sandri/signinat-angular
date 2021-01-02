@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { IAppToken, IUserToken, Validator } from "../utilities/Validator";
 
 import { App, ISerializedApp } from "./App";
-import { Scope } from "./Scope";
+import { ISerializedScope, Scope } from "./Scope";
 import { ISerializedUser, User } from "./User";
 
 const db = firestore();
@@ -15,6 +15,7 @@ interface IAuthToken
     user: string,
 
     app?: string,
+    scopes?: string[],
 }
 
 export interface ISerializedAuthToken
@@ -23,6 +24,7 @@ export interface ISerializedAuthToken
     user: ISerializedUser,
 
     app?: ISerializedApp,
+    scopes?: ISerializedScope[],
 }
 
 export class AuthToken
@@ -33,6 +35,7 @@ export class AuthToken
         public readonly user: User,
 
         public readonly app?: App | null,
+        public readonly scopes?: Scope[],
     ) {}
 
     public async json(): Promise<ISerializedAuthToken>
@@ -42,6 +45,7 @@ export class AuthToken
             user: this.user.json(),
     
             app: await this.app?.json(),
+            scopes: this.scopes?.map(scope => scope.json()),
         };
     }
 
@@ -61,6 +65,7 @@ export class AuthToken
         await db.collection("tokens").doc(uuid).set(<IAuthToken>{
             app: app.id,
             user: user.id,
+            scopes: app.data.scopes,
         });
 
         return new AuthToken(
@@ -68,6 +73,7 @@ export class AuthToken
             "app",
             user,
             app,
+            Scope.from(app.data.scopes),
         );
     }
 
@@ -136,6 +142,7 @@ export class AuthToken
             user.filter(scopes),
 
             app,
+            scopes,
         );
     }
 
