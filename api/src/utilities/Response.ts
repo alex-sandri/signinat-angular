@@ -95,7 +95,7 @@ export default class Response
 
             data.status = { code: 400, message: "Bad Request" };
         }
-        else
+        else if (data.resource)
         {
             this.res.status(200);
 
