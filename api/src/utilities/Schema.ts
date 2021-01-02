@@ -42,11 +42,6 @@ type SchemaFieldDefinition =
      * Restricts the value to only those contained here
      */
     enum?: string[];
-    /**
-     * Available formats:
-     * - `date`
-     * - `url`
-     */
     format?: "date" | "email" | "url";
 }
 
