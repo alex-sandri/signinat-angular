@@ -22,8 +22,17 @@ export class AuthService
 
     await this.api
       .retrieveToken(this.token)
-      .then(token => this._user = token.resource.user)
-      .catch(this.signOut);
+      .then(response =>
+      {
+        if (response.status && response.status.code !== 200)
+        {
+          this.signOut();
+
+          return;
+        }
+
+        this._user = response.resource.user;
+      });
 
     return this.user ?? null;
   }
