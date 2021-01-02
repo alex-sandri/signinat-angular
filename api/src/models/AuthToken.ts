@@ -34,7 +34,7 @@ export class AuthToken
         public readonly type: TAuthTokenType,
         public readonly user: User,
 
-        public readonly app?: App | null,
+        public readonly app?: App,
         public readonly scopes?: Scope[],
     ) {}
 
@@ -113,7 +113,7 @@ export class AuthToken
 
         const user = await User.retrieve(data.user);
 
-        let app: App | null = null;
+        let app: App | undefined;
 
         let scopes: Scope[];
 
@@ -123,11 +123,11 @@ export class AuthToken
         {
             type = "app";
 
-            app = await App.retrieve(data.app);
+            app = await App.retrieve(data.app) ?? undefined;
 
             if (!app) return null;
 
-            scopes = Scope.from(app.data.scopes);
+            scopes = Scope.from(data.scopes!);
         }
         else
         {
