@@ -25,10 +25,16 @@ export class ManageComponent
   {
     api
       .retrieveAccount(route.snapshot.params["id"])
-      .then(account => this.account = account.resource)
-      .catch(() =>
+      .then(response =>
       {
-        router.navigateByUrl("/account");
+        if (response.status && response.status.code !== 200)
+        {
+          router.navigateByUrl("/account");
+
+          return;
+        }
+
+        this.account = response.resource;
       });
   }
 }
