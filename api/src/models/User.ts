@@ -89,6 +89,8 @@ export class User
             filteredUser.birthday = undefined;
         }
 
+        filteredUser.password = ""; // The password is always removed
+
         return new User(this.id, filteredUser);
     }
 
