@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ISerializedAccount } from 'api/src/models/Account';
 import { ISerializedApp } from 'api/src/models/App';
 import { ApiService } from 'src/app/services/api/api.service';
 
@@ -9,21 +8,23 @@ import { ApiService } from 'src/app/services/api/api.service';
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
 })
-export class SigninComponent implements OnInit {
-
+export class SigninComponent
+{
   app!: ISerializedApp;
 
   requestsFullAccess!: boolean;
 
   isSignInButtonDisabled!: boolean;
 
-  async onSignIn(): Promise<void> {
+  async onSignIn(): Promise<void>
+  {
     await this.api.createAccount(this.app.id);
 
     this.redirect(this.app);
   }
 
-  async redirect(app: ISerializedApp): Promise<void> {
+  async redirect(app: ISerializedApp): Promise<void>
+  {
     const token = await this.api.createAppToken({ app: app.id });
 
     let url = new URL(app.url);
@@ -33,38 +34,23 @@ export class SigninComponent implements OnInit {
     location.href = url.toString();
   }
 
-  constructor(private api: ApiService, router: Router, route: ActivatedRoute) {
-    api.listAccounts().then(response =>
-    {
-      const appId: string = route.snapshot.params["id"];
+  constructor(private api: ApiService, router: Router, route: ActivatedRoute)
+  {
+    const appId: string = route.snapshot.params["id"];
 
-      const account = response.data.find((account: ISerializedAccount) => account.app.id === appId);
+    api
+      .retrieveApp(appId)
+      .then(app =>
+      {
+        this.app = app.data;
 
-      api
-        .retrieveApp(appId)
-        .then(app =>
-        {
-          if (account)
-          {
-            this.redirect(app.data);
+        this.requestsFullAccess = this.app.scopes[0].value === "user";
 
-            return;
-          }
-
-          this.app = app.data;
-
-          this.requestsFullAccess = this.app.scopes[0].value === "user";
-
-          this.isSignInButtonDisabled = this.requestsFullAccess;
-        })
-        .catch(() =>
-        {
-          router.navigateByUrl("/account");
-        });
-    });
+        this.isSignInButtonDisabled = this.requestsFullAccess;
+      })
+      .catch(() =>
+      {
+        router.navigateByUrl("/account");
+      });
   }
-
-  ngOnInit(): void {
-  }
-
 }
