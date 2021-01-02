@@ -114,7 +114,7 @@ app.delete("/api/users/:id", async (req, res) =>
 
   await token.user.delete();
 
-  response.ok();
+  response.noContent();
 });
 
 app.get("/api/accounts", async (req, res) =>
@@ -222,7 +222,7 @@ app.delete("/api/accounts/:id", async (req, res) =>
 
   await account.delete();
 
-  response.send();
+  response.noContent();
 });
 
 app.get("/api/apps", async (req, res) =>
@@ -381,7 +381,7 @@ app.delete("/api/apps/:id", async (req, res) =>
 
   await app.delete();
 
-  response.ok();
+  response.noContent();
 });
 
 app.get("/api/scopes", async (req, res) =>
@@ -524,7 +524,7 @@ app.delete("/api/tokens/:id", async (req, res) =>
 
   await tokenToDelete.delete();
 
-  response.ok();
+  response.noContent();
 });
 
 app.listen(3000);
