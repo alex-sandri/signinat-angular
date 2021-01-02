@@ -95,6 +95,12 @@ export default class Response
 
             data.status = { code: 400, message: "Bad Request" };
         }
+        else
+        {
+            this.res.status(200);
+
+            data.status = { code: 200, message: "OK" };
+        }
 
         this.res.send(data);
     }
