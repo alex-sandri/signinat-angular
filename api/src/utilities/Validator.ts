@@ -205,6 +205,16 @@ export class Validator
                 {
                     result.add("app/required");
                 }
+                else if (result.valid)
+                {
+                    if (!Utilities.isNullOrUndefined(app!.url))
+                    {
+                        if (app!.url !== old.url && await App.withUrl(app!.url) !== null)
+                        {
+                            result.add("app/url/already-exists");
+                        }
+                    }
+                }
 
                 break;
             }
