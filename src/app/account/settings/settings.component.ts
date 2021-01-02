@@ -128,13 +128,21 @@ export class SettingsComponent implements OnInit
 
   async updateProfileFormOnSubmit(end: () => void)
   {
+    const birthday = (this.updateProfileFormOptions.groups[1].inputs[0] as IDateFormInput).value;
+
     const response = await this.api.updateUser({
       name: {
         first: (this.updateProfileFormOptions.groups[0].inputs[0] as ITextFormInput).value,
         last: (this.updateProfileFormOptions.groups[0].inputs[1] as ITextFormInput).value,
       },
       email: (this.updateProfileFormOptions.groups[0].inputs[2] as ITextFormInput).value,
-      birthday: (this.updateProfileFormOptions.groups[1].inputs[0] as IDateFormInput).value?.toISOString(),
+      birthday: birthday && (`${
+        birthday.getFullYear()
+      }/${
+        (birthday.getMonth() + 1).toString().padStart(2, "0")
+      }/${
+        (birthday.getDate()).toString().padStart(2, "0")
+      }`),
     });
 
     if (response.errors)
