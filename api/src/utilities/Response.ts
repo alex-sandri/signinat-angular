@@ -92,6 +92,8 @@ export default class Response
         if (data.errors)
         {
             this.res.status(400);
+
+            data.status = { code: 400, message: "Bad Request" };
         }
 
         this.res.send(data);
