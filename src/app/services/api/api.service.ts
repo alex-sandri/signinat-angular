@@ -105,9 +105,9 @@ export class ApiService
     return this.send("PUT", `${ApiService.ENDPOINTS.USERS}/${SettingsService.get("session.userId")}`, data);
   }
 
-  public async deleteUser(): Promise<void>
+  public deleteUser(): Promise<IResponseData>
   {
-    await this.send("DELETE", `${ApiService.ENDPOINTS.USERS}/${SettingsService.get("session.userId")}`);
+    return this.send("DELETE", `${ApiService.ENDPOINTS.USERS}/${SettingsService.get("session.userId")}`);
   }
 
   public createAccount(id: string): Promise<IResponseData>
@@ -125,9 +125,9 @@ export class ApiService
     return this.send("GET", ApiService.ENDPOINTS.ACCOUNTS);
   }
 
-  public async deleteAccount(id: string): Promise<void>
+  public deleteAccount(id: string): Promise<IResponseData>
   {
-    await this.send("DELETE", `${ApiService.ENDPOINTS.ACCOUNTS}/${id}`);
+    return this.send("DELETE", `${ApiService.ENDPOINTS.ACCOUNTS}/${id}`);
   }
 
   public createApp(data: IApp): Promise<IResponseData>
@@ -150,9 +150,9 @@ export class ApiService
     return this.send("PUT", `${ApiService.ENDPOINTS.APPS}/${id}`, data);
   }
 
-  public async deleteApp(id: string): Promise<void>
+  public deleteApp(id: string): Promise<IResponseData>
   {
-    await this.send("DELETE", `${ApiService.ENDPOINTS.APPS}/${id}`);
+    return this.send("DELETE", `${ApiService.ENDPOINTS.APPS}/${id}`);
   }
 
   public listScopes(): Promise<ISerializedScope[]>
@@ -175,8 +175,8 @@ export class ApiService
     return this.send("GET", `${ApiService.ENDPOINTS.TOKENS}/${id}`);
   }
 
-  public async deleteToken(id: string): Promise<void>
+  public deleteToken(id: string): Promise<IResponseData>
   {
-    await this.send("DELETE", `${ApiService.ENDPOINTS.TOKENS}/${id}`);
+    return this.send("DELETE", `${ApiService.ENDPOINTS.TOKENS}/${id}`);
   }
 }
