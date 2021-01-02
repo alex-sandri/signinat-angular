@@ -58,7 +58,7 @@ app.put("/api/users/:id", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token, [ "user" ]);
+  const token = await response.checkAuth([ "user" ], req.token);
 
   if (!token)
   {
@@ -95,7 +95,7 @@ app.delete("/api/users/:id", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token, [ "user" ]);
+  const token = await response.checkAuth([ "user" ], req.token);
 
   if (!token)
   {
@@ -118,7 +118,7 @@ app.get("/api/accounts", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token, [ "user" ]);
+  const token = await response.checkAuth([ "user" ], req.token);
 
   if (!token)
   {
@@ -141,7 +141,7 @@ app.get("/api/accounts/:id", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token, [ "user" ]);
+  const token = await response.checkAuth([ "user" ], req.token);
 
   if (!token)
   {
@@ -158,7 +158,7 @@ app.post("/api/accounts", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token, [ "user" ]);
+  const token = await response.checkAuth([ "user" ], req.token);
 
   if (!token)
   {
@@ -188,7 +188,7 @@ app.delete("/api/accounts/:id", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token, [ "user" ]);
+  const token = await response.checkAuth([ "user" ], req.token);
 
   if (!token)
   {
@@ -213,7 +213,7 @@ app.get("/api/apps", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token, [ "user" ]);
+  const token = await response.checkAuth([ "user" ], req.token);
 
   if (!token)
   {
@@ -236,7 +236,7 @@ app.get("/api/apps/:id", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token, [ "user" ]);
+  const token = await response.checkAuth([ "user" ], req.token);
 
   if (!token)
   {
@@ -253,7 +253,7 @@ app.post("/api/apps", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token, [ "user" ]);
+  const token = await response.checkAuth([ "user" ], req.token);
 
   if (!token)
   {
@@ -283,7 +283,7 @@ app.put("/api/apps/:id", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token, [ "user" ]);
+  const token = await response.checkAuth([ "user" ], req.token);
 
   if (!token)
   {
@@ -329,7 +329,7 @@ app.delete("/api/apps/:id", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token);
+  const token = await response.checkAuth([ "user", "app" ], req.token);
 
   if (!token)
   {
@@ -361,7 +361,7 @@ app.get("/api/scopes", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token);
+  const token = await response.checkAuth([ "user", "app" ], req.token);
 
   if (!token)
   {
@@ -375,7 +375,7 @@ app.get("/api/tokens/:id", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token);
+  const token = await response.checkAuth([ "user", "app" ], req.token);
 
   if (!token)
   {
@@ -428,7 +428,7 @@ app.post("/api/tokens/apps", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token, [ "user" ]);
+  const token = await response.checkAuth([ "user" ], req.token);
 
   if (!token)
   {
@@ -458,7 +458,7 @@ app.delete("/api/tokens/:id", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const token = await response.checkAuth(req.token);
+  const token = await response.checkAuth([ "user", "app" ], req.token);
 
   if (!token)
   {

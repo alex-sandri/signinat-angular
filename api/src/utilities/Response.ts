@@ -34,7 +34,7 @@ export default class Response
         return new Response(res);
     }
 
-    public async checkAuth(token?: string, types?: TAuthTokenType[]): Promise<AuthToken | null>
+    public async checkAuth(types: TAuthTokenType[], token?: string): Promise<AuthToken | null>
     {
         const authToken = await AuthToken.retrieve(token);
 
@@ -45,7 +45,7 @@ export default class Response
             return null;
         }
 
-        if (types && !types.includes(authToken.type))
+        if (!types.includes(authToken.type))
         {
             this.forbidden();
 
