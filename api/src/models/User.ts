@@ -143,7 +143,7 @@ export class User
             password = Utilities.hash(data.password);
         }
 
-        const user: IUser = {
+        const user: IDatabaseUser = {
             name: {
                 first: data.name?.first ?? this.data.name.first,
                 last: data.name?.last ?? this.data.name.last,
