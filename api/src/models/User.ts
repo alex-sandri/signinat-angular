@@ -143,17 +143,13 @@ export class User
             password = Utilities.hash(data.password);
         }
 
-        const user: IDatabaseUser = {
-            name: {
-                first: data.name?.first ?? this.data.name.first,
-                last: data.name?.last ?? this.data.name.last,
-            },
-            email: data.email ?? this.data.email,
-            password: password ?? this.data.password,
-            birthday: data.birthday ?? this.data.birthday,
-        };
+        this.data.name.first = data.name?.first ?? this.data.name.first;
+        this.data.name.last = data.name?.last ?? this.data.name.last;
+        this.data.email = data.email ?? this.data.email;
+        this.data.password = password ?? this.data.password;
+        this.data.birthday = data.birthday ?? this.data.birthday;
 
-        await db.collection("users").doc(this.id).update(user);
+        await db.collection("users").doc(this.id).update(this.data);
     }
 
     public delete = async (): Promise<void> =>
