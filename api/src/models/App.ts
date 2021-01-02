@@ -114,8 +114,9 @@ export class App
             throw result;
         }
 
-        // TODO
-        // Update app
+        this.data.name = data.name ?? this.data.name;
+        this.data.url = data.url ?? this.data.url;
+        this.data.scopes = data.scopes ?? this.data.scopes;
 
         await db.collection("apps").doc(this.id).update(this.data);
     }

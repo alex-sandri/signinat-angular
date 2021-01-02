@@ -187,8 +187,18 @@ export class Validator
             case "update":
             {
                 result = new Schema("app", {
-                    // TODO
-                    // Allow app updates
+                    name: SchemaPresets.OPTIONAL_NON_EMPTY_STRING,
+                    url: SchemaPresets.OPTIONAL_URL,
+                    scopes: {
+                        type: "array",
+                        of: {
+                            type: "string",
+                            required: true,
+                            enum: Scope.all().map(s => s.value),
+                        },
+                        required: false,
+                        size: { min: 1 },
+                    },
                 }).validate(app);
 
                 if (Utilities.isNullOrUndefined(old))
