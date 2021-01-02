@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ISerializedAccount } from 'api/src/models/Account';
 import { ISerializedApp } from 'api/src/models/App';
 import { ApiService } from 'src/app/services/api/api.service';
 
@@ -33,11 +34,11 @@ export class SigninComponent implements OnInit {
   }
 
   constructor(private api: ApiService, router: Router, route: ActivatedRoute) {
-    api.listAccounts().then(accounts =>
+    api.listAccounts().then(response =>
     {
       const appId: string = route.snapshot.params["id"];
 
-      const account = accounts.find(account => account.app.id === appId);
+      const account = response.data.find((account: ISerializedAccount) => account.app.id === appId);
 
       api
         .retrieveApp(appId)

@@ -159,11 +159,11 @@ export class SettingsComponent implements OnInit
 
     if (this.section === "settings") this.section = "general";
 
-    api.listApps().then(apps => this.apps = apps);
+    api.listApps().then(response => this.apps = response.data);
 
     api
       .listScopes()
-      .then(scopes => (this.createNewAppFormOptions.groups[0].inputs[2] as ISelectFormInput).selectOptions = scopes);
+      .then(response => (this.createNewAppFormOptions.groups[0].inputs[2] as ISelectFormInput).selectOptions = response.data);
   }
 
   ngOnInit(): void

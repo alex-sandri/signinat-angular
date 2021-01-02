@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { ISerializedApp } from 'api/src/models/App';
-import { ISerializedAccount } from 'api/src/models/Account';
-import { ISerializedScope } from 'api/src/models/Scope';
-import { ISerializedAuthToken } from 'api/src/models/AuthToken';
 import { SettingsService } from '../settings/settings.service';
 import { IApp, IToken, IUser } from 'api/src/utilities/Validator';
 import { IResponseData } from 'api/src/utilities/Response';
@@ -120,7 +116,7 @@ export class ApiService
     return this.send("GET", `${ApiService.ENDPOINTS.ACCOUNTS}/${id}`);
   }
 
-  public listAccounts(): Promise<ISerializedAccount[]>
+  public listAccounts(): Promise<IResponseData>
   {
     return this.send("GET", ApiService.ENDPOINTS.ACCOUNTS);
   }
@@ -140,7 +136,7 @@ export class ApiService
     return this.send("GET", `${ApiService.ENDPOINTS.APPS}/${id}`);
   }
 
-  public listApps(): Promise<ISerializedApp[]>
+  public listApps(): Promise<IResponseData>
   {
     return this.send("GET", ApiService.ENDPOINTS.APPS);
   }
@@ -155,7 +151,7 @@ export class ApiService
     return this.send("DELETE", `${ApiService.ENDPOINTS.APPS}/${id}`);
   }
 
-  public listScopes(): Promise<ISerializedScope[]>
+  public listScopes(): Promise<IResponseData>
   {
     return this.send("GET", ApiService.ENDPOINTS.SCOPES)
   }

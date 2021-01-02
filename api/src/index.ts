@@ -15,9 +15,9 @@ admin.firestore().settings({
   ignoreUndefinedProperties: true,
 });
 
-import { App, ISerializedApp } from "./models/App";
+import { App } from "./models/App";
 import { User } from "./models/User";
-import { Account, ISerializedAccount } from "./models/Account";
+import { Account } from "./models/Account";
 import { Scope } from "./models/Scope";
 import { SchemaValidationResult } from "./utilities/Schema";
 import Response from "./utilities/Response";
@@ -123,14 +123,14 @@ app.get("/api/accounts", async (req, res) =>
 
   const accounts = await Account.list(token.user);
 
-  const data: ISerializedAccount[] = [];
+  response.body.data = [];
 
   for (const account of accounts)
   {
-    data.push(await account.json());
+    response.body.data.push(await account.json());
   }
 
-  res.send(data);
+  response.send();
 });
 
 app.get("/api/accounts/:id", async (req, res) =>
@@ -224,14 +224,14 @@ app.get("/api/apps", async (req, res) =>
 
   const apps = await App.list(token.user);
 
-  const data: ISerializedApp[] = [];
+  response.body.data = [];
 
   for (const app of apps)
   {
-    data.push(await app.json());
+    response.body.data.push(await app.json());
   }
 
-  res.send(data);
+  response.send();
 });
 
 app.get("/api/apps/:id", async (req, res) =>
@@ -374,7 +374,9 @@ app.get("/api/scopes", async (req, res) =>
     return;
   }
 
-  res.send(Scope.all().map(scope => scope.json()));
+  response.body.data = Scope.all().map(scope => scope.json());
+
+  response.send();
 });
 
 app.get("/api/tokens/:id", async (req, res) =>

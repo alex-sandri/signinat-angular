@@ -12,7 +12,7 @@ export class AccountComponent implements OnInit {
   accounts!: ISerializedAccount[];
 
   constructor(api: ApiService) {
-    api.listAccounts().then(accounts => this.accounts = accounts);
+    api.listAccounts().then(response => this.accounts = response.data);
   }
 
   ngOnInit(): void {
