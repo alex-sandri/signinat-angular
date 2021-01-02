@@ -52,9 +52,6 @@ export class InputComponent implements AfterViewInit
       case "date":
         this.input.nativeElement.valueAsDate = this._options?.value ?? null;
         break;
-      case "select":
-        // TODO
-        break;
       default:
         this.input.nativeElement.value = (this._options as ITextFormInput | undefined)?.value ?? "";
         break;
