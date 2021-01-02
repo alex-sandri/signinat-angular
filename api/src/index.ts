@@ -49,7 +49,14 @@ app.post("/api/users", async (req, res) =>
     }
   }
 
-  response.send();
+  if (response.body.errors)
+  {
+    response.send();
+  }
+  else
+  {
+    response.created();
+  }
 });
 
 app.put("/api/users/:id", async (req, res) =>
@@ -183,7 +190,14 @@ app.post("/api/accounts", async (req, res) =>
     }
   }
 
-  response.send();
+  if (response.body.errors)
+  {
+    response.send();
+  }
+  else
+  {
+    response.created();
+  }
 });
 
 app.delete("/api/accounts/:id", async (req, res) =>
@@ -274,7 +288,7 @@ app.post("/api/apps", async (req, res) =>
   {
     const app = await App.create(token.user, req.body);
 
-    response.body.data = app.json();
+    response.body.data = await app.json();
   }
   catch (e)
   {
@@ -284,7 +298,14 @@ app.post("/api/apps", async (req, res) =>
     }
   }
 
-  response.send();
+  if (response.body.errors)
+  {
+    response.send();
+  }
+  else
+  {
+    response.created();
+  }
 });
 
 app.put("/api/apps/:id", async (req, res) =>
@@ -429,7 +450,14 @@ app.post("/api/tokens/users", async (req, res) =>
     }
   }
 
-  response.send();
+  if (response.body.errors)
+  {
+    response.send();
+  }
+  else
+  {
+    response.created();
+  }
 });
 
 app.post("/api/tokens/apps", async (req, res) =>
@@ -457,7 +485,14 @@ app.post("/api/tokens/apps", async (req, res) =>
     }
   }
 
-  response.send();
+  if (response.body.errors)
+  {
+    response.send();
+  }
+  else
+  {
+    response.created();
+  }
 });
 
 app.delete("/api/tokens/:id", async (req, res) =>

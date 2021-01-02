@@ -70,7 +70,7 @@ export default class Response
 
     public created(): void
     {
-        this.body = { status: { code: 201, message: "Created" } };
+        this.body.status = { code: 201, message: "Created" };
 
         this.send();
     }
@@ -112,12 +112,6 @@ export default class Response
             this.res.status(400);
 
             this.body.status = { code: 400, message: "Bad Request" };
-        }
-        else if (this.body.data)
-        {
-            this.res.status(200);
-
-            this.body.status = { code: 200, message: "OK" };
         }
 
         this.res.send(this.body);
