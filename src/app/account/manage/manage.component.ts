@@ -27,14 +27,14 @@ export class ManageComponent
       .retrieveAccount(route.snapshot.params["id"])
       .then(response =>
       {
-        if (response.status && response.status.code !== 200)
+        if (response.status.code !== 200)
         {
           router.navigateByUrl("/account");
 
           return;
         }
 
-        this.account = response.resource;
+        this.account = response.data;
       });
   }
 }

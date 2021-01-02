@@ -20,7 +20,7 @@ import { User } from "./models/User";
 import { Account, ISerializedAccount } from "./models/Account";
 import { Scope } from "./models/Scope";
 import { SchemaValidationResult } from "./utilities/Schema";
-import Response, { IResponseData } from "./utilities/Response";
+import Response from "./utilities/Response";
 import { AuthToken } from "./models/AuthToken";
 
 const app = express();
@@ -35,23 +35,21 @@ app.post("/api/users", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const data: IResponseData = {};
-
   try
   {
     const user = await User.create(req.body);
 
-    data.resource = user.json();
+    response.body.data = user.json();
   }
   catch (e)
   {
     if (e instanceof SchemaValidationResult)
     {
-      data.errors = e.json().errors;
+      response.body.errors = e.json().errors;
     }
   }
 
-  response.send(data);
+  response.send();
 });
 
 app.put("/api/users/:id", async (req, res) =>
@@ -72,23 +70,21 @@ app.put("/api/users/:id", async (req, res) =>
     return;
   }
 
-  const data: IResponseData = {};
-
   try
   {
     await token.user.update(req.body);
 
-    data.resource = token.user.json();
+    response.body.data = token.user.json();
   }
   catch (e)
   {
     if (e instanceof SchemaValidationResult)
     {
-      data.errors = e.json().errors;
+      response.body.errors = e.json().errors;
     }
   }
 
-  response.send(data);
+  response.send();
 });
 
 app.delete("/api/users/:id", async (req, res) =>
@@ -150,8 +146,16 @@ app.get("/api/accounts/:id", async (req, res) =>
 
   const account = await Account.retrieve(token.user, req.params.id);
 
-  if (!account) response.notFound();
-  else response.send({ resource: await account.json() });
+  if (!account)
+  {
+    response.notFound();
+
+    return;
+  }
+
+  response.body.data = await account.json();
+
+  response.send();
 });
 
 app.post("/api/accounts", async (req, res) =>
@@ -165,23 +169,21 @@ app.post("/api/accounts", async (req, res) =>
     return;
   }
 
-  const data: IResponseData = {};
-
   try
   {
     const account = await Account.create(req.body, token.user);
 
-    data.resource = await account.json();
+    response.body.data = await account.json();
   }
   catch (e)
   {
     if (e instanceof SchemaValidationResult)
     {
-      data.errors = e.json().errors;
+      response.body.errors = e.json().errors;
     }
   }
 
-  response.send(data);
+  response.send();
 });
 
 app.delete("/api/accounts/:id", async (req, res) =>
@@ -245,8 +247,16 @@ app.get("/api/apps/:id", async (req, res) =>
 
   const app = await App.retrieve(req.params.id);
 
-  if (!app) response.notFound();
-  else response.send({ resource: await app.json() });
+  if (!app)
+  {
+    response.notFound();
+
+    return;
+  }
+
+  response.body.data = await app.json();
+
+  response.send();
 });
 
 app.post("/api/apps", async (req, res) =>
@@ -260,23 +270,21 @@ app.post("/api/apps", async (req, res) =>
     return;
   }
 
-  const data: IResponseData = {};
-
   try
   {
     const app = await App.create(token.user, req.body);
 
-    data.resource = app.json();
+    response.body.data = app.json();
   }
   catch (e)
   {
     if (e instanceof SchemaValidationResult)
     {
-      data.errors = e.json().errors;
+      response.body.errors = e.json().errors;
     }
   }
 
-  response.send(data);
+  response.send();
 });
 
 app.put("/api/apps/:id", async (req, res) =>
@@ -306,23 +314,21 @@ app.put("/api/apps/:id", async (req, res) =>
     return;
   }
 
-  const data: IResponseData = {};
-
   try
   {
     await app.update(req.body);
 
-    data.resource = await app.json();
+    response.body.data = await app.json();
   }
   catch (e)
   {
     if (e instanceof SchemaValidationResult)
     {
-      data.errors = e.json().errors;
+      response.body.errors = e.json().errors;
     }
   }
 
-  response.send(data);
+  response.send();
 });
 
 app.delete("/api/apps/:id", async (req, res) =>
@@ -398,30 +404,30 @@ app.get("/api/tokens/:id", async (req, res) =>
     return;
   }
 
-  response.send({ resource: await tokenToRetrieve.json() });
+  response.body.data = await tokenToRetrieve.json();
+
+  response.send();
 });
 
 app.post("/api/tokens/users", async (req, res) =>
 {
   const response = Response.from(res);
 
-  const data: IResponseData = {};
-
   try
   {
     const userToken = await AuthToken.user(req.body);
 
-    data.resource = await userToken.json();
+    response.body.data = await userToken.json();
   }
   catch (e)
   {
     if (e instanceof SchemaValidationResult)
     {
-      data.errors = e.json().errors;
+      response.body.errors = e.json().errors;
     }
   }
 
-  response.send(data);
+  response.send();
 });
 
 app.post("/api/tokens/apps", async (req, res) =>
@@ -435,23 +441,21 @@ app.post("/api/tokens/apps", async (req, res) =>
     return;
   }
 
-  const data: IResponseData = {};
-
   try
   {
     const appToken = await AuthToken.app(req.body, token.user);
 
-    data.resource = await appToken.json();
+    response.body.data = await appToken.json();
   }
   catch (e)
   {
     if (e instanceof SchemaValidationResult)
     {
-      data.errors = e.json().errors;
+      response.body.errors = e.json().errors;
     }
   }
 
-  response.send(data);
+  response.send();
 });
 
 app.delete("/api/tokens/:id", async (req, res) =>

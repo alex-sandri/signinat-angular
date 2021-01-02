@@ -16,8 +16,8 @@ type IResponseStatus =
 
 export interface IResponseData
 {
-    status?: IResponseStatus;
-    resource?: any;
+    status: IResponseStatus;
+    data?: any;
     errors?: {
         id: string;
         message: string;
@@ -26,6 +26,8 @@ export interface IResponseData
 
 export default class Response
 {
+    public body: IResponseData = { status: { code: 200, message: "OK" } };
+
     private constructor(private res: ExpressResponse)
     {}
 
@@ -57,51 +59,49 @@ export default class Response
 
     public ok(): void
     {
-        this.send({ status: { code: 200, message: "OK" } });
+        this.body = { status: { code: 200, message: "OK" } };
+
+        this.send();
     }
 
     public unauthorized(): void
     {
-        this.send({ status: { code: 401, message: "Unauthorized" } });
+        this.body = { status: { code: 401, message: "Unauthorized" } };
+
+        this.send();
     }
 
     public forbidden(): void
     {
-        this.send({ status: { code: 403, message: "Forbidden" } });
+        this.body = { status: { code: 403, message: "Forbidden" } };
+
+        this.send();
     }
 
     public notFound(): void
     {
-        this.send({ status: { code: 404, message: "Not Found" } });
+        this.body = { status: { code: 404, message: "Not Found" } };
+
+        this.send();
     }
 
-    public send(data?: IResponseData): void
+    public send(): void
     {
-        if (!data)
-        {
-            this.ok();
+        this.res.status(this.body.status.code);
 
-            return;
-        }
-
-        if (data.status)
-        {
-            this.res.status(data.status.code);
-        }
-
-        if (data.errors)
+        if (this.body.errors)
         {
             this.res.status(400);
 
-            data.status = { code: 400, message: "Bad Request" };
+            this.body.status = { code: 400, message: "Bad Request" };
         }
-        else if (data.resource)
+        else if (this.body.data)
         {
             this.res.status(200);
 
-            data.status = { code: 200, message: "OK" };
+            this.body.status = { code: 200, message: "OK" };
         }
 
-        this.res.send(data);
+        this.res.send(this.body);
     }
 }

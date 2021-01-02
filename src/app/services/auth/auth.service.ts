@@ -24,14 +24,14 @@ export class AuthService
       .retrieveToken(this.token)
       .then(response =>
       {
-        if (response.status && response.status.code !== 200)
+        if (response.status.code !== 200)
         {
           this.signOut();
 
           return;
         }
 
-        this._user = response.resource.user;
+        this._user = response.data.user;
       });
 
     return this.user ?? null;
