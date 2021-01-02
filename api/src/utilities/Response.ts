@@ -2,6 +2,8 @@ import { Response as ExpressResponse } from "express";
 import { AuthToken, TAuthTokenType } from "../models/AuthToken";
 
 type IResponseStatusOk = { code: 200, message: "OK" };
+type IResponseStatusCreated = { code: 201, message: "Created" };
+type IResponseStatusNoContent = { code: 204, message: "No Content" };
 type IResponseStatusBadRequest = { code: 400, message: "Bad Request" };
 type IResponseStatusUnauthorized = { code: 401, message: "Unauthorized" };
 type IResponseStatusForbidden = { code: 403, message: "Forbidden" };
@@ -9,6 +11,8 @@ type IResponseStatusNotFound = { code: 404, message: "Not Found" };
 
 type IResponseStatus =
 | IResponseStatusOk
+| IResponseStatusCreated
+| IResponseStatusNoContent
 | IResponseStatusBadRequest
 | IResponseStatusUnauthorized
 | IResponseStatusForbidden
@@ -60,6 +64,20 @@ export default class Response
     public ok(): void
     {
         this.body = { status: { code: 200, message: "OK" } };
+
+        this.send();
+    }
+
+    public created(): void
+    {
+        this.body = { status: { code: 201, message: "Created" } };
+
+        this.send();
+    }
+
+    public noContent(): void
+    {
+        this.body = { status: { code: 204, message: "No Content" } };
 
         this.send();
     }
