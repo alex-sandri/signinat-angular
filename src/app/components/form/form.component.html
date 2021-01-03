@@ -1,14 +1,14 @@
 <form
     #form
 
-    *ngIf="options !== undefined"
+    *ngIf="config !== undefined"
 
     (submit)="onSubmit($event)"
 >
-    <h1>{{options.name}}</h1>
+    <h1>{{config.options.name}}</h1>
 
-    <small *ngIf="options.name === 'Sign Up'">or <a routerLink="/signin">Sign In</a></small>
-    <small *ngIf="options.name === 'Sign In'">or <a routerLink="/signup">Sign Up</a></small>
+    <small *ngIf="config.options.name === 'Sign Up'">or <a routerLink="/signin">Sign In</a></small>
+    <small *ngIf="config.options.name === 'Sign In'">or <a routerLink="/signup">Sign Up</a></small>
     
     <app-input
         *ngFor="let input of getGroup('default')!.inputs"
@@ -28,9 +28,9 @@
             </app-input>
         </details>
     </fieldset>
-    <button type="submit">{{options.submitButtonText || "Submit"}}</button>
+    <button type="submit">{{config.options.submitButtonText || "Submit"}}</button>
     <button
-        *ngIf="options.showCancelButton"
+        *ngIf="config.options.showCancelButton"
 
         type="button"
 

@@ -8,11 +8,8 @@ import { InputComponent } from './input/input.component';
 })
 export class FormComponent
 {
-  @Input("options")
-  options!: FormOptions;
-
-  @Output()
-  formSubmit = new EventEmitter<() => void>();
+  @Input("config")
+  config!: FormConfig;
 
   @ViewChild("form")
   form!: ElementRef<HTMLFormElement>;
@@ -31,6 +28,7 @@ export class FormComponent
   public getGroup(name: string): FormGroup | undefined
   {
     return this
+      .config
       .options
       .groups
       .find(group => group.name === name);
@@ -39,6 +37,7 @@ export class FormComponent
   public getNonDefaultGroups(): FormGroup[]
   {
     return this
+      .config
       .options
       .groups
       .filter(group => group.name !== "default");
@@ -47,6 +46,7 @@ export class FormComponent
   public getInput(name: string): FormInput | undefined
   {
     return this
+      .config
       .options
       .groups
       .map(group => group.inputs)
@@ -59,6 +59,7 @@ export class FormComponent
     e.preventDefault();
 
     this
+      .config
       .options
       .groups
       .map(group => group.inputs)
@@ -71,21 +72,26 @@ export class FormComponent
 
     submitButton.disabled = true;
 
-    const callback = () => submitButton.disabled = false;
+    const callback = (options: FormOptions) =>
+    {
+      submitButton.disabled = false;
 
-    this.formSubmit.emit(callback);
+      this.config.options = options;
+    }
+
+    this.config.onSubmit({ /* TODO */ }, this.config.options, callback);
   }
 
   public show(): void
   {
-    this.options.hidden = false;
+    this.config.options.hidden = false;
   }
 
   public showModal(): void
   {
     const dialog = document.createElement("dialog");
 
-    dialog.setAttribute("data-form", this.options.name);
+    dialog.setAttribute("data-form", this.config.options.name);
 
     dialog.appendChild(this.form.nativeElement);
 
@@ -96,9 +102,9 @@ export class FormComponent
 
   public hide(): void
   {
-    this.options.hidden = true;
+    this.config.options.hidden = true;
 
-    document.querySelector(`dialog[data-form="${this.options.name}"]`)?.remove();
+    document.querySelector(`dialog[data-form="${this.config.options.name}"]`)?.remove();
   }
 
   public reset(): void
@@ -114,6 +120,12 @@ export class FormComponent
 
     this.reset();
   }
+}
+
+export interface FormConfig
+{
+  options: FormOptions;
+  onSubmit: (data: { [ key: string ]: string }, options: FormOptions, end: (options: FormOptions) => void) => void;
 }
 
 export interface FormOptions
