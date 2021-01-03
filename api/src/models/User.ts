@@ -163,11 +163,7 @@ export class User
         this.data.email = data.email ?? this.data.email;
         this.data.password = password ?? this.data.password;
         this.data.birthday = data.birthday ?? this.data.birthday;
-
-        if (data.tel)
-        {
-            const pn = new PhoneNumber(data.tel);
-        }
+        this.data.tel = data.tel ?? this.data.tel;
 
         await db.collection("users").doc(this.id).update(this.data);
     }
