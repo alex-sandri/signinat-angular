@@ -79,7 +79,34 @@ export class FormComponent
       this.config.options = options;
     }
 
-    this.config.onSubmit({ /* TODO */ }, this.config.options, callback);
+    const data: { [ key: string ]: any } = {};
+
+    this.inputs.forEach(input =>
+    {
+      switch (input.options.type)
+      {
+        case "date":
+        {
+          // TODO
+
+          break;
+        }
+        case "select":
+        {
+          // TODO
+
+          break;
+        }
+        default:
+        {
+          data[input.options.name] = input.options.value;
+
+          break;
+        }
+      }
+    });
+
+    this.config.onSubmit(data, this.config.options, callback);
   }
 
   public show(): void
@@ -125,7 +152,7 @@ export class FormComponent
 export interface FormConfig
 {
   options: FormOptions;
-  onSubmit: (data: { [ key: string ]: string }, options: FormOptions, end: (options: FormOptions) => void) => void;
+  onSubmit: (data: { [ key: string ]: any }, options: FormOptions, end: (options: FormOptions) => void) => void;
 }
 
 export interface FormOptions
