@@ -30,6 +30,11 @@
                 <br>
                 <small *ngIf="user.birthday; else notAvailable">{{getFormattedBirthday()}}</small>
             </div>
+            <div class="field">
+                <b>Phone Number</b>
+                <br>
+                <small *ngIf="user.tel; else notAvailable">{{user.tel}}</small>
+            </div>
         </fieldset>
         <button (click)="updateProfileForm.showModal()">Edit</button>
     </section>
