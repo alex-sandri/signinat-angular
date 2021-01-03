@@ -3,17 +3,15 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class SettingsService {
+export class SettingsService
+{
+  get = (key: string) => localStorage.getItem(key);
 
-  constructor() { }
+  set = (key: string, value: string) => localStorage.setItem(key, value);
 
-  static get = (key: string) => localStorage.getItem(key);
+  delete = (key: string) => localStorage.removeItem(key);
 
-  static set = (key: string, value: string) => localStorage.setItem(key, value);
+  exists = (key: string): boolean => this.get(key) !== null;
 
-  static delete = (key: string) => localStorage.removeItem(key);
-
-  static exists = (key: string): boolean => SettingsService.get(key) !== null;
-
-  static clear = () => localStorage.clear();
+  clear = () => localStorage.clear();
 }

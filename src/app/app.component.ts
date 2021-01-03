@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth/auth.service';
+import { SettingsService } from './services/settings/settings.service';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,9 @@ export class AppComponent
 
   canLoad = false;
 
-  constructor(auth: AuthService)
+  constructor(auth: AuthService, settings: SettingsService)
   {
-    if (!auth.token)
+    if (!settings.get("session.token"))
     {
       this.canLoad = true;
 

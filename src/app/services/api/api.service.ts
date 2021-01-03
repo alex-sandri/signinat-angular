@@ -10,7 +10,7 @@ import { IResponseData } from 'api/src/utilities/Response';
 })
 export class ApiService
 {
-  constructor(private http: HttpClient)
+  constructor(private http: HttpClient, private settings: SettingsService)
   {}
 
   private static readonly BASE_ENDPOINT = "http://localhost:3000/api";
@@ -34,7 +34,7 @@ export class ApiService
           this.http
             .delete(url, {
               headers: {
-                "Authorization": `Bearer ${SettingsService.get("session.token")}`,
+                "Authorization": `Bearer ${this.settings.get("session.token")}`,
               },
             })
             .toPromise()
@@ -48,7 +48,7 @@ export class ApiService
           this.http
             .get(url, {
               headers: {
-                "Authorization": `Bearer ${SettingsService.get("session.token")}`,
+                "Authorization": `Bearer ${this.settings.get("session.token")}`,
               },
             })
             .toPromise()
@@ -63,7 +63,7 @@ export class ApiService
             .post(url, JSON.stringify(data), {
               headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${SettingsService.get("session.token")}`,
+                "Authorization": `Bearer ${this.settings.get("session.token")}`,
               },
             })
             .toPromise()
@@ -78,7 +78,7 @@ export class ApiService
             .put(url, JSON.stringify(data), {
               headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${SettingsService.get("session.token")}`,
+                "Authorization": `Bearer ${this.settings.get("session.token")}`,
               },
             })
             .toPromise()
@@ -98,12 +98,12 @@ export class ApiService
 
   public updateUser(data: IUser): Promise<IResponseData>
   {
-    return this.send("PUT", `${ApiService.ENDPOINTS.USERS}/${SettingsService.get("session.userId")}`, data);
+    return this.send("PUT", `${ApiService.ENDPOINTS.USERS}/${this.settings.get("session.userId")}`, data);
   }
 
   public deleteUser(): Promise<IResponseData>
   {
-    return this.send("DELETE", `${ApiService.ENDPOINTS.USERS}/${SettingsService.get("session.userId")}`);
+    return this.send("DELETE", `${ApiService.ENDPOINTS.USERS}/${this.settings.get("session.userId")}`);
   }
 
   public createAccount(id: string): Promise<IResponseData>

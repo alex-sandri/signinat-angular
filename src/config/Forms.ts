@@ -5,49 +5,50 @@ import { SettingsService } from "src/app/services/settings/settings.service";
 
 export default class Forms
 {
-    public static readonly signIn: (api: ApiService, router: Router, route: ActivatedRoute) => FormConfig = (api: ApiService, router: Router, route: ActivatedRoute) =>
-    ({
-        options: {
-            name: "Sign In",
-            groups: [
-                {
-                    name: "default",
-                    inputs: [
-                        { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
-                        { label: "Password", name: "password", type: "password", required: true, autocomplete: "current-password" },
+    public static readonly signIn: (api: ApiService, router: Router, route: ActivatedRoute, settings: SettingsService) => FormConfig
+        = (api: ApiService, router: Router, route: ActivatedRoute, settings: SettingsService) =>
+            ({
+                options: {
+                    name: "Sign In",
+                    groups: [
+                        {
+                            name: "default",
+                            inputs: [
+                                { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
+                                { label: "Password", name: "password", type: "password", required: true, autocomplete: "current-password" },
+                            ],
+                        },
                     ],
+                    submitButtonText: "Sign In",
                 },
-            ],
-            submitButtonText: "Sign In",
-        },
-        onSubmit: async (data, options, end) =>
-        {
-            const response = await api.createUserToken({
-                email: data["email"],
-                password: data["password"],
+                onSubmit: async (data, options, end) =>
+                {
+                    const response = await api.createUserToken({
+                        email: data["email"],
+                        password: data["password"],
+                    });
+
+                    if (response.errors)
+                    {
+                        options.groups[0].inputs[0].error = response.errors.find(e => e.id.startsWith("token/email/"))?.message;
+                        options.groups[0].inputs[1].error = response.errors.find(e => e.id.startsWith("token/password/"))?.message;
+                    }
+                    else
+                    {
+                        settings.set("session.token", response.data.id);
+                        settings.set("session.userId", response.data.user.id);
+
+                        if (route.snapshot.queryParams["ref"])
+                        {
+                            router.navigateByUrl(`/${route.snapshot.queryParams["ref"]}`)
+                        }
+                        else
+                        {
+                            router.navigateByUrl("/account");
+                        }
+                    }
+
+                    end(options);
+                },
             });
-
-            if (response.errors)
-            {
-                options.groups[0].inputs[0].error = response.errors.find(e => e.id.startsWith("token/email/"))?.message;
-                options.groups[0].inputs[1].error = response.errors.find(e => e.id.startsWith("token/password/"))?.message;
-            }
-            else
-            {
-                SettingsService.set("session.token", response.data.id);
-                SettingsService.set("session.userId", response.data.user.id);
-
-                if (route.snapshot.queryParams["ref"])
-                {
-                    router.navigateByUrl(`/${route.snapshot.queryParams["ref"]}`)
-                }
-                else
-                {
-                    router.navigateByUrl("/account");
-                }
-            }
-
-            end(options);
-        },
-    })
 }

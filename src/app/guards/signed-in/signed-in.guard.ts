@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/app/services/auth/auth.service';
 import { RouterService } from 'src/app/services/router/router.service';
+import { SettingsService } from 'src/app/services/settings/settings.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SignedInGuard implements CanActivate {
-  constructor(private auth: AuthService, private router: RouterService) {}
+  constructor(private settings: SettingsService, private router: RouterService) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
   {
-    if (!this.auth.token)
+    if (!this.settings.get("session.token"))
     {
       this.router.navigateToSignIn(route);
     }

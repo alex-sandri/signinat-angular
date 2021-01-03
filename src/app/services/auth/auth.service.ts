@@ -12,16 +12,16 @@ export class AuthService
 {
   private _user?: ISerializedUser;
 
-  get token () { return SettingsService.get("session.token"); }
-
   get user() { return this._user; }
 
   async signIn(): Promise<ISerializedUser | null>
   {
-    if (!this.token) return null;
+    const token = this.settings.get("session.token");
+
+    if (!token) return null;
 
     await this.api
-      .retrieveToken(this.token)
+      .retrieveToken(token)
       .then(response =>
       {
         if (response.status.code !== 200)
@@ -39,17 +39,19 @@ export class AuthService
 
   async signOut()
   {
-    if (!this.token) return;
+    const token = this.settings.get("session.token");
 
-    await this.api.deleteToken(this.token).finally(() =>
+    if (!token) return;
+
+    await this.api.deleteToken(token).finally(() =>
     {
-      SettingsService.delete("session.token");
-      SettingsService.delete("session.userId");
+      this.settings.delete("session.token");
+      this.settings.delete("session.userId");
 
       this.router.navigateToSignIn(this.route.snapshot);
     });
   }
 
-  constructor(private api: ApiService, private router: RouterService, private route: ActivatedRoute)
+  constructor(private api: ApiService, private router: RouterService, private route: ActivatedRoute, private settings: SettingsService)
   {}
 }
