@@ -17,6 +17,7 @@ export interface IUser
     email?: string,
     password?: string,
     birthday?: string,
+    tel?: string,
 }
 
 export interface IApp

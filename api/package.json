@@ -6,6 +6,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "awesome-phonenumber": "^2.43.0",
     "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",

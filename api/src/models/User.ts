@@ -1,4 +1,5 @@
 import { firestore } from "firebase-admin";
+import PhoneNumber from "awesome-phonenumber";
 
 import { Scope } from "./Scope";
 import { Account } from "./Account";
@@ -17,6 +18,7 @@ interface IDatabaseUser
     email: string,
     password: string,
     birthday?: string,
+    tel?: string,
 }
 
 export interface ISerializedUser
@@ -33,6 +35,10 @@ export interface ISerializedUser
         month: number,
         year: number,
     },
+    tel?: {
+        prefix: string,
+        number: string,
+    },
 }
 
 export class User
@@ -42,14 +48,7 @@ export class User
 
     public json = (): ISerializedUser =>
     {
-        let birthdayAsDate: Date | undefined;
-
-        if (!Utilities.isNullOrUndefined(this.data.birthday))
-        {
-            birthdayAsDate = new Date(this.data.birthday);
-        }
-
-        return {
+        const json: ISerializedUser = {
             id: this.id,
             name: {
                 first: this.data.name.first,
@@ -57,12 +56,30 @@ export class User
             },
             email: this.data.email,
             password: this.data.password,
-            birthday: birthdayAsDate && {
-                day: birthdayAsDate.getDate(),
-                month: birthdayAsDate.getMonth() + 1,
-                year: birthdayAsDate.getFullYear(),
-            },
         };
+
+        if (!Utilities.isNullOrUndefined(this.data.birthday))
+        {
+            const birthday = new Date(this.data.birthday);;
+
+            json.birthday = {
+                day: birthday.getDate(),
+                month: birthday.getMonth() + 1,
+                year: birthday.getFullYear(),
+            };
+        }
+
+        if (!Utilities.isNullOrUndefined(this.data.tel))
+        {
+            const phoneNumber = new PhoneNumber(this.data.tel);
+
+            json.tel = {
+                prefix: `+${phoneNumber.getCountryCode()}`,
+                number: phoneNumber.getNumber(),
+            };
+        }
+
+        return json;
     };
 
     public filter = (scopes: Scope[]): User =>
@@ -150,6 +167,13 @@ export class User
         this.data.email = data.email ?? this.data.email;
         this.data.password = password ?? this.data.password;
         this.data.birthday = data.birthday ?? this.data.birthday;
+
+        if (data.tel)
+        {
+            const pn = new PhoneNumber(data.tel);
+
+            console.log(pn);
+        }
 
         await db.collection("users").doc(this.id).update(this.data);
     }
