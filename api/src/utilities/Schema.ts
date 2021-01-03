@@ -3,7 +3,7 @@ import { ApiError, ISerializedApiError } from "../models/ApiError";
 import Constants from "../config/Constants";
 import Utilities from "./Utilities";
 
-interface SchemaDefinition
+export interface SchemaDefinition
 {
     [key: string]: SchemaFieldDefinition;
 }

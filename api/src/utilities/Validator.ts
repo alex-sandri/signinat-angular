@@ -1,11 +1,10 @@
 import { Account } from "../models/Account";
 import { App, ISerializedApp } from "../models/App";
 import { TAuthTokenType } from "../models/AuthToken";
-import { Scope } from "../models/Scope";
 import { ISerializedUser, User } from "../models/User";
-import Constants from "../config/Constants";
-import Schema, { SchemaPresets, SchemaValidationResult } from "./Schema";
+import Schema, { SchemaValidationResult } from "./Schema";
 import Utilities from "./Utilities";
+import { ACCOUNT_SCHEMA, APP_CREATE_SCHEMA, APP_TOKEN_SCHEMA, APP_UPDATE_SCHEMA, USER_CREATE_SCHEMA, USER_TOKEN_SCHEMA, USER_UPDATE_SCHEMA } from "../config/Schemas";
 
 type TValidatorType = "create" | "update";
 
@@ -75,23 +74,7 @@ export class Validator
         {
             case "create":
             {
-                result = new Schema("user", {
-                    name: {
-                        type: "object",
-                        required: true,
-                        child: {
-                            first: SchemaPresets.NON_EMPTY_STRING,
-                            last: SchemaPresets.NON_EMPTY_STRING,
-                        },
-                    },
-                    email: SchemaPresets.EMAIL,
-                    password: {
-                        type: "string",
-                        required: true,
-                        length: { min: Constants.PASSWORD_MIN_LENGTH },
-                    },
-                    birthday: SchemaPresets.OPTIONAL_DATE,
-                }).validate(user);
+                result = new Schema("user", USER_CREATE_SCHEMA).validate(user);
 
                 if (result.valid)
                 {
@@ -105,23 +88,7 @@ export class Validator
             }
             case "update":
             {
-                result = new Schema("user", {
-                    name: {
-                        type: "object",
-                        required: false,
-                        child: {
-                            first: SchemaPresets.OPTIONAL_NON_EMPTY_STRING,
-                            last: SchemaPresets.OPTIONAL_NON_EMPTY_STRING,
-                        },
-                    },
-                    email: SchemaPresets.OPTIONAL_EMAIL,
-                    password: {
-                        type: "string",
-                        required: false,
-                        length: { min: Constants.PASSWORD_MIN_LENGTH },
-                    },
-                    birthday: SchemaPresets.OPTIONAL_DATE,
-                }).validate(user);
+                result = new Schema("user", USER_UPDATE_SCHEMA).validate(user);
 
                 if (Utilities.isNullOrUndefined(old))
                 {
@@ -161,20 +128,7 @@ export class Validator
         {
             case "create":
             {
-                result = new Schema("app", {
-                    name: SchemaPresets.NON_EMPTY_STRING,
-                    url: SchemaPresets.URL,
-                    scopes: {
-                        type: "array",
-                        of: {
-                            type: "string",
-                            required: true,
-                            enum: Scope.all().map(s => s.value),
-                        },
-                        required: true,
-                        size: { min: 1 },
-                    },
-                }).validate(app);
+                result = new Schema("app", APP_CREATE_SCHEMA).validate(app);
 
                 if (result.valid)
                 {
@@ -186,20 +140,7 @@ export class Validator
             }
             case "update":
             {
-                result = new Schema("app", {
-                    name: SchemaPresets.OPTIONAL_NON_EMPTY_STRING,
-                    url: SchemaPresets.OPTIONAL_URL,
-                    scopes: {
-                        type: "array",
-                        of: {
-                            type: "string",
-                            required: true,
-                            enum: Scope.all().map(s => s.value),
-                        },
-                        required: false,
-                        size: { min: 1 },
-                    },
-                }).validate(app);
+                result = new Schema("app", APP_UPDATE_SCHEMA).validate(app);
 
                 if (Utilities.isNullOrUndefined(old))
                 {
@@ -248,9 +189,7 @@ export class Validator
         {
             case "app":
             {
-                result = new Schema("token", {
-                    app: SchemaPresets.NON_EMPTY_STRING,
-                }).validate(token);
+                result = new Schema("token", APP_TOKEN_SCHEMA).validate(token);
 
                 if (result.valid)
                 {
@@ -266,10 +205,7 @@ export class Validator
             }
             case "user":
             {
-                result = new Schema("token", {
-                    email: SchemaPresets.EMAIL,
-                    password: SchemaPresets.NON_EMPTY_STRING,
-                }).validate(token);
+                result = new Schema("token", USER_TOKEN_SCHEMA).validate(token);
 
                 if (result.valid)
                 {
@@ -304,9 +240,7 @@ export class Validator
     {
         let result: SchemaValidationResult;
 
-        result = new Schema("account", {
-            app: SchemaPresets.NON_EMPTY_STRING,
-        }).validate(account);
+        result = new Schema("account", ACCOUNT_SCHEMA).validate(account);
 
         if (result.valid)
         {
