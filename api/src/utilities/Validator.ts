@@ -198,7 +198,7 @@ export class Validator
 
                     if (!app)
                     {
-                        result.add("app/inexistent");
+                        result.add("token/app/inexistent");
                     }
                 }
 
@@ -214,11 +214,11 @@ export class Validator
 
                     if (!user)
                     {
-                        result.add("user/inexistent");
+                        result.add("token/email/inexistent");
                     }
                     else if (!Utilities.verifyHash((token as IUserToken).password!, user.data.password))
                     {
-                        result.add("user/password/wrong");
+                        result.add("token/password/wrong");
                     }
                 }
 
