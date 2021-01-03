@@ -29,7 +29,6 @@ export interface ISerializedUser
         last: string,
     },
     email: string,
-    password: string,
     birthday?: {
         day: number,
         month: number,
@@ -55,7 +54,6 @@ export class User
                 last: this.data.name.last,
             },
             email: this.data.email,
-            password: "",
         };
 
         if (!Utilities.isNullOrUndefined(this.data.birthday))
