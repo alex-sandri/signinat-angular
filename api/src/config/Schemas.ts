@@ -18,6 +18,7 @@ export const USER_CREATE_SCHEMA: SchemaDefinition = {
         length: { min: Constants.PASSWORD_MIN_LENGTH },
     },
     birthday: SchemaPresets.OPTIONAL_DATE,
+    tel: SchemaPresets.OPTIONAL_TEL,
 };
 
 export const USER_UPDATE_SCHEMA: SchemaDefinition = {
@@ -36,6 +37,7 @@ export const USER_UPDATE_SCHEMA: SchemaDefinition = {
         length: { min: Constants.PASSWORD_MIN_LENGTH },
     },
     birthday: SchemaPresets.OPTIONAL_DATE,
+    tel: SchemaPresets.OPTIONAL_TEL,
 };
 
 export const APP_CREATE_SCHEMA: SchemaDefinition = {

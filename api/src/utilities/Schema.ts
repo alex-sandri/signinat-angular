@@ -42,7 +42,7 @@ type SchemaFieldDefinition =
      * Restricts the value to only those contained here
      */
     enum?: string[];
-    format?: "date" | "email" | "url";
+    format?: "date" | "email" | "tel" | "url";
 }
 
 export default class Schema
@@ -190,6 +190,15 @@ export default class Schema
 
                                     break;
                                 }
+                                case "tel":
+                                {
+                                    if (!validator.isMobilePhone(value, "any", { strictMode: true }))
+                                    {
+                                        result.add(`${fieldNamespace}/invalid`);
+                                    }
+
+                                    break;
+                                }
                                 case "url":
                                 {
                                     if (!validator.isURL(value, { protocols: [ "https" ], require_protocol: true, allow_underscores: true }))
@@ -253,4 +262,7 @@ export class SchemaPresets
 
     public static readonly URL: SchemaFieldDefinition = { type: "string", required: true, format: "url" };
     public static readonly OPTIONAL_URL: SchemaFieldDefinition = { ...SchemaPresets.URL, required: false };
+
+    public static readonly TEL: SchemaFieldDefinition = { type: "string", required: true, format: "tel" };
+    public static readonly OPTIONAL_TEL: SchemaFieldDefinition = { ...SchemaPresets.URL, required: false };
 }
