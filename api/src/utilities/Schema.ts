@@ -264,5 +264,5 @@ export class SchemaPresets
     public static readonly OPTIONAL_URL: SchemaFieldDefinition = { ...SchemaPresets.URL, required: false };
 
     public static readonly TEL: SchemaFieldDefinition = { type: "string", required: true, format: "tel" };
-    public static readonly OPTIONAL_TEL: SchemaFieldDefinition = { ...SchemaPresets.URL, required: false };
+    public static readonly OPTIONAL_TEL: SchemaFieldDefinition = { ...SchemaPresets.TEL, required: false };
 }
