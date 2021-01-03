@@ -1,4 +1,4 @@
-import Constants from "../utilities/Constants";
+import Constants from "../config/Constants";
 
 export interface ISerializedApiError
 {

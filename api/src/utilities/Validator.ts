@@ -3,7 +3,7 @@ import { App, ISerializedApp } from "../models/App";
 import { TAuthTokenType } from "../models/AuthToken";
 import { Scope } from "../models/Scope";
 import { ISerializedUser, User } from "../models/User";
-import Constants from "./Constants";
+import Constants from "../config/Constants";
 import Schema, { SchemaPresets, SchemaValidationResult } from "./Schema";
 import Utilities from "./Utilities";
 

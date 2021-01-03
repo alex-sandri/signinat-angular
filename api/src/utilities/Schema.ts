@@ -1,6 +1,6 @@
 import validator from "validator";
 import { ApiError, ISerializedApiError } from "../models/ApiError";
-import Constants from "./Constants";
+import Constants from "../config/Constants";
 import Utilities from "./Utilities";
 
 interface SchemaDefinition
