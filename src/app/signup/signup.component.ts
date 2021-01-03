@@ -37,7 +37,7 @@ export class SignupComponent implements OnInit {
 
   async onSubmit(end: () => void): Promise<void>
   {
-    const birthday = (this.updateProfileFormOptions.groups[1].inputs[0] as IDateFormInput).value;
+    const birthday = (this.options.groups[1].inputs[0] as IDateFormInput).value;
 
     const response = await this.api.createUser({
       name: {
