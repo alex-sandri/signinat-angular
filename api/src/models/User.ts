@@ -34,10 +34,7 @@ export interface ISerializedUser
         month: number,
         year: number,
     },
-    tel?: {
-        prefix: string,
-        number: string,
-    },
+    tel?: string,
 }
 
 export class User
@@ -69,12 +66,7 @@ export class User
 
         if (!Utilities.isNullOrUndefined(this.data.tel))
         {
-            const phoneNumber = new PhoneNumber(this.data.tel);
-
-            json.tel = {
-                prefix: `+${phoneNumber.getCountryCode()}`,
-                number: phoneNumber.getNumber(),
-            };
+            json.tel = new PhoneNumber(this.data.tel).getNumber("international");
         }
 
         return json;
