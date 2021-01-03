@@ -55,7 +55,7 @@ export class User
                 last: this.data.name.last,
             },
             email: this.data.email,
-            password: this.data.password,
+            password: "",
         };
 
         if (!Utilities.isNullOrUndefined(this.data.birthday))
@@ -105,8 +105,6 @@ export class User
         {
             filteredUser.birthday = undefined;
         }
-
-        filteredUser.password = ""; // The password is always removed
 
         return new User(this.id, filteredUser);
     }
@@ -171,8 +169,6 @@ export class User
         if (data.tel)
         {
             const pn = new PhoneNumber(data.tel);
-
-            console.log(pn);
         }
 
         await db.collection("users").doc(this.id).update(this.data);
