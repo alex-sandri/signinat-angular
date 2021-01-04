@@ -92,13 +92,13 @@ export class FormComponent
       {
         case "date":
         {
-          // TODO
+          data[input.options.name] = input.options.value;
 
           break;
         }
         case "select":
         {
-          // TODO
+          data[input.options.name] = input.options.selectedValues;
 
           break;
         }
