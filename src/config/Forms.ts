@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router } from "@angular/router";
 import { ISerializedUser } from "api/src/models/User";
-import { FormComponent, FormConfig } from "src/app/components/form/form.component";
+import { FormConfig } from "src/app/components/form/form.component";
 import { ApiService } from "src/app/services/api/api.service";
 import { SettingsService } from "src/app/services/settings/settings.service";
 
