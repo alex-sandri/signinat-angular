@@ -1,5 +1,4 @@
 import validator from "validator";
-import { ApiError, ISerializedApiError } from "../models/ApiError";
 import Constants from "../config/Constants";
 import Utilities from "./Utilities";
 
@@ -8,10 +7,16 @@ export interface SchemaDefinition
     [key: string]: SchemaFieldDefinition;
 }
 
+interface ISerializedSchemaFieldError
+{
+    id: string;
+    message: string;
+}
+
 interface ISerializedSchemaValidationResult
 {
     valid: boolean;
-    errors: ISerializedApiError[];
+    errors: ISerializedSchemaFieldError[];
 }
 
 type SchemaFieldDefinition =
@@ -223,19 +228,19 @@ export default class Schema
 
 export class SchemaValidationResult
 {
-    public readonly errors: Set<string> = new Set();
+    public readonly errors: Set<ISerializedSchemaFieldError> = new Set();
 
     public get valid()
     {
         return this.errors.size === 0;
     }
 
-    public add(error: string): void
+    public add(error: ISerializedSchemaFieldError): void
     {
         this.errors.add(error);
     }
 
-    public addAll(errors: string[]): void
+    public addAll(errors: ISerializedSchemaFieldError[]): void
     {
         errors.forEach(error => this.add(error));
     }
@@ -244,7 +249,7 @@ export class SchemaValidationResult
     {
         return {
             valid: this.valid,
-            errors: Array.from(this.errors).map(error => new ApiError(error).json()),
+            errors: Array.from(this.errors),
         };
     }
 }
