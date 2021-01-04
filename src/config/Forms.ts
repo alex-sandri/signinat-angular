@@ -146,6 +146,7 @@ export default class Forms
                 {
                     options.groups[0].inputs[0].error = response.errors.find(e => e.id.startsWith("app/name/"))?.message;
                     options.groups[0].inputs[1].error = response.errors.find(e => e.id.startsWith("app/url/"))?.message;
+                    options.groups[0].inputs[2].error = response.errors.find(e => e.id.startsWith("app/scopes/"))?.message;
                 }
                 else
                 {
