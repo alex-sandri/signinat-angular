@@ -77,6 +77,11 @@ export class FormComponent
       submitButton.disabled = false;
 
       this.config.options = options;
+
+      if (options.hidden)
+      {
+        this.hide();
+      }
     }
 
     const data: { [ key: string ]: any } = {};

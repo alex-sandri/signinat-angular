@@ -1,8 +1,8 @@
-import { Component, ComponentRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ISerializedApp } from 'api/src/models/App';
 import { ISerializedUser } from 'api/src/models/User';
-import { FormComponent, FormOptions, IDateFormInput, ISelectFormInput, ITextFormInput } from 'src/app/components/form/form.component';
+import { FormComponent, ISelectFormInput } from 'src/app/components/form/form.component';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import Forms from 'src/config/Forms';
@@ -17,14 +17,14 @@ export class SettingsComponent
   user?: ISerializedUser = this.auth.user;
 
   @ViewChild("createNewAppForm")
-  createNewAppForm!: FormComponent;
+  createNewAppForm?: FormComponent;
 
   @ViewChild("updateProfileForm")
-  updateProfileForm!: FormComponent;
+  updateProfileForm?: FormComponent;
 
-  createNewAppFormConfig = Forms.createNewApp(this.api, this.createNewAppForm);
+  createNewAppFormConfig = Forms.createNewApp(this.api);
 
-  updateProfileFormConfig = Forms.updateProfile(this.api, this.user as ISerializedUser, this.updateProfileForm, this.getBirthdayAsDate());
+  updateProfileFormConfig = Forms.updateProfile(this.api, this.user as ISerializedUser, this.getBirthdayAsDate());
 
   section: string;
 
@@ -80,6 +80,6 @@ export class SettingsComponent
 
     api
       .listScopes()
-      .then(response => (this.createNewAppFormConfig.options.groups[0].inputs[2] as ISelectFormInput).selectOptions = response.data);
+      .then(response => (this.createNewAppFormConfig!.options.groups[0].inputs[2] as ISelectFormInput).selectOptions = response.data);
   }
 }

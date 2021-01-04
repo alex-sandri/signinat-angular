@@ -113,7 +113,7 @@ export default class Forms
         };
     }
 
-    public static createNewApp(api: ApiService, form: FormComponent): FormConfig
+    public static createNewApp(api: ApiService): FormConfig
     {
         return {
             options: {
@@ -147,7 +147,7 @@ export default class Forms
                 }
                 else
                 {
-                    form.hide();
+                    options.hidden = true;
                 }
 
                 end(options);
@@ -155,7 +155,7 @@ export default class Forms
         };
     }
 
-    public static updateProfile(api: ApiService, user: ISerializedUser, form: FormComponent, birthdayAsDate?: Date): FormConfig
+    public static updateProfile(api: ApiService, user: ISerializedUser, birthdayAsDate?: Date): FormConfig
     {
         return {
             options: {
@@ -209,7 +209,7 @@ export default class Forms
                 }
                 else
                 {
-                    form.hide();
+                    options.hidden = true;
                 }
 
                 end(options);
