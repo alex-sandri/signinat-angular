@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 import { SettingsService } from '../settings/settings.service';
 import { IApp, IToken, IUser } from 'api/src/utilities/Validator';
@@ -10,7 +9,7 @@ import { IResponseData } from 'api/src/utilities/Response';
 })
 export class ApiService
 {
-  constructor(private http: HttpClient, private settings: SettingsService)
+  constructor(private settings: SettingsService)
   {}
 
   private static readonly BASE_ENDPOINT = "http://localhost:3000/api";
@@ -23,72 +22,18 @@ export class ApiService
     TOKENS: `${ApiService.BASE_ENDPOINT}/tokens`,
   };
 
-  private async send(method: "DELETE" | "GET" | "POST" | "PUT", url: string, data?: any): Promise<any>
+  private async send(method: "DELETE" | "GET" | "POST" | "PUT", url: string, body?: any): Promise<any>
   {
-    return new Promise(resolve =>
-    {
-      switch (method)
-      {
-        case "DELETE":
-        {
-          this.http
-            .delete(url, {
-              headers: {
-                "Authorization": `Bearer ${this.settings.get("session.token")}`,
-              },
-            })
-            .toPromise()
-            .then(resolve)
-            .catch(e => resolve(e.error));
-
-          break;
-        }
-        case "GET":
-        {
-          this.http
-            .get(url, {
-              headers: {
-                "Authorization": `Bearer ${this.settings.get("session.token")}`,
-              },
-            })
-            .toPromise()
-            .then(resolve)
-            .catch(e => resolve(e.error));
-
-          break;
-        }
-        case "POST":
-        {
-          this.http
-            .post(url, JSON.stringify(data), {
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${this.settings.get("session.token")}`,
-              },
-            })
-            .toPromise()
-            .then(resolve)
-            .catch(e => resolve(e.error));
-
-          break;
-        }
-        case "PUT":
-        {
-          this.http
-            .put(url, JSON.stringify(data), {
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${this.settings.get("session.token")}`,
-              },
-            })
-            .toPromise()
-            .then(resolve)
-            .catch(e => resolve(e.error));
-
-          break;
-        }
-      }
+    const response = await fetch(url, {
+      method,
+      body: JSON.stringify(body),
+      headers: {
+        "Authorization": `Bearer ${this.settings.get("session.token")}`,
+        "Content-Type": "application/json",
+      },
     });
+
+    return await response.json();
   }
 
   public createUser(data: IUser): Promise<IResponseData>

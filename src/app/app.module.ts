@@ -1,5 +1,4 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -61,7 +60,6 @@ import { InputComponent } from './components/form/input/input.component';
       { path: "app/manage/:id", component: AppManageComponent, canActivate: [ SignedInGuard ] },
       { path: "app/signin/:id", component: AppSignInComponent, canActivate: [ SignedInGuard ] }
     ]),
-    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
