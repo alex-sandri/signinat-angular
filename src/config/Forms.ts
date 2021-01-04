@@ -140,6 +140,8 @@ export default class Forms
                     scopes: data["scopes"],
                 });
 
+                let hide = false;
+
                 if (response.errors)
                 {
                     options.groups[0].inputs[0].error = response.errors.find(e => e.id.startsWith("app/name/"))?.message;
@@ -147,10 +149,10 @@ export default class Forms
                 }
                 else
                 {
-                    options.hidden = true;
+                    hide = true;
                 }
 
-                end(options);
+                end(options, hide);
             },
         };
     }
@@ -199,6 +201,8 @@ export default class Forms
                     }`),
                 });
 
+                let hide = false;
+
                 if (response.errors)
                 {
                     options.groups[0].inputs[0].error = response.errors.find(e => e.id.startsWith("user/name/first/"))?.message;
@@ -209,10 +213,10 @@ export default class Forms
                 }
                 else
                 {
-                    options.hidden = true;
+                    hide = true;
                 }
 
-                end(options);
+                end(options, hide);
             },
         };
     }

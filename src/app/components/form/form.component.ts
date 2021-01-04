@@ -72,13 +72,13 @@ export class FormComponent
 
     submitButton.disabled = true;
 
-    const callback = (options: FormOptions) =>
+    const callback = (options: FormOptions, hide?: boolean) =>
     {
       submitButton.disabled = false;
 
       this.config.options = options;
 
-      if (options.hidden)
+      if (hide)
       {
         this.hide();
       }
@@ -157,7 +157,7 @@ export class FormComponent
 export interface FormConfig
 {
   options: FormOptions;
-  onSubmit: (data: { [ key: string ]: any }, options: FormOptions, end: (options: FormOptions) => void) => void;
+  onSubmit: (data: { [ key: string ]: any }, options: FormOptions, end: (options: FormOptions, hide?: boolean) => void) => void;
 }
 
 export interface FormOptions
