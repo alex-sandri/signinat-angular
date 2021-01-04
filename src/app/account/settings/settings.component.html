@@ -71,20 +71,16 @@
 <app-form
     #createNewAppForm
 
-    [options]="createNewAppFormOptions"
-    [ngClass]="{hidden: createNewAppFormOptions.hidden}"
-
-    (formSubmit)="createNewAppFormOnSubmit($event)"
+    [config]="createNewAppFormConfig"
+    [ngClass]="{hidden: createNewAppFormConfig.options.hidden}"
 >
 </app-form>
 
 <app-form
     #updateProfileForm
 
-    [options]="updateProfileFormOptions"
-    [ngClass]="{hidden: updateProfileFormOptions.hidden}"
-
-    (formSubmit)="updateProfileFormOnSubmit($event)"
+    [config]="updateProfileFormConfig"
+    [ngClass]="{hidden: updateProfileFormConfig.options.hidden}"
 >
 </app-form>
 
