@@ -54,6 +54,65 @@ export default class Forms
         };
     }
 
+    public static signUp(api: ApiService): FormConfig
+    {
+        return {
+            options: {
+                name: "Sign Up",
+                groups: [
+                    {
+                        name: "default",
+                        inputs: [
+                            { label: "First Name", name: "first-name", type: "text", required: true, autocomplete: "given-name" },
+                            { label: "Last Name", name: "last-name", type: "text", required: true, autocomplete: "family-name" },
+                            { label: "Email", name: "email", type: "email", required: true, autocomplete: "email" },
+                            { label: "Password", name: "password", type: "password", required: true, autocomplete: "new-password" },
+                        ],
+                    },
+                    {
+                        name: "Additional information",
+                        inputs: [
+                            { label: "Birthday", name: "birthday", type: "date", required: false, autocomplete: "bday" },
+                        ],
+                    },
+                ],
+                submitButtonText: "Sign Up",
+            },
+            onSubmit: async (data, options, end) =>
+            {
+                const birthday: Date = data["birthday"];
+
+                const response = await api.createUser({
+                    name: {
+                        first: data["first-name"],
+                        last: data["last-name"],
+                    },
+                    email: data["email"],
+                    password: data["password"],
+                    birthday: birthday && (`${
+                        birthday.getFullYear()
+                    }/${
+                        (birthday.getMonth() + 1).toString().padStart(2, "0")
+                    }/${
+                        (birthday.getDate()).toString().padStart(2, "0")
+                    }`),
+                });
+
+                if (response.errors)
+                {
+                    options.groups[0].inputs[0].error = response.errors.find(e => e.id.startsWith("user/name/first/"))?.message;
+                    options.groups[0].inputs[1].error = response.errors.find(e => e.id.startsWith("user/name/last/"))?.message;
+                    options.groups[0].inputs[2].error = response.errors.find(e => e.id.startsWith("user/email/"))?.message;
+                    options.groups[0].inputs[3].error = response.errors.find(e => e.id.startsWith("user/password/"))?.message;
+
+                    options.groups[1].inputs[0].error = response.errors.find(e => e.id.startsWith("user/birthday/"))?.message;
+                }
+
+                end(options);
+            },
+        };
+    }
+
     public static createNewApp(api: ApiService, form: FormComponent): FormConfig
     {
         return {
