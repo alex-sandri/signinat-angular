@@ -14,7 +14,9 @@ export default class AuthMiddleware
 
     public static init(types: TAuthTokenType[], callback: TCallbackType): (req: ExpressRequest, res: ExpressResponse) => Promise<void>
     {
-        return new AuthMiddleware(types, callback).use;
+        const middleware = new AuthMiddleware(types, callback);
+
+        return (req: ExpressRequest, res: ExpressResponse) => middleware.use(req, res);
     }
 
     public async use(req: ExpressRequest, res: ExpressResponse): Promise<void>
