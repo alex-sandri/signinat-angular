@@ -35,6 +35,20 @@ app.use(bearerToken());
 
 app.use(express.json());
 
+app.get("/api/users/:id", AuthMiddleware.init([ "user", "app" ], async (request, response, token) =>
+{
+  if (token.user.id !== request.params.id)
+  {
+    response.forbidden();
+
+    return;
+  }
+
+  response.body.data = token.user.json();
+
+  response.send();
+}));
+
 app.post("/api/users", async (req, res) =>
 {
   const response = Response.from(res);
