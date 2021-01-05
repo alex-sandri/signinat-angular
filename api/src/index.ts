@@ -24,7 +24,8 @@ import { Account } from "./models/Account";
 import { Scope } from "./models/Scope";
 import { SchemaValidationResult } from "./utilities/Schema";
 import Response from "./utilities/Response";
-import { AuthToken } from "./models/AuthToken";
+import AuthToken from "./models/AuthToken";
+import AuthMiddleware from "./utilities/AuthMiddleware";
 
 const app = express();
 
@@ -62,18 +63,9 @@ app.post("/api/users", async (req, res) =>
   }
 });
 
-app.put("/api/users/:id", async (req, res) =>
+app.put("/api/users/:id", AuthMiddleware.init([ "user" ], async (request, response, token) =>
 {
-  const response = Response.from(res);
-
-  const token = await response.checkAuth([ "user" ], req.token);
-
-  if (!token)
-  {
-    return;
-  }
-
-  if (token.user.id !== req.params.id)
+  if (token.user.id !== request.params.id)
   {
     response.forbidden();
 
@@ -82,7 +74,7 @@ app.put("/api/users/:id", async (req, res) =>
 
   try
   {
-    await token.user.update(req.body);
+    await token.user.update(request.body);
 
     response.body.data = token.user.json();
   }
@@ -95,20 +87,11 @@ app.put("/api/users/:id", async (req, res) =>
   }
 
   response.send();
-});
+}));
 
-app.delete("/api/users/:id", async (req, res) =>
+app.delete("/api/users/:id", AuthMiddleware.init([ "user" ], async (request, response, token) =>
 {
-  const response = Response.from(res);
-
-  const token = await response.checkAuth([ "user" ], req.token);
-
-  if (!token)
-  {
-    return;
-  }
-
-  if (token.user.id !== req.params.id)
+  if (token.user.id !== request.params.id)
   {
     response.forbidden();
 
@@ -118,19 +101,10 @@ app.delete("/api/users/:id", async (req, res) =>
   await token.user.delete();
 
   response.noContent();
-});
+}));
 
-app.get("/api/accounts", async (req, res) =>
+app.get("/api/accounts", AuthMiddleware.init([ "user" ], async (request, response, token) =>
 {
-  const response = Response.from(res);
-
-  const token = await response.checkAuth([ "user" ], req.token);
-
-  if (!token)
-  {
-    return;
-  }
-
   const accounts = await Account.list(token.user);
 
   response.body.data = [];
@@ -141,20 +115,11 @@ app.get("/api/accounts", async (req, res) =>
   }
 
   response.send();
-});
+}));
 
-app.get("/api/accounts/:id", async (req, res) =>
+app.get("/api/accounts/:id", AuthMiddleware.init([ "user" ], async (request, response, token) =>
 {
-  const response = Response.from(res);
-
-  const token = await response.checkAuth([ "user" ], req.token);
-
-  if (!token)
-  {
-    return;
-  }
-
-  const account = await Account.retrieve(token.user, req.params.id);
+  const account = await Account.retrieve(token.user, request.params.id);
 
   if (!account)
   {
@@ -166,22 +131,13 @@ app.get("/api/accounts/:id", async (req, res) =>
   response.body.data = await account.json();
 
   response.send();
-});
+}));
 
-app.post("/api/accounts", async (req, res) =>
+app.post("/api/accounts", AuthMiddleware.init([ "user" ], async (request, response, token) =>
 {
-  const response = Response.from(res);
-
-  const token = await response.checkAuth([ "user" ], req.token);
-
-  if (!token)
-  {
-    return;
-  }
-
   try
   {
-    const account = await Account.create(req.body, token.user);
+    const account = await Account.create(request.body, token.user);
 
     response.body.data = await account.json();
   }
@@ -201,20 +157,11 @@ app.post("/api/accounts", async (req, res) =>
   {
     response.created();
   }
-});
+}));
 
-app.delete("/api/accounts/:id", async (req, res) =>
+app.delete("/api/accounts/:id", AuthMiddleware.init([ "user" ], async (request, response, token) =>
 {
-  const response = Response.from(res);
-
-  const token = await response.checkAuth([ "user" ], req.token);
-
-  if (!token)
-  {
-    return;
-  }
-
-  const account = await Account.retrieve(token.user, req.params.id);
+  const account = await Account.retrieve(token.user, request.params.id);
 
   if (!account)
   {
@@ -226,19 +173,10 @@ app.delete("/api/accounts/:id", async (req, res) =>
   await account.delete();
 
   response.noContent();
-});
+}));
 
-app.get("/api/apps", async (req, res) =>
+app.get("/api/apps", AuthMiddleware.init([ "user" ], async (request, response, token) =>
 {
-  const response = Response.from(res);
-
-  const token = await response.checkAuth([ "user" ], req.token);
-
-  if (!token)
-  {
-    return;
-  }
-
   const apps = await App.list(token.user);
 
   response.body.data = [];
@@ -249,20 +187,11 @@ app.get("/api/apps", async (req, res) =>
   }
 
   response.send();
-});
+}));
 
-app.get("/api/apps/:id", async (req, res) =>
+app.get("/api/apps/:id", AuthMiddleware.init([ "user" ], async (request, response, token) =>
 {
-  const response = Response.from(res);
-
-  const token = await response.checkAuth([ "user" ], req.token);
-
-  if (!token)
-  {
-    return;
-  }
-
-  const app = await App.retrieve(req.params.id);
+  const app = await App.retrieve(request.params.id);
 
   if (!app)
   {
@@ -274,22 +203,13 @@ app.get("/api/apps/:id", async (req, res) =>
   response.body.data = await app.json();
 
   response.send();
-});
+}));
 
-app.post("/api/apps", async (req, res) =>
+app.post("/api/apps", AuthMiddleware.init([ "user" ], async (request, response, token) =>
 {
-  const response = Response.from(res);
-
-  const token = await response.checkAuth([ "user" ], req.token);
-
-  if (!token)
-  {
-    return;
-  }
-
   try
   {
-    const app = await App.create(token.user, req.body);
+    const app = await App.create(token.user, request.body);
 
     response.body.data = await app.json();
   }
@@ -309,20 +229,11 @@ app.post("/api/apps", async (req, res) =>
   {
     response.created();
   }
-});
+}));
 
-app.put("/api/apps/:id", async (req, res) =>
+app.put("/api/apps/:id", AuthMiddleware.init([ "user" ], async (request, response, token) =>
 {
-  const response = Response.from(res);
-
-  const token = await response.checkAuth([ "user" ], req.token);
-
-  if (!token)
-  {
-    return;
-  }
-
-  const app = await App.retrieve(req.params.id);
+  const app = await App.retrieve(request.params.id);
 
   if (!app)
   {
@@ -340,7 +251,7 @@ app.put("/api/apps/:id", async (req, res) =>
 
   try
   {
-    await app.update(req.body);
+    await app.update(request.body);
 
     response.body.data = await app.json();
   }
@@ -353,20 +264,11 @@ app.put("/api/apps/:id", async (req, res) =>
   }
 
   response.send();
-});
+}));
 
-app.delete("/api/apps/:id", async (req, res) =>
+app.delete("/api/apps/:id", AuthMiddleware.init([ "user", "app" ], async (request, response, token) =>
 {
-  const response = Response.from(res);
-
-  const token = await response.checkAuth([ "user", "app" ], req.token);
-
-  if (!token)
-  {
-    return;
-  }
-
-  const app = await App.retrieve(req.params.id);
+  const app = await App.retrieve(request.params.id);
 
   if (!app)
   {
@@ -385,36 +287,18 @@ app.delete("/api/apps/:id", async (req, res) =>
   await app.delete();
 
   response.noContent();
-});
+}));
 
-app.get("/api/scopes", async (req, res) =>
+app.get("/api/scopes", AuthMiddleware.init([ "user", "app" ], (request, response, token) =>
 {
-  const response = Response.from(res);
-
-  const token = await response.checkAuth([ "user", "app" ], req.token);
-
-  if (!token)
-  {
-    return;
-  }
-
   response.body.data = Scope.all().map(scope => scope.json());
 
   response.send();
-});
+}));
 
-app.get("/api/tokens/:id", async (req, res) =>
+app.get("/api/tokens/:id", AuthMiddleware.init([ "user", "app" ], async (request, response, token) =>
 {
-  const response = Response.from(res);
-
-  const token = await response.checkAuth([ "user", "app" ], req.token);
-
-  if (!token)
-  {
-    return;
-  }
-
-  const tokenToRetrieve = await AuthToken.retrieve(req.params.id);
+  const tokenToRetrieve = await AuthToken.retrieve(request.params.id);
 
   if (!tokenToRetrieve)
   {
@@ -433,7 +317,7 @@ app.get("/api/tokens/:id", async (req, res) =>
   response.body.data = await tokenToRetrieve.json();
 
   response.send();
-});
+}));
 
 app.post("/api/tokens/users", async (req, res) =>
 {
@@ -463,20 +347,11 @@ app.post("/api/tokens/users", async (req, res) =>
   }
 });
 
-app.post("/api/tokens/apps", async (req, res) =>
+app.post("/api/tokens/apps", AuthMiddleware.init([ "user" ], async (request, response, token) =>
 {
-  const response = Response.from(res);
-
-  const token = await response.checkAuth([ "user" ], req.token);
-
-  if (!token)
-  {
-    return;
-  }
-
   try
   {
-    const appToken = await AuthToken.app(req.body, token.user);
+    const appToken = await AuthToken.app(request.body, token.user);
 
     response.body.data = await appToken.json();
   }
@@ -496,6 +371,6 @@ app.post("/api/tokens/apps", async (req, res) =>
   {
     response.created();
   }
-});
+}));
 
 app.listen(3000);

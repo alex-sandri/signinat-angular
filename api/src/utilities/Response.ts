@@ -1,5 +1,4 @@
 import { Response as ExpressResponse } from "express";
-import { AuthToken, TAuthTokenType } from "../models/AuthToken";
 
 type IResponseStatusOk = { code: 200, message: "OK" };
 type IResponseStatusCreated = { code: 201, message: "Created" };
@@ -38,27 +37,6 @@ export default class Response
     public static from(res: ExpressResponse): Response
     {
         return new Response(res);
-    }
-
-    public async checkAuth(types: TAuthTokenType[], token?: string): Promise<AuthToken | null>
-    {
-        const authToken = await AuthToken.retrieve(token);
-
-        if (!authToken)
-        {
-            this.unauthorized();
-
-            return null;
-        }
-
-        if (!types.includes(authToken.type))
-        {
-            this.forbidden();
-
-            return null;
-        }
-
-        return authToken;
     }
 
     public ok(): void

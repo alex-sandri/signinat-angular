@@ -24,7 +24,7 @@ export interface ISerializedAuthToken
     scopes?: ISerializedScope[],
 }
 
-export class AuthToken
+export default class AuthToken
 {
     private constructor(
         public readonly id: string,
