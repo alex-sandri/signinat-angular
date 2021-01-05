@@ -12,9 +12,7 @@ export class AccountMenuComponent implements OnInit
 
   user = this.auth.user;
 
-  signOut = this.auth.signOut;
-
-  constructor(private auth: AuthService)
+  constructor(public auth: AuthService)
   {}
 
   ngOnInit(): void
