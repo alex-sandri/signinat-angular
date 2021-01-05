@@ -1,12 +1,4 @@
-const SCOPES = [
-    { value: "user", description: "Everything" },
-    { value: "user.profile", description: "Your entire profile" },
-    { value: "user.profile.name", description: "Your full name" },
-    { value: "user.profile.name.first", description: "Your first name" },
-    { value: "user.profile.name.last", description: "Your last name" },
-    { value: "user.profile.email", description: "Your email" },
-    { value: "user.profile.birthday", description: "Your birthday" },
-];
+import Constants from "../config/Constants";
 
 export interface ISerializedScope
 {
@@ -35,7 +27,7 @@ export class Scope
 
     public static all = (): Scope[] =>
     {
-        return SCOPES.map(scope => new Scope(scope.value));
+        return Constants.SCOPES.map(scope => new Scope(scope.value));
     }
 
     static from = (scopes: string[]): Scope[] =>
@@ -68,6 +60,6 @@ export class Scope
     }
 
     public get description(): string {
-        return SCOPES.find(scope => scope.value === this.value)!.description;
+        return Constants.SCOPES.find(scope => scope.value === this.value)!.description;
     }
 }
