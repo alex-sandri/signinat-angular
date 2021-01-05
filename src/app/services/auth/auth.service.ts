@@ -37,19 +37,12 @@ export class AuthService
     return this.user ?? null;
   }
 
-  async signOut()
+  public signOut()
   {
-    const token = this.settings.get("session.token");
+    this.settings.delete("session.token");
+    this.settings.delete("session.userId");
 
-    if (!token) return;
-
-    await this.api.deleteToken(token).finally(() =>
-    {
-      this.settings.delete("session.token");
-      this.settings.delete("session.userId");
-
-      this.router.navigateToSignIn(this.route.snapshot);
-    });
+    this.router.navigateToSignIn(this.route.snapshot);
   }
 
   constructor(private api: ApiService, private router: RouterService, private route: ActivatedRoute, private settings: SettingsService)

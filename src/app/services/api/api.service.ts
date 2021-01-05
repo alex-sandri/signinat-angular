@@ -115,9 +115,4 @@ export class ApiService
   {
     return this.send("GET", `${ApiService.ENDPOINTS.TOKENS}/${id}`);
   }
-
-  public deleteToken(id: string): Promise<IResponseData>
-  {
-    return this.send("DELETE", `${ApiService.ENDPOINTS.TOKENS}/${id}`);
-  }
 }
