@@ -3,7 +3,6 @@ import * as express from "express";
 import * as cors from "cors";
 import * as helmet from "helmet";
 import * as bearerToken from "express-bearer-token";
-import * as jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -497,38 +496,6 @@ app.post("/api/tokens/apps", async (req, res) =>
   {
     response.created();
   }
-});
-
-app.delete("/api/tokens/:id", async (req, res) =>
-{
-  const response = Response.from(res);
-
-  const token = await response.checkAuth([ "user", "app" ], req.token);
-
-  if (!token)
-  {
-    return;
-  }
-
-  const tokenToDelete = await AuthToken.retrieve(req.params.id);
-
-  if (!tokenToDelete)
-  {
-    response.notFound();
-
-    return;
-  }
-
-  if (tokenToDelete.user.id !== token.user.id)
-  {
-    response.forbidden();
-
-    return;
-  }
-
-  await tokenToDelete.delete();
-
-  response.noContent();
 });
 
 app.listen(3000);

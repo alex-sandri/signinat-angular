@@ -1,12 +1,9 @@
-import { firestore } from "firebase-admin";
-import { v4 as uuidv4 } from "uuid";
+import * as jwt from "jsonwebtoken";
 import { IAppToken, IUserToken, Validator } from "../utilities/Validator";
 
 import { App, ISerializedApp } from "./App";
 import { ISerializedScope, Scope } from "./Scope";
 import { ISerializedUser, User } from "./User";
-
-const db = firestore();
 
 export type TAuthTokenType = "user" | "app";
 
@@ -60,16 +57,10 @@ export class AuthToken
 
         const app = await App.retrieve(token.app!) as App;
 
-        const uuid = uuidv4();
-
-        await db.collection("tokens").doc(uuid).set(<IAuthToken>{
-            app: app.id,
-            user: user.id,
-            scopes: app.data.scopes,
-        });
+        const id = jwt.sign({ app: app.id, user: user.id, scopes: app.data.scopes }, process.env.TOKEN_SECRET!, { expiresIn: "30m" });
 
         return new AuthToken(
-            uuid,
+            id,
             "app",
             user,
             app,
@@ -88,12 +79,10 @@ export class AuthToken
 
         const user = await User.withEmail(token.email!) as User;
 
-        const uuid = uuidv4();
-
-        await db.collection("tokens").doc(uuid).set(<IAuthToken>{ user: user.id });
+        const id = jwt.sign({ user: user.id }, process.env.TOKEN_SECRET!, { expiresIn: "30m" });
 
         return new AuthToken(
-            uuid,
+            id,
             "user",
             user,
         );
@@ -105,11 +94,18 @@ export class AuthToken
 
         if (!id) return null;
 
-        const snapshot = await db.collection("tokens").doc(id).get();
+        let token: string | object;
 
-        if (!snapshot.exists) return null;
+        try
+        {
+            token = jwt.verify(id, process.env.TOKEN_SECRET!);
+        }
+        catch (e)
+        {
+            return null;
+        }
 
-        const data = snapshot.data() as IAuthToken;
+        const data = token as IAuthToken;
 
         const user = await User.retrieve(data.user);
 
@@ -144,10 +140,5 @@ export class AuthToken
             app,
             scopes,
         );
-    }
-
-    public delete = async (): Promise<void> =>
-    {
-        await db.collection("tokens").doc(this.id).delete();
     }
 }
