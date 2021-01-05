@@ -67,7 +67,7 @@ export class Validator
      * 
      * @returns `Promise<SchemaValidationResult>` Validation success
      */
-    public async user(user?: IUser, old?: ISerializedUser): Promise<SchemaValidationResult>
+    public async user(user: IUser, old: ISerializedUser): Promise<SchemaValidationResult>
     {
         let result: SchemaValidationResult;
 
@@ -79,7 +79,7 @@ export class Validator
 
                 if (result.valid)
                 {
-                    if (await User.exists(user!.email!))
+                    if (await User.exists(user.email!))
                     {
                         result.add("user/email/already-exists");
                     }
@@ -91,15 +91,11 @@ export class Validator
             {
                 result = new Schema("user", USER_UPDATE_SCHEMA).validate(user);
 
-                if (Utilities.isNullOrUndefined(old))
+                if (result.valid)
                 {
-                    result.add("user/required");
-                }
-                else if (result.valid)
-                {
-                    if (!Utilities.isNullOrUndefined(user!.email))
+                    if (!Utilities.isNullOrUndefined(user.email))
                     {
-                        if (user!.email !== old.email && await User.exists(user!.email))
+                        if (user.email !== old.email && await User.exists(user.email))
                         {
                             result.add("user/email/already-exists");
                         }
@@ -121,7 +117,7 @@ export class Validator
      * 
      * @returns `Promise<SchemaValidationResult>` Validation success
      */
-    public async app(app?: IApp, old?: ISerializedApp): Promise<SchemaValidationResult>
+    public async app(app: IApp, old: ISerializedApp): Promise<SchemaValidationResult>
     {
         let result: SchemaValidationResult;
 
@@ -133,7 +129,7 @@ export class Validator
 
                 if (result.valid)
                 {
-                    if ((await App.withUrl(app!.url!)) !== null)
+                    if ((await App.withUrl(app.url!)) !== null)
                         result.add("app/url/already-exists");
                 }
 
@@ -143,15 +139,11 @@ export class Validator
             {
                 result = new Schema("app", APP_UPDATE_SCHEMA).validate(app);
 
-                if (Utilities.isNullOrUndefined(old))
+                if (result.valid)
                 {
-                    result.add("app/required");
-                }
-                else if (result.valid)
-                {
-                    if (!Utilities.isNullOrUndefined(app!.url))
+                    if (!Utilities.isNullOrUndefined(app.url))
                     {
-                        if (app!.url !== old.url && await App.withUrl(app!.url) !== null)
+                        if (app.url !== old.url && await App.withUrl(app.url) !== null)
                         {
                             result.add("app/url/already-exists");
                         }
@@ -173,18 +165,9 @@ export class Validator
      * 
      * @returns `Promise<SchemaValidationResult>` Validation success
      */
-    public async token(token?: IToken, type?: TAuthTokenType): Promise<SchemaValidationResult>
+    public async token(token: IToken, type: TAuthTokenType): Promise<SchemaValidationResult>
     {
         let result: SchemaValidationResult;
-
-        if (Utilities.isNullOrUndefined(type))
-        {
-            result = new SchemaValidationResult();
-
-            result.add("token/type/required");
-
-            return result;
-        }
 
         switch (type)
         {
