@@ -31,7 +31,7 @@ export class AuthService
           return;
         }
 
-        this._user = response.data.user;
+        this._user = response.data;
       });
 
     return this.user ?? null;
