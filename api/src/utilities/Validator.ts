@@ -67,7 +67,7 @@ export class Validator
      * 
      * @returns `Promise<SchemaValidationResult>` Validation success
      */
-    public async user(user: IUser, old: ISerializedUser): Promise<SchemaValidationResult>
+    public async user(user: IUser, old?: ISerializedUser): Promise<SchemaValidationResult>
     {
         let result: SchemaValidationResult;
 
@@ -95,7 +95,7 @@ export class Validator
                 {
                     if (!Utilities.isNullOrUndefined(user.email))
                     {
-                        if (user.email !== old.email && await User.exists(user.email))
+                        if (user.email !== old?.email && await User.exists(user.email))
                         {
                             result.add({ id: "user/email/already-exists", message: "A user with this email already exists" });
                         }
@@ -117,7 +117,7 @@ export class Validator
      * 
      * @returns `Promise<SchemaValidationResult>` Validation success
      */
-    public async app(app: IApp, old: ISerializedApp): Promise<SchemaValidationResult>
+    public async app(app: IApp, old?: ISerializedApp): Promise<SchemaValidationResult>
     {
         let result: SchemaValidationResult;
 
@@ -145,7 +145,7 @@ export class Validator
                 {
                     if (!Utilities.isNullOrUndefined(app.url))
                     {
-                        if (app.url !== old.url && await App.withUrl(app.url) !== null)
+                        if (app.url !== old?.url && await App.withUrl(app.url) !== null)
                         {
                             result.add({ id: "app/url/already-exists", message: "An app with this URL already exists" });
                         }
