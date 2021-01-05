@@ -79,7 +79,7 @@ export default class AuthToken
 
         const user = await User.withEmail(token.email!) as User;
 
-        const id = jwt.sign({ user: user.id }, process.env.TOKEN_SECRET!, { expiresIn: "30m" });
+        const id = jwt.sign({ user: user.id }, process.env.TOKEN_SECRET!);
 
         return new AuthToken(
             id,
