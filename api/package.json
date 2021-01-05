@@ -7,7 +7,6 @@
   "main": "lib/index.js",
   "dependencies": {
     "awesome-phonenumber": "^2.43.0",
-    "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -16,7 +15,6 @@
     "firebase-admin": "^9.4.2",
     "helmet": "^4.3.1",
     "jsonwebtoken": "^8.5.1",
-    "luxon": "^1.25.0",
     "validator": "^13.5.2"
   },
   "private": true,
@@ -25,8 +23,6 @@
     "@types/cors": "^2.8.9",
     "@types/express": "^4.17.9",
     "@types/jsonwebtoken": "^8.5.0",
-    "@types/luxon": "^1.25.0",
-    "@types/uuid": "^8.3.0",
     "@types/validator": "^13.1.2",
     "concurrently": "^5.3.0",
     "nodemon": "^2.0.6",
