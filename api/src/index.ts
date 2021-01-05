@@ -21,7 +21,6 @@ admin.firestore().settings({
 import { App } from "./models/App";
 import { User } from "./models/User";
 import { Account } from "./models/Account";
-import { Scope } from "./models/Scope";
 import { SchemaValidationResult } from "./utilities/Schema";
 import Response from "./utilities/Response";
 import AuthToken from "./models/AuthToken";
@@ -301,13 +300,6 @@ app.delete("/api/apps/:id", AuthMiddleware.init([ "user", "app" ], async (reques
   await app.delete();
 
   response.noContent();
-}));
-
-app.get("/api/scopes", AuthMiddleware.init([ "user", "app" ], (request, response, token) =>
-{
-  response.body.data = Scope.all().map(scope => scope.json());
-
-  response.send();
 }));
 
 app.post("/api/tokens/users", async (req, res) =>

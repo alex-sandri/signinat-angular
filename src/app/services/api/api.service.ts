@@ -107,11 +107,6 @@ export class ApiService
     return this.send("DELETE", `${ApiService.ENDPOINTS.APPS}/${id}`);
   }
 
-  public listScopes(): Promise<IResponseData>
-  {
-    return this.send("GET", ApiService.ENDPOINTS.SCOPES)
-  }
-
   public createUserToken(data: IToken): Promise<IResponseData>
   {
     return this.send("POST", `${ApiService.ENDPOINTS.TOKENS}/users`, data);

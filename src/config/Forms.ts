@@ -1,4 +1,5 @@
 import { ActivatedRoute, Router } from "@angular/router";
+import Constants from "api/src/config/Constants";
 import { ISerializedUser } from "api/src/models/User";
 import { FormConfig } from "src/app/components/form/form.component";
 import { ApiService } from "src/app/services/api/api.service";
@@ -124,7 +125,14 @@ export default class Forms
                         inputs: [
                             { label: "App Name", name: "name", type: "text", required: true },
                             { label: "URL", name: "url", type: "url", required: true },
-                            { label: "Scopes", name: "scopes", type: "select", required: true, options: { multiple: true } },
+                            {
+                                label: "Scopes",
+                                name: "scopes",
+                                type: "select",
+                                required: true,
+                                options: { multiple: true },
+                                selectOptions: Constants.SCOPES.map(scope => ({ value: scope.value })),
+                            },
                         ],
                     },
                 ],

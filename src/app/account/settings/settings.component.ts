@@ -77,9 +77,5 @@ export class SettingsComponent
     if (this.section === "settings") this.section = "general";
 
     api.listApps().then(response => this.apps = response.data);
-
-    api
-      .listScopes()
-      .then(response => (this.createNewAppFormConfig!.options.groups[0].inputs[2] as ISelectFormInput).selectOptions = response.data);
   }
 }
