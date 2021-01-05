@@ -310,29 +310,6 @@ app.get("/api/scopes", AuthMiddleware.init([ "user", "app" ], (request, response
   response.send();
 }));
 
-app.get("/api/tokens/:id", AuthMiddleware.init([ "user", "app" ], async (request, response, token) =>
-{
-  const tokenToRetrieve = await AuthToken.retrieve(request.params.id);
-
-  if (!tokenToRetrieve)
-  {
-    response.notFound();
-
-    return;
-  }
-
-  if (tokenToRetrieve.user.id !== token.user.id)
-  {
-    response.forbidden();
-
-    return;
-  }
-
-  response.body.data = await tokenToRetrieve.json();
-
-  response.send();
-}));
-
 app.post("/api/tokens/users", async (req, res) =>
 {
   const response = Response.from(res);

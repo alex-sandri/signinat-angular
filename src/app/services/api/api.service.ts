@@ -42,6 +42,11 @@ export class ApiService
     return await response.json();
   }
 
+  public retrieveUser(id: string): Promise<IResponseData>
+  {
+    return this.send("GET", `${ApiService.ENDPOINTS.USERS}/${id}`);
+  }
+
   public createUser(data: IUser): Promise<IResponseData>
   {
     return this.send("POST", ApiService.ENDPOINTS.USERS, data);
@@ -115,10 +120,5 @@ export class ApiService
   public createAppToken(data: IToken): Promise<IResponseData>
   {
     return this.send("POST", `${ApiService.ENDPOINTS.TOKENS}/apps`, data);
-  }
-
-  public retrieveToken(id: string): Promise<IResponseData>
-  {
-    return this.send("GET", `${ApiService.ENDPOINTS.TOKENS}/${id}`);
   }
 }

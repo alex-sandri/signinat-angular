@@ -16,12 +16,12 @@ export class AuthService
 
   async signIn(): Promise<ISerializedUser | null>
   {
-    const token = this.settings.get("session.token");
+    const userId = this.settings.get("session.userId");
 
-    if (!token) return null;
+    if (!userId) return null;
 
     await this.api
-      .retrieveToken(token)
+      .retrieveUser(userId)
       .then(response =>
       {
         if (response.status.code !== 200)
