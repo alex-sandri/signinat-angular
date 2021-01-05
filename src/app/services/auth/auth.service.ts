@@ -39,8 +39,7 @@ export class AuthService
 
   public signOut()
   {
-    this.settings.delete("session.token");
-    this.settings.delete("session.userId");
+    this.settings.clear();
 
     this.router.navigateToSignIn(this.route.snapshot);
   }
