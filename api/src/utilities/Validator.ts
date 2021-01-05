@@ -81,7 +81,7 @@ export class Validator
                 {
                     if (await User.exists(user.email!))
                     {
-                        result.add("user/email/already-exists");
+                        result.add({ id: "user/email/already-exists", message: "A user with this email already exists" });
                     }
                 }
 
@@ -97,7 +97,7 @@ export class Validator
                     {
                         if (user.email !== old.email && await User.exists(user.email))
                         {
-                            result.add("user/email/already-exists");
+                            result.add({ id: "user/email/already-exists", message: "A user with this email already exists" });
                         }
                     }
                 }
@@ -130,7 +130,9 @@ export class Validator
                 if (result.valid)
                 {
                     if ((await App.withUrl(app.url!)) !== null)
-                        result.add("app/url/already-exists");
+                    {
+                        result.add({ id: "app/url/already-exists", message: "An app with this URL already exists" });
+                    }
                 }
 
                 break;
@@ -145,7 +147,7 @@ export class Validator
                     {
                         if (app.url !== old.url && await App.withUrl(app.url) !== null)
                         {
-                            result.add("app/url/already-exists");
+                            result.add({ id: "app/url/already-exists", message: "An app with this URL already exists" });
                         }
                     }
                 }
@@ -181,7 +183,7 @@ export class Validator
 
                     if (!app)
                     {
-                        result.add("token/app/inexistent");
+                        result.add({ id: "token/app/inexistent", message: "This app does not exist" });
                     }
                 }
 
@@ -197,11 +199,11 @@ export class Validator
 
                     if (!user)
                     {
-                        result.add("token/email/inexistent");
+                        result.add({ id: "token/email/inexistent", message: "A user with this email does not exist" });
                     }
                     else if (!Utilities.verifyHash((token as IUserToken).password!, user.data.password))
                     {
-                        result.add("token/password/wrong");
+                        result.add({ id: "token/password/wrong", message: "Wrong password" });
                     }
                 }
 
@@ -232,11 +234,11 @@ export class Validator
 
             if (!app)
             {
-                result.add("app/inexistent");
+                result.add({ id: "app/inexistent", message: "This app does not exist" });
             }
             else if (await Account.exists(user, app.id))
             {
-                result.add("account/already-exists");
+                result.add({ id: "account/already-exists", message: "This account already exists" });
             }
         }
 
