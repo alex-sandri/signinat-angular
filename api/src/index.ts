@@ -3,6 +3,10 @@ import * as express from "express";
 import * as cors from "cors";
 import * as helmet from "helmet";
 import * as bearerToken from "express-bearer-token";
+import * as jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const serviceAccount = require("./service-account.json");
 
