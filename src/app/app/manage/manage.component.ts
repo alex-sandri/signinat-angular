@@ -12,11 +12,6 @@ export class ManageComponent
 {
   app!: ISerializedApp;
 
-  copyApiKey()
-  {
-    navigator.clipboard.writeText(this.app.api.key);
-  }
-
   async delete()
   {
     await this.api.deleteApp(this.app.id);

@@ -26,9 +26,6 @@ export interface IApp
     url?: string,
     owner?: string,
     scopes?: string[],
-    api?: {
-        key?: string,
-    },
 }
 
 export interface IAppToken

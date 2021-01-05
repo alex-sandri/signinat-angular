@@ -1,5 +1,4 @@
 import { firestore } from "firebase-admin";
-import { v4 as uuidv4 } from "uuid";
 
 import { IApp, Validator } from "../utilities/Validator";
 import { Account } from "./Account";
@@ -13,9 +12,6 @@ interface IDatabaseApp
     name: string,
     url: string,
     owner: string,
-    api: {
-        key: string,
-    },
     scopes: string[],
 }
 
@@ -25,10 +21,6 @@ export interface ISerializedApp
     name: string,
     url: string,
     owner: ISerializedUser,
-    // TODO: Send API key only if the signed in user is the owner
-    api: {
-        key: string,
-    },
     scopes: ISerializedScope[],
 }
 
@@ -47,9 +39,6 @@ export class App
             name: this.data.name,
             url: this.data.url,
             owner: (await User.retrieve(this.data.owner))!.json(),
-            api: {
-                key: this.data.api.key,
-            },
             scopes: Scope.from(this.data.scopes).map(scope => scope.json()),
         };
     };
@@ -67,9 +56,6 @@ export class App
             name: data.name!.trim(),
             url: data.url!.trim(),
             owner: user.id,
-            api: {
-                key: uuidv4(),
-            },
             scopes: Scope.filterUnnecessary(data.scopes!),
         };
 
