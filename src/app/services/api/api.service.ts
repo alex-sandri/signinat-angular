@@ -33,6 +33,12 @@ export class ApiService
       },
     });
 
+    // No Content
+    if (response.status === 204)
+    {
+      return;
+    }
+
     return await response.json();
   }
 
