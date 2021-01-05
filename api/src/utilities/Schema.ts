@@ -19,11 +19,21 @@ interface ISerializedSchemaValidationResult
     errors: ISerializedSchemaFieldError[];
 }
 
+interface SchemaFieldErrorMessages
+{
+    required: string;
+    invalid: string;
+    empty: string;
+    short: string;
+    long: string;
+}
+
 type SchemaFieldDefinition =
 {
     type: "object";
     required: boolean;
     child: SchemaDefinition;
+    messages?: SchemaFieldErrorMessages;
 }
 |
 {
@@ -34,6 +44,7 @@ type SchemaFieldDefinition =
         min?: number;
         max?: number;
     };
+    messages?: SchemaFieldErrorMessages;
 }
 |
 {
@@ -48,6 +59,7 @@ type SchemaFieldDefinition =
      */
     enum?: string[];
     format?: "date" | "email" | "tel" | "url";
+    messages?: SchemaFieldErrorMessages;
 }
 
 export default class Schema
@@ -67,7 +79,7 @@ export default class Schema
         {
             if (!this.schema[key])
             {
-                result.add(`${this.namespace}/invalid`);
+                result.add({ id: `${this.namespace}/invalid`, message: "Additional keys are not allowed" });
 
                 return result;
             }
@@ -81,7 +93,7 @@ export default class Schema
 
             if (definition.required && Utilities.isNullOrUndefined(value))
             {
-                result.add(`${fieldNamespace}/required`);
+                result.add({ id: `${fieldNamespace}/required`, message: definition.messages?.required ?? "Required" });
 
                 continue;
             }
@@ -105,7 +117,7 @@ export default class Schema
                 {
                     if (!Array.isArray(value))
                     {
-                        result.add(`${fieldNamespace}/invalid`);
+                        result.add({ id: `${fieldNamespace}/invalid`, message: definition.messages?.invalid ?? "Invalid" });
                     }
                     else
                     {
@@ -122,16 +134,16 @@ export default class Schema
                             {
                                 if (value.length === 0)
                                 {
-                                    result.add(`${fieldNamespace}/empty`);
+                                    result.add({ id: `${fieldNamespace}/empty`, message: definition.messages?.empty ?? `Empty (Minimum size: ${definition.size.min})` });
                                 }
                                 else
                                 {
-                                    result.add(`${fieldNamespace}/short`);
+                                    result.add({ id: `${fieldNamespace}/short`, message: definition.messages?.short ?? `Short (Minimum size: ${definition.size.min})` });
                                 }
                             }
                             else if (!Utilities.isNullOrUndefined(definition.size.max) && value.length > definition.size.max)
                             {
-                                result.add(`${fieldNamespace}/long`);
+                                result.add({ id: `${fieldNamespace}/long`, message: definition.messages?.long ?? `Long (Maximum size: ${definition.size.max})` });
                             }
                         }
                     }
@@ -142,7 +154,7 @@ export default class Schema
                 {
                     if (typeof value !== "string")
                     {
-                        result.add(`${fieldNamespace}/invalid`);
+                        result.add({ id: `${fieldNamespace}/invalid`, message: definition.messages?.invalid ?? "Invalid" });
                     }
                     else
                     {
@@ -152,16 +164,16 @@ export default class Schema
                             {
                                 if (value.length === 0)
                                 {
-                                    result.add(`${fieldNamespace}/empty`);
+                                    result.add({ id: `${fieldNamespace}/empty`, message: definition.messages?.empty ?? `Empty (Minimum length: ${definition.length.min})` });
                                 }
                                 else
                                 {
-                                    result.add(`${fieldNamespace}/short`);
+                                    result.add({ id: `${fieldNamespace}/short`, message: definition.messages?.short ?? `Short (Minimum length: ${definition.length.min})` });
                                 }
                             }
                             else if (!Utilities.isNullOrUndefined(definition.length.max) && value.length > definition.length.max)
                             {
-                                result.add(`${fieldNamespace}/long`);
+                                result.add({ id: `${fieldNamespace}/long`, message: definition.messages?.long ?? `Long (Maximum length: ${definition.length.max})` });
                             }
                         }
 
@@ -169,7 +181,7 @@ export default class Schema
                         {
                             if (!definition.enum.includes(value))
                             {
-                                result.add(`${fieldNamespace}/invalid`);
+                                result.add({ id: `${fieldNamespace}/invalid`, message: definition.messages?.invalid ?? "Invalid" });
                             }
                         }
 
@@ -181,7 +193,7 @@ export default class Schema
                                 {
                                     if (!validator.isDate(value, { format: Constants.DATE_FORMAT }))
                                     {
-                                        result.add(`${fieldNamespace}/invalid`);
+                                        result.add({ id: `${fieldNamespace}/invalid`, message: definition.messages?.invalid ?? "Invalid" });
                                     }
 
                                     break;
@@ -190,7 +202,7 @@ export default class Schema
                                 {
                                     if (!validator.isEmail(value))
                                     {
-                                        result.add(`${fieldNamespace}/invalid`);
+                                        result.add({ id: `${fieldNamespace}/invalid`, message: definition.messages?.invalid ?? "Invalid" });
                                     }
 
                                     break;
@@ -199,7 +211,7 @@ export default class Schema
                                 {
                                     if (!validator.isMobilePhone(value, "any", { strictMode: true }))
                                     {
-                                        result.add(`${fieldNamespace}/invalid`);
+                                        result.add({ id: `${fieldNamespace}/invalid`, message: definition.messages?.invalid ?? "Invalid" });
                                     }
 
                                     break;
@@ -208,7 +220,7 @@ export default class Schema
                                 {
                                     if (!validator.isURL(value, { protocols: [ "https" ], require_protocol: true, allow_underscores: true }))
                                     {
-                                        result.add(`${fieldNamespace}/invalid`);
+                                        result.add({ id: `${fieldNamespace}/invalid`, message: definition.messages?.invalid ?? "Invalid" });
                                     }
 
                                     break;
