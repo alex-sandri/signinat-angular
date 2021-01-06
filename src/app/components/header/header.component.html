@@ -4,7 +4,7 @@
     <div class="right">
         <a class="button small inverted" routerLink="/signin" *ngIf="!user && !router.url.startsWith('/signin')">Sign In</a>
         <a class="button small inverted" routerLink="/signup" *ngIf="!user && router.url.startsWith('/signin')">Sign Up</a>
-        <button class="small inverted" (click)="openAccountMenu(accountMenu)" *ngIf="user">Account</button>
+        <button class="small inverted" (click)="openAccountMenu(accountMenu)" *ngIf="user">Menu</button>
     </div>
 </header>
 
