@@ -12,5 +12,6 @@ export default class Constants
         { value: "user.profile.name.last", description: "Your last name" },
         { value: "user.profile.email", description: "Your email" },
         { value: "user.profile.birthday", description: "Your birthday" },
+        { value: "user.profile.tel", description: "Your phone number" },
     ] as const;
 }

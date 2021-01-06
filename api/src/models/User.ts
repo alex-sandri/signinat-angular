@@ -96,6 +96,11 @@ export class User
             filteredUser.birthday = undefined;
         }
 
+        if (!scopes.some(scope => scope.canAccess("user.profile.tel")))
+        {
+            filteredUser.tel = undefined;
+        }
+
         return new User(this.id, filteredUser);
     }
 
