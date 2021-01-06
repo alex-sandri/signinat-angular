@@ -3,7 +3,7 @@ import { TAuthTokenType } from "../models/AuthToken";
 import { ISerializedUser, User } from "../models/User";
 import Schema, { SchemaValidationResult } from "./Schema";
 import Utilities from "./Utilities";
-import { ACCOUNT_SCHEMA, APP_CREATE_SCHEMA, APP_TOKEN_SCHEMA, APP_UPDATE_SCHEMA, USER_CREATE_SCHEMA, USER_TOKEN_SCHEMA, USER_UPDATE_SCHEMA } from "../config/Schemas";
+import { APP_CREATE_SCHEMA, APP_TOKEN_SCHEMA, APP_UPDATE_SCHEMA, USER_CREATE_SCHEMA, USER_TOKEN_SCHEMA, USER_UPDATE_SCHEMA } from "../config/Schemas";
 
 type TValidatorType = "create" | "update";
 
@@ -204,33 +204,6 @@ export class Validator
                 }
 
                 break;
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Validates an account object
-     * 
-     * @param account The account object to validate
-     * @param user The owner of the account
-     * 
-     * @returns `Promise<SchemaValidationResult>` Validation success
-     */
-    public async account(account: IAccount, user: User): Promise<SchemaValidationResult>
-    {
-        let result: SchemaValidationResult;
-
-        result = new Schema("account", ACCOUNT_SCHEMA).validate(account);
-
-        if (result.valid)
-        {
-            const app = await App.retrieve(account.app!);
-
-            if (!app)
-            {
-                result.add({ id: "app/inexistent", message: "This app does not exist" });
             }
         }
 

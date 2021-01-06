@@ -78,7 +78,3 @@ export const USER_TOKEN_SCHEMA: SchemaDefinition = {
     email: SchemaPresets.EMAIL,
     password: SchemaPresets.NON_EMPTY_STRING,
 };
-
-export const ACCOUNT_SCHEMA: SchemaDefinition = {
-    app: SchemaPresets.NON_EMPTY_STRING,
-};
