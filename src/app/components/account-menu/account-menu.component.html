@@ -3,7 +3,6 @@
         <h1>{{user!.name.first}} {{user!.name.last}}</h1>
         <p>{{user!.email}}</p>
         <a class="button inverted" routerLink="/account">Account</a>
-        <a class="button inverted" routerLink="/account/settings">Settings</a>
         <button class="inverted" (click)="auth.signOut()">Sign Out</button>
     </aside>
 </div>
