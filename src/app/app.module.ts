@@ -10,7 +10,6 @@ import { RouterModule } from '@angular/router';
 import { IndexComponent } from './index/index.component';
 import { SigninComponent } from './signin/signin.component';
 import { AccountComponent } from './account/account.component';
-import { SettingsComponent } from './account/settings/settings.component';
 import { SignedInGuard } from './guards/signed-in/signed-in.guard';
 import { AccountMenuComponent } from './components/account-menu/account-menu.component';
 import { SignedOutGuard } from './guards/signed-out/signed-out.guard';
@@ -31,7 +30,6 @@ import { InputComponent } from './components/form/input/input.component';
     IndexComponent,
     SigninComponent,
     AccountComponent,
-    SettingsComponent,
     AccountMenuComponent,
     AppManageComponent,
     AppSignInComponent,
@@ -50,10 +48,9 @@ import { InputComponent } from './components/form/input/input.component';
       { path: "signup", component: SignupComponent, canActivate: [ SignedOutGuard ] },
       { path: "signin", component: SigninComponent, canActivate: [ SignedOutGuard ] },
       { path: "account", component: AccountComponent, canActivate: [ SignedInGuard ] },
-      { path: "account/settings", component: SettingsComponent, canActivate: [ SignedInGuard ] },
-      { path: "account/settings/general", component: SettingsComponent, canActivate: [ SignedInGuard ] },
-      { path: "account/settings/advanced", component: SettingsComponent, canActivate: [ SignedInGuard ] },
-      { path: "account/settings/developer", component: SettingsComponent, canActivate: [ SignedInGuard ] },
+      { path: "account/general", component: AccountComponent, canActivate: [ SignedInGuard ] },
+      { path: "account/advanced", component: AccountComponent, canActivate: [ SignedInGuard ] },
+      { path: "account/developer", component: AccountComponent, canActivate: [ SignedInGuard ] },
       { path: "app/manage/:id", component: AppManageComponent, canActivate: [ SignedInGuard ] },
       { path: "app/signin/:id", component: AppSignInComponent, canActivate: [ SignedInGuard ] }
     ]),
