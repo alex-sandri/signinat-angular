@@ -62,26 +62,6 @@ export class ApiService
     return this.send("DELETE", `${ApiService.ENDPOINTS.USERS}/${this.settings.get("session.userId")}`);
   }
 
-  public createAccount(id: string): Promise<IResponseData>
-  {
-    return this.send("POST", ApiService.ENDPOINTS.ACCOUNTS, { app: id });
-  }
-
-  public retrieveAccount(id: string): Promise<IResponseData>
-  {
-    return this.send("GET", `${ApiService.ENDPOINTS.ACCOUNTS}/${id}`);
-  }
-
-  public listAccounts(): Promise<IResponseData>
-  {
-    return this.send("GET", ApiService.ENDPOINTS.ACCOUNTS);
-  }
-
-  public deleteAccount(id: string): Promise<IResponseData>
-  {
-    return this.send("DELETE", `${ApiService.ENDPOINTS.ACCOUNTS}/${id}`);
-  }
-
   public createApp(data: IApp): Promise<IResponseData>
   {
     return this.send("POST", ApiService.ENDPOINTS.APPS, data);

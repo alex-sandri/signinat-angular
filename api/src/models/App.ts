@@ -1,7 +1,6 @@
 import { firestore } from "firebase-admin";
 
 import { IApp, Validator } from "../utilities/Validator";
-import { Account } from "./Account";
 import { ISerializedScope, Scope } from "./Scope";
 import { ISerializedUser, User } from "./User";
 
@@ -113,13 +112,6 @@ export class App
     public delete = async (): Promise<void> =>
     {
         await db.collection("apps").doc(this.id).delete();
-
-        const accounts = await Account.forApp(this);
-
-        for (const account of accounts)
-        {
-            await account.delete();
-        }
     }
 
     static withUrl = async (url: string): Promise<App | null> =>

@@ -28,7 +28,7 @@
         <button
             [attr.disabled]="isSignInButtonDisabled ? '' : null"
 
-            (click)="onSignIn()"
+            (click)="redirect()"
         >
             Sign In @ <b>{{app.name}}</b>
         </button>

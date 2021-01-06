@@ -2,7 +2,6 @@ import { firestore } from "firebase-admin";
 import PhoneNumber from "awesome-phonenumber";
 
 import { Scope } from "./Scope";
-import { Account } from "./Account";
 import { App } from "./App";
 import { IUser, Validator } from "../utilities/Validator";
 import Utilities from "../utilities/Utilities";
@@ -174,13 +173,6 @@ export class User
         for (const app of apps)
         {
             await app.delete();
-        }
-
-        const accounts = await Account.list(this);
-
-        for (const account of accounts)
-        {
-            await account.delete();
         }
     }
 

@@ -16,18 +16,11 @@ export class SigninComponent
 
   isSignInButtonDisabled!: boolean;
 
-  async onSignIn(): Promise<void>
+  async redirect(): Promise<void>
   {
-    await this.api.createAccount(this.app.id);
+    const token = await this.api.createAppToken({ app: this.app.id });
 
-    this.redirect(this.app);
-  }
-
-  async redirect(app: ISerializedApp): Promise<void>
-  {
-    const token = await this.api.createAppToken({ app: app.id });
-
-    let url = new URL(app.url);
+    let url = new URL(this.app.url);
 
     url.searchParams.append("SignInAtSession", token.data.id);
 

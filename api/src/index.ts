@@ -20,7 +20,6 @@ admin.firestore().settings({
 
 import { App } from "./models/App";
 import { User } from "./models/User";
-import { Account } from "./models/Account";
 import { SchemaValidationResult } from "./utilities/Schema";
 import Response from "./utilities/Response";
 import AuthToken from "./models/AuthToken";
@@ -112,78 +111,6 @@ app.delete("/api/users/:id", AuthMiddleware.init([ "user" ], async (request, res
   }
 
   await token.user.delete();
-
-  response.noContent();
-}));
-
-app.get("/api/accounts", AuthMiddleware.init([ "user" ], async (request, response, token) =>
-{
-  const accounts = await Account.list(token.user);
-
-  response.body.data = [];
-
-  for (const account of accounts)
-  {
-    response.body.data.push(account.json());
-  }
-
-  response.send();
-}));
-
-app.get("/api/accounts/:id", AuthMiddleware.init([ "user" ], async (request, response, token) =>
-{
-  const account = await Account.retrieve(token.user, request.params.id);
-
-  if (!account)
-  {
-    response.notFound();
-
-    return;
-  }
-
-  response.body.data = account.json();
-
-  response.send();
-}));
-
-app.post("/api/accounts", AuthMiddleware.init([ "user" ], async (request, response, token) =>
-{
-  try
-  {
-    const account = await Account.create(request.body, token.user);
-
-    response.body.data = account.json();
-  }
-  catch (e)
-  {
-    if (e instanceof SchemaValidationResult)
-    {
-      response.body.errors = e.json().errors;
-    }
-  }
-
-  if (response.body.errors)
-  {
-    response.send();
-  }
-  else
-  {
-    response.created();
-  }
-}));
-
-app.delete("/api/accounts/:id", AuthMiddleware.init([ "user" ], async (request, response, token) =>
-{
-  const account = await Account.retrieve(token.user, request.params.id);
-
-  if (!account)
-  {
-    response.notFound();
-
-    return;
-  }
-
-  await account.delete();
 
   response.noContent();
 }));

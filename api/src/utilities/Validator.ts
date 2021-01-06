@@ -1,4 +1,3 @@
-import { Account } from "../models/Account";
 import { App, ISerializedApp } from "../models/App";
 import { TAuthTokenType } from "../models/AuthToken";
 import { ISerializedUser, User } from "../models/User";
@@ -232,10 +231,6 @@ export class Validator
             if (!app)
             {
                 result.add({ id: "app/inexistent", message: "This app does not exist" });
-            }
-            else if (await Account.exists(user, app.id))
-            {
-                result.add({ id: "account/already-exists", message: "This account already exists" });
             }
         }
 

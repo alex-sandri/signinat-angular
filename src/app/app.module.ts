@@ -13,7 +13,6 @@ import { AccountComponent } from './account/account.component';
 import { SettingsComponent } from './account/settings/settings.component';
 import { SignedInGuard } from './guards/signed-in/signed-in.guard';
 import { AccountMenuComponent } from './components/account-menu/account-menu.component';
-import { ManageComponent as AccountManageComponent } from './account/manage/manage.component';
 import { SignedOutGuard } from './guards/signed-out/signed-out.guard';
 import { ManageComponent as AppManageComponent } from './app/manage/manage.component';
 import { SigninComponent as AppSignInComponent } from './app/signin/signin.component';
@@ -34,7 +33,6 @@ import { InputComponent } from './components/form/input/input.component';
     AccountComponent,
     SettingsComponent,
     AccountMenuComponent,
-    AccountManageComponent,
     AppManageComponent,
     AppSignInComponent,
     SpinnerComponent,
@@ -56,7 +54,6 @@ import { InputComponent } from './components/form/input/input.component';
       { path: "account/settings/general", component: SettingsComponent, canActivate: [ SignedInGuard ] },
       { path: "account/settings/advanced", component: SettingsComponent, canActivate: [ SignedInGuard ] },
       { path: "account/settings/developer", component: SettingsComponent, canActivate: [ SignedInGuard ] },
-      { path: "account/manage/:id", component: AccountManageComponent, canActivate: [ SignedInGuard ] },
       { path: "app/manage/:id", component: AppManageComponent, canActivate: [ SignedInGuard ] },
       { path: "app/signin/:id", component: AppSignInComponent, canActivate: [ SignedInGuard ] }
     ]),

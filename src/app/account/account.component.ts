@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ISerializedAccount } from 'api/src/models/Account';
 import { ApiService } from '../services/api/api.service';
 
 @Component({
@@ -9,10 +8,10 @@ import { ApiService } from '../services/api/api.service';
 })
 export class AccountComponent implements OnInit {
 
-  accounts!: ISerializedAccount[];
+  accounts!: any[];
 
   constructor(api: ApiService) {
-    api.listAccounts().then(response => this.accounts = response.data);
+    
   }
 
   ngOnInit(): void {
