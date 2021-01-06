@@ -124,7 +124,7 @@ app.get("/api/accounts", AuthMiddleware.init([ "user" ], async (request, respons
 
   for (const account of accounts)
   {
-    response.body.data.push(await account.json());
+    response.body.data.push(account.json());
   }
 
   response.send();
@@ -141,7 +141,7 @@ app.get("/api/accounts/:id", AuthMiddleware.init([ "user" ], async (request, res
     return;
   }
 
-  response.body.data = await account.json();
+  response.body.data = account.json();
 
   response.send();
 }));
@@ -152,7 +152,7 @@ app.post("/api/accounts", AuthMiddleware.init([ "user" ], async (request, respon
   {
     const account = await Account.create(request.body, token.user);
 
-    response.body.data = await account.json();
+    response.body.data = account.json();
   }
   catch (e)
   {
@@ -196,7 +196,7 @@ app.get("/api/apps", AuthMiddleware.init([ "user" ], async (request, response, t
 
   for (const app of apps)
   {
-    response.body.data.push(await app.json());
+    response.body.data.push(app.json());
   }
 
   response.send();
@@ -213,7 +213,7 @@ app.get("/api/apps/:id", AuthMiddleware.init([ "user" ], async (request, respons
     return;
   }
 
-  response.body.data = await app.json();
+  response.body.data = app.json();
 
   response.send();
 }));
@@ -224,7 +224,7 @@ app.post("/api/apps", AuthMiddleware.init([ "user" ], async (request, response, 
   {
     const app = await App.create(token.user, request.body);
 
-    response.body.data = await app.json();
+    response.body.data = app.json();
   }
   catch (e)
   {
@@ -266,7 +266,7 @@ app.put("/api/apps/:id", AuthMiddleware.init([ "user" ], async (request, respons
   {
     await app.update(request.body);
 
-    response.body.data = await app.json();
+    response.body.data = app.json();
   }
   catch (e)
   {
@@ -310,7 +310,7 @@ app.post("/api/tokens/users", async (req, res) =>
   {
     const userToken = await AuthToken.user(req.body);
 
-    response.body.data = await userToken.json();
+    response.body.data = userToken.json();
   }
   catch (e)
   {
@@ -336,7 +336,7 @@ app.post("/api/tokens/apps", AuthMiddleware.init([ "user" ], async (request, res
   {
     const appToken = await AuthToken.app(request.body, token.user);
 
-    response.body.data = await appToken.json();
+    response.body.data = appToken.json();
   }
   catch (e)
   {

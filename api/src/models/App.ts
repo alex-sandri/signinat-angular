@@ -29,16 +29,17 @@ export class App
     private constructor(
         public readonly id: string,
         public readonly data: IDatabaseApp,
+        public readonly owner: User,
     )
     {}
 
-    public async json(): Promise<ISerializedApp>
+    public json(): ISerializedApp
     {
         return {
             id: this.id,
             name: this.data.name,
             url: this.data.url,
-            owner: (await User.retrieve(this.data.owner))!.json(),
+            owner: this.owner.json(),
             scopes: Scope.from(this.data.scopes).map(scope => scope.json()),
         };
     };
@@ -61,7 +62,7 @@ export class App
 
         const { id } = await db.collection("apps").add(app);
 
-        return new App(id, app);
+        return new App(id, app, user);
     }
 
     static retrieve = async (id: string): Promise<App | null> =>
@@ -72,7 +73,9 @@ export class App
 
         const data = app.data() as IDatabaseApp;
 
-        return new App(id, data);
+        const owner = await User.retrieve(data.owner) as User;
+
+        return new App(id, data, owner);
     }
 
     static list = async (user: User): Promise<App[]> =>
@@ -85,7 +88,7 @@ export class App
         {
             const data = app.data() as IDatabaseApp;
 
-            apps.push(new App(app.id, data));
+            apps.push(new App(app.id, data, user));
         });
 
         return apps;
@@ -93,7 +96,7 @@ export class App
 
     public update = async (data: IApp): Promise<void> =>
     {
-        const result = await Validator.of("update").app(data, await this.json());
+        const result = await Validator.of("update").app(data, this.json());
 
         if (!result.valid)
         {

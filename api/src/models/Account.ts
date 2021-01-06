@@ -27,11 +27,11 @@ export class Account
         public readonly user: User,
     ) {}
 
-    public async json(): Promise<ISerializedAccount>
+    public json(): ISerializedAccount
     {
         return {
             id: this.id,
-            app: await this.app.json(),
+            app: this.app.json(),
             user: this.user.json(),
         };
     }

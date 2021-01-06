@@ -35,13 +35,13 @@ export default class AuthToken
         public readonly scopes?: Scope[],
     ) {}
 
-    public async json(): Promise<ISerializedAuthToken>
+    public json(): ISerializedAuthToken
     {
         return {
             id: this.id,
             user: this.user.json(),
-    
-            app: await this.app?.json(),
+
+            app: this.app?.json(),
             scopes: this.scopes?.map(scope => scope.json()),
         };
     }
