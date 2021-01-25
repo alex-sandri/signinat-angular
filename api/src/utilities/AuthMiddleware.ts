@@ -39,11 +39,6 @@ export default class AuthMiddleware
             return;
         }
 
-        if (!token)
-        {
-            return;
-        }
-
         this.callback(req, response, token);
     }
 }
